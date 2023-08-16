@@ -85,8 +85,8 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
       </div>
       <div className="flex flex-col">
         <label htmlFor="descricao">Descrição</label>
-        <textarea
-          rows={4}
+        <input
+          type="text"
           {...register("descricao", { required: "Campo Obrigatório" })}
           className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
         />
