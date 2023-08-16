@@ -8,6 +8,12 @@ import {
   doc,
   writeBatch,
   Timestamp,
+  FieldPath,
+  WhereFilterOp,
+  OrderByDirection,
+  CollectionReference,
+  Query,
+  QueryCompositeFilterConstraint,
 } from "firebase/firestore";
 import { db } from "@/libs/firebase";
 import { monthNumberToString } from "@/helpers/converter-mes";
@@ -66,11 +72,40 @@ export async function createBulkGastos(
   return batch.commit();
 }
 
-export async function listarTodosGastos(): Promise<GastosProps[]> {
+type Filtros = {
+  where?: Array<[string | FieldPath, WhereFilterOp, unknown]>;
+  orderBy?: Array<[string | FieldPath, OrderByDirection]>;
+};
+
+function construirConsulta(
+  collectionRef: CollectionReference,
+  filtros?: Filtros
+) {
+  let queryResult;
+
+  if (filtros?.where) {
+    filtros.where.forEach(([field, op, value]) => {
+        queryResult = query(collectionRef, where(field, op, value));
+    });
+  }
+
+  if (filtros?.orderBy) {
+    filtros.orderBy.forEach(([campo, direcao]) => {
+      queryResult = query(collectionRef, orderBy(campo, direcao));
+    });
+  }
+
+  return queryResult || collectionRef;
+}
+
+export async function listarTodosGastos(
+  filtros?: Filtros
+): Promise<GastosProps[]> {
   const gastos: GastosProps[] = [];
   const gastosCollection = collection(db(), "gastos");
-  const gastosQuery = query(gastosCollection, orderBy("data", "desc"));
-  const querySnapshot = await getDocs(gastosQuery);
+
+  const consulta = construirConsulta(gastosCollection, filtros);
+  const querySnapshot = await getDocs(consulta);
 
   querySnapshot.forEach((doc) => {
     const {
@@ -100,6 +135,7 @@ export async function listarTodosGastos(): Promise<GastosProps[]> {
   return gastos;
 }
 
+// Filtro: Total de Gastos por mês
 export async function totalMonthlyExpenses(year: number) {
   const gastosCollection = collection(db(), "gastos");
 
@@ -138,6 +174,47 @@ export async function totalMonthlyExpenses(year: number) {
 
   return monthlyTotals;
 }
+
+// fILTRO:período médio de compra para um determinado produto.
+export const averagePurchasePeriod = async () => {
+  const gastosCollection = collection(db(), "gastos");
+
+  const consulta = query(gastosCollection, orderBy("data", "asc"));
+  const querySnapshot = await getDocs(consulta);
+
+  const itens = Object({});
+  querySnapshot.forEach((doc) => {
+    const { data, descricao } = doc.data();
+
+    const key = descricao.toUpperCase();
+    if (!itens[key]) {
+      itens[key] = [];
+    }
+
+    itens[key].push(data.toDate());
+  });
+
+  const itensMedia = Object({});
+  for (const item in itens) {
+    if (itens[item].length <= 1) continue;
+
+    const datas = itens[item];
+    const totalDias = datas.length - 1;
+    let totalIntervaloDias = 0;
+
+    for (let i = 1; i < datas.length; i++) {
+      const diffTime = Math.abs(datas[i] - datas[i - 1]);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      totalIntervaloDias += diffDays;
+    }
+
+    const mediaDias = totalIntervaloDias / totalDias;
+
+    itensMedia[item] = mediaDias;
+  }
+
+  return itensMedia;
+};
 
 // Filtro: Total de Gastos por Local
 export const getTotalExpensesByLocation = async () => {
@@ -312,29 +389,4 @@ const getExpensesByPeriod = async (startDate: Date, endDate: Date) => {
   // });
 
   // return expensesByPeriod;
-};
-
-// fILTRO:período médio de compra para um determinado produto.
-const calculateAveragePurchasePeriod = async (descricao: string) => {
-  const data = await listarTodosGastos();
-  const filteredData = data.filter((item) => item.descricao === descricao);
-
-  if (filteredData.length <= 1) {
-    return "Não há dados suficientes para calcular o período médio de compra.";
-  }
-
-  // filteredData.sort((a, b) => a.data - b.data);
-
-  // let totalDays = 0;
-  // for (let i = 1; i < filteredData.length; i++) {
-  //   const currentDate = new Date(filteredData[i].data);
-  //   const prevDate = new Date(filteredData[i - 1].data);
-  //   const daysDiff = (currentDate - prevDate) / (1000 * 60 * 60 * 24);
-  //   totalDays += daysDiff;
-  // }
-
-  // const averagePeriod = totalDays / (filteredData.length - 1);
-  // return `O período médio de compra para "${descricao}" é de aproximadamente ${averagePeriod.toFixed(
-  //   2
-  // )} dias.`;
 };

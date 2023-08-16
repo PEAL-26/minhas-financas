@@ -1,15 +1,37 @@
 import { GastosProps } from "@/services/gastos";
 import { Filtro } from "./filtro";
 import { formatCurrencyKz } from "@/helpers/format-number";
+import { Console } from "console";
+import { useState } from "react";
 
 interface TableProps {
   data: GastosProps[];
 }
 
 export function Table({ data }: TableProps) {
+  const [filtro, setFiltro] = useState("");
+
+  const filtroLike = (
+    array: GastosProps[],
+    searchTerm: string
+  ): GastosProps[] => {
+    const regex = new RegExp(searchTerm, "i");
+
+    return array.filter(
+      (item) => regex.test(item.descricao) || regex.test(item.local || "")
+    );
+  };
+
+  const handleFilter = (filter: string) => {
+    setFiltro(filter);
+  };
+
+  const filteredData =
+    filtro.trim().length > 1 ? filtroLike(data, filtro) : data;
+
   return (
     <div className="relative overflow-x-auto p-2">
-      <Filtro />
+      <Filtro onSearch={handleFilter} />
       <table className="w-full text-left text-sm text-gray-500 ">
         <thead className="bg-gray-50 text-xs uppercase text-gray-700">
           <tr>
@@ -40,7 +62,7 @@ export function Table({ data }: TableProps) {
           </tr>
         </thead>
         <tbody>
-          {data.length === 0 && (
+          {filteredData.length === 0 && (
             <div
               aria-colspan={8}
               className="flex h-20 w-full flex-1 items-center justify-center"
@@ -48,7 +70,7 @@ export function Table({ data }: TableProps) {
               <span className="text-center ">Não possui nenhum registo!</span>
             </div>
           )}
-          {data.map((item) => (
+          {filteredData.map((item) => (
             <tr key={item.id} className="border-b bg-white hover:bg-gray-50">
               <th
                 scope="row"

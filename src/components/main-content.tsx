@@ -13,7 +13,10 @@ export function MainContent() {
 
   const listarGastos = async () => {
     try {
-      const _gastos = await listarTodosGastos();
+      const _gastos = await listarTodosGastos({
+        orderBy: [["data", "desc"]],
+      });
+
       setGastos(_gastos);
     } catch (error) {
       console.log(error);
