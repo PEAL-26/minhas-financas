@@ -5,6 +5,7 @@ import { GastosProps, listarTodosGastos } from "@/services/gastos";
 import { FormularioAdicionar } from "./formulario-adicionar";
 import { Table } from "./table";
 import { Skeleton } from "./skeleton";
+import { formatCurrencyKz } from "@/helpers/format-number";
 
 export function MainContent() {
   const [gastos, setGastos] = useState<GastosProps[]>([]);
@@ -29,12 +30,22 @@ export function MainContent() {
     listarGastos();
   }, []);
 
+  const total = gastos.reduce(
+    (accumulator, item) => accumulator + item.total,
+    0
+  );
+
   return (
     <>
       <FormularioAdicionar onLoading={setLoading} />
 
       <div className="mt-5 w-full">
         {loading ? <Skeleton /> : <Table data={gastos} />}
+        <div className="flex h-5 w-full items-center justify-center">
+          <span className="text-center text-lg font-bold">
+            {formatCurrencyKz(total)}
+          </span>
+        </div>
       </div>
     </>
   );

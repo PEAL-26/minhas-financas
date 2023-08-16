@@ -1,5 +1,6 @@
 import { GastosProps } from "@/services/gastos";
 import { Filtro } from "./filtro";
+import { formatCurrencyKz } from "@/helpers/format-number";
 
 interface TableProps {
   data: GastosProps[];
@@ -7,10 +8,10 @@ interface TableProps {
 
 export function Table({ data }: TableProps) {
   return (
-    <div className="relative overflow-x-auto shadow  p-2">
+    <div className="relative overflow-x-auto p-2">
       <Filtro />
-      <table className="w-full text-sm text-left text-gray-500 ">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+      <table className="w-full text-left text-sm text-gray-500 ">
+        <thead className="bg-gray-50 text-xs uppercase text-gray-700">
           <tr>
             <th scope="col" className="px-6 py-3">
               Descrição
@@ -42,26 +43,26 @@ export function Table({ data }: TableProps) {
           {data.length === 0 && (
             <div
               aria-colspan={8}
-              className="flex-1 w-full h-20 flex justify-center items-center"
+              className="flex h-20 w-full flex-1 items-center justify-center"
             >
               <span className="text-center ">Não possui nenhum registo!</span>
             </div>
           )}
           {data.map((item) => (
-            <tr key={item.id} className="bg-white border-b hover:bg-gray-50">
+            <tr key={item.id} className="border-b bg-white hover:bg-gray-50">
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+                className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
               >
                 {item.descricao}
               </th>
               <td className="px-6 py-4">{item.local}</td>
               <td className="px-6 py-4">{item.data.toDateString()}</td>
               <td className="px-6 py-4">{item.data_termino?.toDateString()}</td>
-              <td className="px-6 py-4">{item.preco} Kz</td>
+              <td className="px-6 py-4">{formatCurrencyKz(item.preco)}</td>
               <td className="px-6 py-4">{item.quantidade}</td>
-              <td className="px-6 py-4">{item.total} Kz</td>
-              <td className="px-6 py-4 flex gap-2">
+              <td className="px-6 py-4">{formatCurrencyKz(item.total)}</td>
+              <td className="flex gap-2 px-6 py-4">
                 <a
                   href="#"
                   className="font-medium text-blue-600 hover:underline"

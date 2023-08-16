@@ -4,8 +4,13 @@ import {
   query,
   getDocs,
   orderBy,
+  where,
+  doc,
+  writeBatch,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "@/libs/firebase";
+import { monthNumberToString } from "@/helpers/converter-mes";
 
 export interface GastosProps {
   id: string;
@@ -35,6 +40,30 @@ export async function createGastos(
 
   const postCollection = collection(db(), "gastos");
   await addDoc(postCollection, inputData);
+}
+
+export async function createBulkGastos(
+  input: Omit<GastosProps, "id" | "created_at">[]
+) {
+  const inputData = input.map((props) => ({
+    data: new Date(props.data),
+    data_termino: props.data_termino ? new Date(props.data_termino) : null,
+    descricao: props.descricao,
+    quantidade: props.quantidade,
+    local: props.local,
+    preco: props.preco,
+    total: props.total,
+    created_at: new Date(),
+  }));
+
+  const batch = writeBatch(db());
+
+  inputData.forEach((data) => {
+    const docRef = doc(collection(db(), "gastos"));
+    batch.set(docRef, data);
+  });
+
+  return batch.commit();
 }
 
 export async function listarTodosGastos(): Promise<GastosProps[]> {
@@ -70,3 +99,242 @@ export async function listarTodosGastos(): Promise<GastosProps[]> {
 
   return gastos;
 }
+
+export async function totalMonthlyExpenses(year: number) {
+  const gastosCollection = collection(db(), "gastos");
+
+  const filtroAnoInicio = where(
+    "data",
+    ">=",
+    Timestamp.fromDate(new Date(`${year}-01-01`))
+  );
+  const filtroAnoFim = where(
+    "data",
+    "<=",
+    Timestamp.fromDate(new Date(`${year}-12-31`))
+  );
+
+  const gastosQuery = query(
+    gastosCollection,
+    filtroAnoInicio,
+    filtroAnoFim,
+    orderBy("data", "asc")
+  );
+
+  const monthlyTotals = Object({});
+  const querySnapshot = await getDocs(gastosQuery);
+  querySnapshot.forEach((doc) => {
+    const { data, total } = doc.data();
+    const month = data.toDate().getMonth();
+
+    const key = monthNumberToString(month);
+
+    if (!monthlyTotals[key]) {
+      monthlyTotals[key] = 0;
+    }
+
+    monthlyTotals[key] += total;
+  });
+
+  return monthlyTotals;
+}
+
+// Filtro: Total de Gastos por Local
+export const getTotalExpensesByLocation = async () => {
+  const data = await listarTodosGastos();
+  const expensesByLocation = {} as GastosProps;
+
+  // data.forEach((item) => {
+  //   const { local, total } = item;
+  //   if (local && total) {
+  //     if (!expensesByLocation[local]) {
+  //       expensesByLocation[local] = 0;
+  //     }
+  //     expensesByLocation[local] += total;
+  //   }
+  // });
+
+  // return expensesByLocation;
+};
+
+// Filtro: Quantidade Vendida por Descrição
+const getQuantitySoldByDescription = async () => {
+  const data = await listarTodosGastos();
+  const quantitySoldByDescription = {};
+
+  // data.forEach((item) => {
+  //   const { descricao, quantidade } = item;
+  //   if (descricao && quantidade) {
+  //     if (!quantitySoldByDescription[descricao]) {
+  //       quantitySoldByDescription[descricao] = 0;
+  //     }
+  //     quantitySoldByDescription[descricao] += quantidade;
+  //   }
+  // });
+
+  // return quantitySoldByDescription;
+};
+
+// Filtro: Evolução dos Gastos ao Longo do Tempo
+const getExpenseEvolutionOverTime = async () => {
+  const data = await listarTodosGastos();
+  const evolutionOverTime = {};
+
+  data.forEach((item) => {
+    const { data, total } = item;
+    // Implemente a lógica para agrupar os gastos por período (mês, trimestre, ano, etc.)
+    // e calcule o total gasto em cada período
+    // Adicione os dados no objeto evolutionOverTime
+  });
+
+  return evolutionOverTime;
+};
+
+// Filtro: Distribuição dos Preços dos Produtos
+const getPriceDistribution = async () => {
+  const data = await listarTodosGastos();
+  const priceDistribution = {};
+
+  data.forEach((item) => {
+    const { descricao, preco } = item;
+    // Implemente a lógica para categorizar os preços dos produtos em intervalos
+    // e conte quantos produtos estão em cada intervalo
+    // Adicione os dados no objeto priceDistribution
+  });
+
+  return priceDistribution;
+};
+
+// Filtro: Relação entre Preço e Total
+const getPriceTotalRelation = async () => {
+  const data = await listarTodosGastos();
+  const priceTotalRelation = {};
+
+  // data.forEach((item) => {
+  //   const { descricao, preco, total } = item;
+  //   if (descricao && preco && total) {
+  //     if (!priceTotalRelation[descricao]) {
+  //       priceTotalRelation[descricao] = [];
+  //     }
+  //     priceTotalRelation[descricao].push({ preco, total });
+  //   }
+  // });
+
+  // return priceTotalRelation;
+};
+
+// Filtro: Quantidade Vendida e Total por Descrição
+const getQuantitySoldAndTotalByDescription = async () => {
+  const data = await listarTodosGastos();
+  const quantitySoldAndTotalByDescription = {};
+
+  // data.forEach((item) => {
+  //   const { descricao, quantidade, total } = item;
+  //   if (descricao && quantidade && total) {
+  //     if (!quantitySoldAndTotalByDescription[descricao]) {
+  //       quantitySoldAndTotalByDescription[descricao] = [];
+  //     }
+  //     quantitySoldAndTotalByDescription[descricao].push({ quantidade, total });
+  //   }
+  // });
+
+  // return quantitySoldAndTotalByDescription;
+};
+
+// Filtro: Comparação de Gastos por Categoria
+const compareExpensesByCategory = async () => {
+  const data = await listarTodosGastos();
+  const expensesByCategory = {};
+
+  // data.forEach((item) => {
+  //   const { categoria, total } = item;
+  //   if (categoria && total) {
+  //     if (!expensesByCategory[categoria]) {
+  //       expensesByCategory[categoria] = 0;
+  //     }
+  //     expensesByCategory[categoria] += total;
+  //   }
+  // });
+
+  // return expensesByCategory;
+};
+
+// Filtro: Top N Produtos Mais Vendidos
+const getTopNBestSellingProducts = async (n: number) => {
+  const data = await listarTodosGastos();
+  const products = {};
+
+  // data.forEach((item) => {
+  //   const { descricao, quantidade } = item;
+  //   if (descricao && quantidade) {
+  //     if (!products[descricao]) {
+  //       products[descricao] = 0;
+  //     }
+  //     products[descricao] += quantidade;
+  //   }
+  // });
+
+  // // Ordena os produtos mais vendidos
+  // const sortedProducts = Object.keys(products).sort(
+  //   (a, b) => products[b] - products[a]
+  // );
+
+  // // Retorna os primeiros N produtos
+  // return sortedProducts.slice(0, n);
+};
+
+// Filtro: Relação entre Quantidade e Total
+const getQuantityTotalRelation = async () => {
+  const data = await listarTodosGastos();
+  const quantityTotalRelation = {};
+
+  // data.forEach((item) => {
+  //   const { quantidade, total } = item;
+  //   if (quantidade && total) {
+  //     const relation = total / quantidade;
+  //     quantityTotalRelation[item.descricao] = relation;
+  //   }
+  // });
+
+  // return quantityTotalRelation;
+};
+
+// Filtro: Gastos por Período
+const getExpensesByPeriod = async (startDate: Date, endDate: Date) => {
+  const data = await listarTodosGastos();
+  // const expensesByPeriod = [];
+
+  // data.forEach((item) => {
+  //   const { data: expenseDate, total } = item;
+  //   if (expenseDate >= startDate && expenseDate <= endDate) {
+  //     expensesByPeriod.push({ data: expenseDate, total });
+  //   }
+  // });
+
+  // return expensesByPeriod;
+};
+
+// fILTRO:período médio de compra para um determinado produto.
+const calculateAveragePurchasePeriod = async (descricao: string) => {
+  const data = await listarTodosGastos();
+  const filteredData = data.filter((item) => item.descricao === descricao);
+
+  if (filteredData.length <= 1) {
+    return "Não há dados suficientes para calcular o período médio de compra.";
+  }
+
+  // filteredData.sort((a, b) => a.data - b.data);
+
+  // let totalDays = 0;
+  // for (let i = 1; i < filteredData.length; i++) {
+  //   const currentDate = new Date(filteredData[i].data);
+  //   const prevDate = new Date(filteredData[i - 1].data);
+  //   const daysDiff = (currentDate - prevDate) / (1000 * 60 * 60 * 24);
+  //   totalDays += daysDiff;
+  // }
+
+  // const averagePeriod = totalDays / (filteredData.length - 1);
+  // return `O período médio de compra para "${descricao}" é de aproximadamente ${averagePeriod.toFixed(
+  //   2
+  // )} dias.`;
+};

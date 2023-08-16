@@ -2,6 +2,7 @@
 import { createGastos } from "@/services/gastos";
 import { useState } from "react";
 import { useForm, SubmitHandler, ValidateResult } from "react-hook-form";
+import ImportarDados from "./impoertar-dados";
 
 interface FormularioAdicionarProps {
   id?: string;
@@ -60,26 +61,26 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-3 w-96"
+      className="flex w-96 flex-col gap-3"
     >
       <div className="flex gap-3">
-        <div className="flex flex-col w-full">
+        <div className="flex w-full flex-col">
           <label htmlFor="data">Data Gasto</label>
           <input
             type="date"
             {...register("data", { required: "Campo Obrigatório" })}
-            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-100  p-2.5 text-sm text-gray-900"
           />
           {errors.data && (
             <span className="text-red-600">{errors.data.message}</span>
           )}
         </div>
-        <div className="flex flex-col  w-full">
+        <div className="flex w-full  flex-col">
           <label htmlFor="data_termino">Data Término</label>
           <input
             type="date"
             {...register("data_termino")}
-            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-100  p-2.5 text-sm text-gray-900"
           />
         </div>
       </div>
@@ -88,7 +89,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
         <input
           type="text"
           {...register("descricao", { required: "Campo Obrigatório" })}
-          className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
+          className="block w-full rounded-lg border border-gray-300 bg-gray-100  p-2.5 text-sm text-gray-900"
         />
         {errors.descricao && (
           <span className="text-red-600">{errors.descricao.message}</span>
@@ -99,7 +100,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
         <input
           type="text"
           {...register("local")}
-          className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
+          className="block w-full rounded-lg border border-gray-300 bg-gray-100  p-2.5 text-sm text-gray-900"
         />
       </div>
       <div className="flex gap-3">
@@ -112,7 +113,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
               min: { message: "Tem de ter no mínimo 1 quantidade", value: 1 },
               valueAsNumber: true,
             })}
-            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-100  p-2.5 text-sm text-gray-900"
             onChange={(e) =>
               calcularTotal(parseFloat(e.target.value), watch("preco"))
             }
@@ -136,7 +137,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
                 }
               },
             })}
-            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-100  p-2.5 text-sm text-gray-900"
             onChange={(e) =>
               calcularTotal(watch("quantidade"), parseFloat(e.target.value))
             }
@@ -152,19 +153,20 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
             readOnly
             {...register("total")}
             value={total}
-            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 cursor-not-allowed"
+            className="block w-full cursor-not-allowed rounded-lg border border-gray-300  bg-gray-100 p-2.5 text-sm text-gray-900"
           />
         </div>
       </div>
-      <div className="flex justify-center items-center mt-5">
+      <div className="mt-5 flex items-center justify-center gap-3">
         <button
           type="submit"
           data-loading={loading}
           disabled={loading}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full data-[loading=true]:cursor-wait data-[loading=true]:bg-gray-700"
+          className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 data-[loading=true]:cursor-wait data-[loading=true]:bg-gray-700"
         >
           Adicionar
         </button>
+        <ImportarDados />
       </div>
     </form>
   );
