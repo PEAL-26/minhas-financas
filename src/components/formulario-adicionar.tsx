@@ -59,10 +59,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex w-96 flex-col gap-3"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
       <div className="flex gap-3">
         <div className="flex w-full flex-col">
           <label htmlFor="data">Data Gasto</label>
@@ -110,7 +107,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
             type="number"
             {...register("quantidade", {
               required: "Campo Obrigatório",
-              min: { message: "Tem de ter no mínimo 1 quantidade", value: 1 },
+              min: { message: "A quantidade não pode ser 0 ou negativa", value: 1 },
               valueAsNumber: true,
             })}
             className="block w-full rounded-lg border border-gray-300 bg-gray-100  p-2.5 text-sm text-gray-900"
@@ -128,7 +125,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
             type="text"
             {...register("preco", {
               required: "Campo Obrigatório",
-              min: { message: "Tem de ter no mínimo 1 quantidade", value: 1 },
+              min: { message: "O preço não pode ser 0 ou negativo", value: 1 },
               valueAsNumber: true,
               validate: (valor) => {
                 if (Number.isNaN(valor)) {

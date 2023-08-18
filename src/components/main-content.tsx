@@ -5,7 +5,7 @@ import { GastosProps, listarTodosGastos } from "@/services/gastos";
 import { FormularioAdicionar } from "./formulario-adicionar";
 import { Table } from "./table";
 import { Skeleton } from "./skeleton";
-import { formatCurrencyKz } from "@/helpers/format-number";
+import { BotaoAbrirModal } from "./botao-abrir-modal";
 
 export function MainContent() {
   const [gastos, setGastos] = useState<GastosProps[]>([]);
@@ -13,6 +13,7 @@ export function MainContent() {
 
   const listarGastos = async () => {
     try {
+      setLoading(true);
       const _gastos = await listarTodosGastos({
         orderBy: [["data", "desc"]],
       });
@@ -33,22 +34,13 @@ export function MainContent() {
     listarGastos();
   }, []);
 
-  const total = gastos.reduce(
-    (accumulator, item) => accumulator + item.total,
-    0
-  );
-
   return (
     <>
-      <FormularioAdicionar onLoading={setLoading} />
-
+      <BotaoAbrirModal>
+        <FormularioAdicionar onLoading={setLoading} />
+      </BotaoAbrirModal>
       <div className="mt-5 w-full">
         {loading ? <Skeleton /> : <Table data={gastos} />}
-        <div className="flex h-5 w-full items-center justify-center">
-          <span className="text-center text-lg font-bold">
-            {formatCurrencyKz(total)}
-          </span>
-        </div>
       </div>
     </>
   );

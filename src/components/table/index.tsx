@@ -1,15 +1,23 @@
+"use client";
+import { useEffect, useState } from "react";
 import { GastosProps } from "@/services/gastos";
-import { Filtro } from "./filtro";
 import { formatCurrencyKz } from "@/helpers/format-number";
-import { Console } from "console";
-import { useState } from "react";
+
+import { Filtro } from "./filtro";
+import { Pagination } from "./pagination";
 
 interface TableProps {
   data: GastosProps[];
 }
 
+const itemsPerPage = 10;
+
 export function Table({ data }: TableProps) {
   const [filtro, setFiltro] = useState("");
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   const filtroLike = (
     array: GastosProps[],
@@ -28,6 +36,23 @@ export function Table({ data }: TableProps) {
 
   const filteredData =
     filtro.trim().length > 1 ? filtroLike(data, filtro) : data;
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const total = filteredData.reduce(
+    (accumulator, item) => accumulator + item.total,
+    0
+  );
+
+  useEffect(() => {
+    if (totalPages === 0) setCurrentPage(0);
+    else setCurrentPage(1);
+  }, [totalPages]);
 
   return (
     <div className="relative overflow-x-auto p-2">
@@ -62,7 +87,7 @@ export function Table({ data }: TableProps) {
           </tr>
         </thead>
         <tbody>
-          {filteredData.length === 0 && (
+          {paginatedData.length === 0 && (
             <div
               aria-colspan={8}
               className="flex h-20 w-full flex-1 items-center justify-center"
@@ -70,7 +95,7 @@ export function Table({ data }: TableProps) {
               <span className="text-center ">Não possui nenhum registo!</span>
             </div>
           )}
-          {filteredData.map((item) => (
+          {paginatedData.map((item) => (
             <tr key={item.id} className="border-b bg-white hover:bg-gray-50">
               <th
                 scope="row"
@@ -101,7 +126,20 @@ export function Table({ data }: TableProps) {
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </tfoot>
       </table>
+
+      <div className="flex h-5 w-full items-center justify-center">
+        <span className="text-center text-lg font-bold">
+          {formatCurrencyKz(total)}
+        </span>
+      </div>
     </div>
   );
 }
