@@ -1,18 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
-import { GastosProps } from "@/services/gastos";
+import { DespesasProps } from "@/services/despesas";
 import { formatCurrencyKz } from "@/helpers/format-number";
 
 import { Filtro } from "./filtro";
 import { Pagination } from "./pagination";
 
 interface TableProps {
-  data: GastosProps[];
+  data: DespesasProps[];
+  buttonEvent?(): void;
 }
 
 const itemsPerPage = 10;
 
-export function Table({ data }: TableProps) {
+export function Table({ data, buttonEvent }: TableProps) {
   const [filtro, setFiltro] = useState("");
 
   const handlePageChange = (newPage: number) => {
@@ -20,9 +21,9 @@ export function Table({ data }: TableProps) {
   };
 
   const filtroLike = (
-    array: GastosProps[],
+    array: DespesasProps[],
     searchTerm: string
-  ): GastosProps[] => {
+  ): DespesasProps[] => {
     const regex = new RegExp(searchTerm, "i");
 
     return array.filter(
@@ -111,14 +112,14 @@ export function Table({ data }: TableProps) {
               <td className="px-6 py-4">{formatCurrencyKz(item.total)}</td>
               <td className="flex gap-2 px-6 py-4">
                 <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
+                  onClick={(e) => e.preventDefault()}
+                  className="cursor-pointer font-medium text-blue-600 hover:underline"
                 >
                   Edit
                 </a>
                 <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline"
+                  onClick={(e) => e.preventDefault()}
+                  className="cursor-pointer font-medium text-red-600 hover:underline"
                 >
                   Delete
                 </a>

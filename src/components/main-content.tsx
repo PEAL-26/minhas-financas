@@ -1,24 +1,26 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import { GastosProps, listarTodosGastos } from "@/services/gastos";
+import { DespesasProps, listarTodosDespesas } from "@/services/despesas";
 import { FormularioAdicionar } from "./formulario-adicionar";
 import { Table } from "./table";
 import { Skeleton } from "./skeleton";
 import { BotaoAbrirModal } from "./botao-abrir-modal";
+import { ExportarDados } from "./exportar-dados";
+import { ImportarDados } from "./importar-dados";
 
 export function MainContent() {
-  const [gastos, setGastos] = useState<GastosProps[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [despesas, setDespesas] = useState<DespesasProps[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const listarGastos = async () => {
+  const listarDespesas = async () => {
     try {
       setLoading(true);
-      const _gastos = await listarTodosGastos({
+      const _despesas = await listarTodosDespesas({
         orderBy: [["data", "desc"]],
       });
 
-      setGastos(_gastos);
+      setDespesas(_despesas);
     } catch (error) {
       console.log(error);
     } finally {
@@ -27,20 +29,22 @@ export function MainContent() {
   };
 
   useEffect(() => {
-    if (loading) listarGastos();
+    if (loading) listarDespesas();
   }, [loading]);
-
-  useEffect(() => {
-    listarGastos();
-  }, []);
 
   return (
     <>
-      <BotaoAbrirModal>
-        <FormularioAdicionar onLoading={setLoading} />
-      </BotaoAbrirModal>
+      <div className="flex gap-2">
+        <BotaoAbrirModal>
+          <FormularioAdicionar onLoading={setLoading} />
+        </BotaoAbrirModal>
+        <ExportarDados />
+        <ImportarDados />
+      </div>
+
       <div className="mt-5 w-full">
-        {loading ? <Skeleton /> : <Table data={gastos} />}
+        {loading && <Skeleton />}
+        {!loading && <Table data={despesas} />}
       </div>
     </>
   );

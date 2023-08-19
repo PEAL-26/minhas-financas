@@ -2,7 +2,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { AiFillCheckCircle, AiOutlineLoading } from "react-icons/ai";
 
-import { createBulkGastos } from "@/services/gastos";
+import { createBulkDespesas } from "@/services/despesas";
 
 export default function ImportarDadosInput() {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +52,7 @@ export default function ImportarDadosInput() {
       setIsLoading(true);
 
       const data = processData(content);
-      await createBulkGastos(data);
+      await createBulkDespesas(data);
 
       setContent("");
       setIsLoading(false);

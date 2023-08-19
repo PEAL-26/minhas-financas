@@ -9,7 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { totalMonthlyExpenses } from "@/services/gastos";
+import { totalMonthlyExpenses } from "@/services/despesas";
 import { useEffect, useState } from "react";
 
 ChartJS.register(
@@ -29,7 +29,7 @@ const options = {
     },
     title: {
       display: true,
-      text: "Total de Gastos Por Mês",
+      text: "Total de Despesas Por Mês",
     },
   },
 };
@@ -62,7 +62,7 @@ export function TotalMonthlyExpenses() {
           {
             data,
             backgroundColor: "rgba(255, 99, 132, 0.5)",
-            label: "Gastos",
+            label: "Despesas",
           },
         ],
       }}

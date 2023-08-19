@@ -18,7 +18,7 @@ import {
 import { db } from "@/libs/firebase";
 import { monthNumberToString } from "@/helpers/converter-mes";
 
-export interface GastosProps {
+export interface DespesasProps {
   id: string;
   data: Date;
   data_termino: Date | null;
@@ -30,8 +30,8 @@ export interface GastosProps {
   created_at: Date;
 }
 
-export async function createGastos(
-  props: Omit<GastosProps, "id" | "created_at">
+export async function createDespesa(
+  props: Omit<DespesasProps, "id" | "created_at">
 ) {
   const inputData = {
     data: new Date(props.data),
@@ -44,12 +44,12 @@ export async function createGastos(
     created_at: new Date(),
   };
 
-  const postCollection = collection(db(), "gastos");
+  const postCollection = collection(db(), "despesas");
   await addDoc(postCollection, inputData);
 }
 
-export async function createBulkGastos(
-  input: Omit<GastosProps, "id" | "created_at">[]
+export async function createBulkDespesas(
+  input: Omit<DespesasProps, "id" | "created_at">[]
 ) {
   const inputData = input.map((props) => ({
     data: new Date(props.data),
@@ -65,7 +65,7 @@ export async function createBulkGastos(
   const batch = writeBatch(db());
 
   inputData.forEach((data) => {
-    const docRef = doc(collection(db(), "gastos"));
+    const docRef = doc(collection(db(), "despesas"));
     batch.set(docRef, data);
   });
 
@@ -98,13 +98,13 @@ function construirConsulta(
   return queryResult || collectionRef;
 }
 
-export async function listarTodosGastos(
+export async function listarTodosDespesas(
   filtros?: Filtros
-): Promise<GastosProps[]> {
-  const gastos: GastosProps[] = [];
-  const gastosCollection = collection(db(), "gastos");
+): Promise<DespesasProps[]> {
+  const despesas: DespesasProps[] = [];
+  const despesasCollection = collection(db(), "despesas");
 
-  const consulta = construirConsulta(gastosCollection, filtros);
+  const consulta = construirConsulta(despesasCollection, filtros);
   const querySnapshot = await getDocs(consulta);
 
   querySnapshot.forEach((doc) => {
@@ -119,7 +119,7 @@ export async function listarTodosGastos(
       created_at,
     } = doc.data();
 
-    gastos.push({
+    despesas.push({
       id: doc.id,
       data: data.toDate(),
       data_termino: data_termino && data_termino.toDate(),
@@ -132,12 +132,12 @@ export async function listarTodosGastos(
     });
   });
 
-  return gastos;
+  return despesas;
 }
 
-// Filtro: Total de Gastos por mês
+// Filtro: Total de Despesas por mês
 export async function totalMonthlyExpenses(year: number) {
-  const gastosCollection = collection(db(), "gastos");
+  const despesasCollection = collection(db(), "despesas");
 
   const filtroAnoInicio = where(
     "data",
@@ -150,15 +150,15 @@ export async function totalMonthlyExpenses(year: number) {
     Timestamp.fromDate(new Date(`${year}-12-31`))
   );
 
-  const gastosQuery = query(
-    gastosCollection,
+  const despesasQuery = query(
+    despesasCollection,
     filtroAnoInicio,
     filtroAnoFim,
     orderBy("data", "asc")
   );
 
   const monthlyTotals = Object({});
-  const querySnapshot = await getDocs(gastosQuery);
+  const querySnapshot = await getDocs(despesasQuery);
   querySnapshot.forEach((doc) => {
     const { data, total } = doc.data();
     const month = data.toDate().getMonth();
@@ -177,9 +177,9 @@ export async function totalMonthlyExpenses(year: number) {
 
 // fILTRO:período médio de compra para um determinado produto.
 export const averagePurchasePeriod = async () => {
-  const gastosCollection = collection(db(), "gastos");
+  const despesasCollection = collection(db(), "despesas");
 
-  const consulta = query(gastosCollection, orderBy("data", "asc"));
+  const consulta = query(despesasCollection, orderBy("data", "asc"));
   const querySnapshot = await getDocs(consulta);
 
   const itens = Object({});
@@ -216,10 +216,10 @@ export const averagePurchasePeriod = async () => {
   return itensMedia;
 };
 
-// Filtro: Total de Gastos por Local
+// Filtro: Total de Despesas por Local
 export const getTotalExpensesByLocation = async () => {
-  const data = await listarTodosGastos();
-  const expensesByLocation = {} as GastosProps;
+  const data = await listarTodosDespesas();
+  const expensesByLocation = {} as DespesasProps;
 
   // data.forEach((item) => {
   //   const { local, total } = item;
@@ -236,7 +236,7 @@ export const getTotalExpensesByLocation = async () => {
 
 // Filtro: Quantidade Vendida por Descrição
 const getQuantitySoldByDescription = async () => {
-  const data = await listarTodosGastos();
+  const data = await listarTodosDespesas();
   const quantitySoldByDescription = {};
 
   // data.forEach((item) => {
@@ -252,14 +252,14 @@ const getQuantitySoldByDescription = async () => {
   // return quantitySoldByDescription;
 };
 
-// Filtro: Evolução dos Gastos ao Longo do Tempo
+// Filtro: Evolução dos Despesas ao Longo do Tempo
 const getExpenseEvolutionOverTime = async () => {
-  const data = await listarTodosGastos();
+  const data = await listarTodosDespesas();
   const evolutionOverTime = {};
 
   data.forEach((item) => {
     const { data, total } = item;
-    // Implemente a lógica para agrupar os gastos por período (mês, trimestre, ano, etc.)
+    // Implemente a lógica para agrupar os despesas por período (mês, trimestre, ano, etc.)
     // e calcule o total gasto em cada período
     // Adicione os dados no objeto evolutionOverTime
   });
@@ -269,7 +269,7 @@ const getExpenseEvolutionOverTime = async () => {
 
 // Filtro: Distribuição dos Preços dos Produtos
 const getPriceDistribution = async () => {
-  const data = await listarTodosGastos();
+  const data = await listarTodosDespesas();
   const priceDistribution = {};
 
   data.forEach((item) => {
@@ -284,7 +284,7 @@ const getPriceDistribution = async () => {
 
 // Filtro: Relação entre Preço e Total
 const getPriceTotalRelation = async () => {
-  const data = await listarTodosGastos();
+  const data = await listarTodosDespesas();
   const priceTotalRelation = {};
 
   // data.forEach((item) => {
@@ -302,7 +302,7 @@ const getPriceTotalRelation = async () => {
 
 // Filtro: Quantidade Vendida e Total por Descrição
 const getQuantitySoldAndTotalByDescription = async () => {
-  const data = await listarTodosGastos();
+  const data = await listarTodosDespesas();
   const quantitySoldAndTotalByDescription = {};
 
   // data.forEach((item) => {
@@ -318,9 +318,9 @@ const getQuantitySoldAndTotalByDescription = async () => {
   // return quantitySoldAndTotalByDescription;
 };
 
-// Filtro: Comparação de Gastos por Categoria
+// Filtro: Comparação de Despesas por Categoria
 const compareExpensesByCategory = async () => {
-  const data = await listarTodosGastos();
+  const data = await listarTodosDespesas();
   const expensesByCategory = {};
 
   // data.forEach((item) => {
@@ -338,7 +338,7 @@ const compareExpensesByCategory = async () => {
 
 // Filtro: Top N Produtos Mais Vendidos
 const getTopNBestSellingProducts = async (n: number) => {
-  const data = await listarTodosGastos();
+  const data = await listarTodosDespesas();
   const products = {};
 
   // data.forEach((item) => {
@@ -362,7 +362,7 @@ const getTopNBestSellingProducts = async (n: number) => {
 
 // Filtro: Relação entre Quantidade e Total
 const getQuantityTotalRelation = async () => {
-  const data = await listarTodosGastos();
+  const data = await listarTodosDespesas();
   const quantityTotalRelation = {};
 
   // data.forEach((item) => {
@@ -376,9 +376,9 @@ const getQuantityTotalRelation = async () => {
   // return quantityTotalRelation;
 };
 
-// Filtro: Gastos por Período
+// Filtro: Despesas por Período
 const getExpensesByPeriod = async (startDate: Date, endDate: Date) => {
-  const data = await listarTodosGastos();
+  const data = await listarTodosDespesas();
   // const expensesByPeriod = [];
 
   // data.forEach((item) => {

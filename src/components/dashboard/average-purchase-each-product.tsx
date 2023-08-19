@@ -11,7 +11,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import { useEffect, useState } from "react";
 
-import { averagePurchasePeriod } from "@/services/gastos";
+import { averagePurchasePeriod } from "@/services/despesas";
 
 ChartJS.register(
   CategoryScale,
@@ -31,7 +31,7 @@ const options = {
     },
     title: {
       display: true,
-      text: "Média de gastos em dias por item",
+      text: "Média de despesas em dias por item",
     },
   },
 };

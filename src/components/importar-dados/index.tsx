@@ -3,8 +3,9 @@ import Tippy from "@tippyjs/react";
 import { TfiImport } from "react-icons/tfi";
 
 import ImportarDadosInput from "./input";
+import { AiOutlineLoading } from "react-icons/ai";
 
-export default function ImportarDados() {
+export function ImportarDados() {
   return (
     <Tippy
       content={<ImportarDadosInput />}

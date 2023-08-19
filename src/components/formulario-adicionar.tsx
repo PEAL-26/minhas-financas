@@ -1,8 +1,7 @@
 "use client";
-import { createGastos } from "@/services/gastos";
+import { createDespesa } from "@/services/despesas";
 import { useState } from "react";
 import { useForm, SubmitHandler, ValidateResult } from "react-hook-form";
-import ImportarDados from "./impoertar-dados";
 
 interface FormularioAdicionarProps {
   id?: string;
@@ -37,7 +36,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
 
     try {
       setLoading(true);
-      await createGastos({ ...data, total });
+      await createDespesa({ ...data, total });
       onLoading && onLoading(true);
       reset();
       setTotal(0);
@@ -62,7 +61,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
       <div className="flex gap-3">
         <div className="flex w-full flex-col">
-          <label htmlFor="data">Data Gasto</label>
+          <label htmlFor="data">Data</label>
           <input
             type="date"
             {...register("data", { required: "Campo Obrigatório" })}
@@ -107,7 +106,10 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
             type="number"
             {...register("quantidade", {
               required: "Campo Obrigatório",
-              min: { message: "A quantidade não pode ser 0 ou negativa", value: 1 },
+              min: {
+                message: "A quantidade não pode ser 0 ou negativa",
+                value: 1,
+              },
               valueAsNumber: true,
             })}
             className="block w-full rounded-lg border border-gray-300 bg-gray-100  p-2.5 text-sm text-gray-900"
@@ -163,7 +165,6 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
         >
           Adicionar
         </button>
-        <ImportarDados />
       </div>
     </form>
   );

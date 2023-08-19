@@ -7,7 +7,7 @@ export default function Dashboard() {
   return (
     <main className="flex flex-col items-center justify-center p-10">
       <h2 className="mb-10 text-center text-lg font-bold">Dashboard</h2>
-      {/* Total de gastos Mensal*/}
+      {/* Total de despesas Mensal*/}
       <TotalMonthlyExpenses />
       {/* Media de compra de cada produto */}
       <AveragePurchaseEachProduct />
