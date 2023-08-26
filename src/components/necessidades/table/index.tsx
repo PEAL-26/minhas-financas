@@ -1,19 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
-import { DespesasProps } from "@/services/despesas";
 import { formatCurrencyKz } from "@/helpers/format-number";
+import { NecessidadeProps, prioridadeToString } from "@/services/necessidades";
 
 import { Filtro } from "./filtro";
 import { Pagination } from "./pagination";
+import { TableEmpty } from "@/components/table-empty";
 
 interface TableProps {
-  data: DespesasProps[];
+  data: NecessidadeProps[];
+  itemsPerPage?: number;
   buttonEvent?(): void;
 }
 
-const itemsPerPage = 10;
-
-export function Table({ data, buttonEvent }: TableProps) {
+export function Table(props: TableProps) {
+  const { data, itemsPerPage = 10 } = props;
   const [filtro, setFiltro] = useState("");
 
   const handlePageChange = (newPage: number) => {
@@ -21,13 +22,13 @@ export function Table({ data, buttonEvent }: TableProps) {
   };
 
   const filtroLike = (
-    array: DespesasProps[],
+    array: NecessidadeProps[],
     searchTerm: string
-  ): DespesasProps[] => {
+  ): NecessidadeProps[] => {
     const regex = new RegExp(searchTerm, "i");
 
     return array.filter(
-      (item) => regex.test(item.descricao) || regex.test(item.local || "")
+      (item) => regex.test(item.item) || regex.test(item.descricao || "")
     );
   };
 
@@ -46,7 +47,7 @@ export function Table({ data, buttonEvent }: TableProps) {
   );
 
   const total = filteredData.reduce(
-    (accumulator, item) => accumulator + item.total,
+    (accumulator, item) => accumulator + item.valor,
     0
   );
 
@@ -62,25 +63,22 @@ export function Table({ data, buttonEvent }: TableProps) {
         <thead className="bg-gray-50 text-xs uppercase text-gray-700">
           <tr>
             <th scope="col" className="px-6 py-3">
+              Item
+            </th>
+            <th scope="col" className="px-6 py-3">
               Descrição
             </th>
             <th scope="col" className="px-6 py-3">
-              Local
+              Categoria
             </th>
             <th scope="col" className="px-6 py-3">
-              Data
+              Prioridade
             </th>
             <th scope="col" className="px-6 py-3">
-              Data de Término
+              Tipo
             </th>
             <th scope="col" className="px-6 py-3">
-              Preço
-            </th>
-            <th scope="col" className="px-6 py-3">
-              QTD
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Total
+              Valor
             </th>
             <th scope="col" className="px-6 py-3">
               Ação
@@ -88,28 +86,27 @@ export function Table({ data, buttonEvent }: TableProps) {
           </tr>
         </thead>
         <tbody>
-          {paginatedData.length === 0 && (
-            <div
-              aria-colspan={8}
-              className="flex h-20 w-full flex-1 items-center justify-center"
-            >
-              <span className="text-center ">Não possui nenhum registo!</span>
-            </div>
-          )}
-          {paginatedData.map((item) => (
-            <tr key={item.id} className="border-b bg-white hover:bg-gray-50">
+          {paginatedData.length === 0 && <TableEmpty colSpan={7} />}
+          {paginatedData.map((data) => (
+            <tr key={data.id} className="border-b bg-white hover:bg-gray-50">
               <th
                 scope="row"
                 className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
               >
-                {item.descricao}
+                {data.item}
               </th>
-              <td className="px-6 py-4">{item.local}</td>
-              <td className="px-6 py-4">{item.data.toDateString()}</td>
-              <td className="px-6 py-4">{item.data_termino?.toDateString()}</td>
-              <td className="px-6 py-4">{formatCurrencyKz(item.preco)}</td>
-              <td className="px-6 py-4">{item.quantidade}</td>
-              <td className="px-6 py-4">{formatCurrencyKz(item.total)}</td>
+              <td className="px-6 py-4">{data.descricao}</td>
+              <td className="px-6 py-4">{data.categoria}</td>
+              <td className="px-6 py-4">
+                <span
+                  data-prioridade={data.prioridade}
+                  className="rounded p-1 data-[prioridade=0]:bg-orange-400 data-[prioridade=1]:bg-green-400 data-[prioridade=3]:bg-red-500"
+                >
+                  {prioridadeToString(data.prioridade)}
+                </span>
+              </td>
+              <td className="px-6 py-4">{data.tipo.display}</td>
+              <td className="px-6 py-4">{formatCurrencyKz(data.valor)}</td>
               <td className="flex gap-2 px-6 py-4">
                 <a
                   onClick={(e) => e.preventDefault()}

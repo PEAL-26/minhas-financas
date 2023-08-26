@@ -58,7 +58,7 @@ export function Filtro(props: FiltroProps) {
           type="text"
           id="table-search"
           className="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-          placeholder="Search htmlFor items"
+          placeholder="Pesquisar"
           onChange={(e) => onSearch && onSearch(e.target.value)}
         />
       </div>

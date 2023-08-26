@@ -1,6 +1,8 @@
 import {
   collection,
+  updateDoc,
   addDoc,
+  deleteDoc,
   query,
   getDocs,
   orderBy,
@@ -8,15 +10,12 @@ import {
   doc,
   writeBatch,
   Timestamp,
-  FieldPath,
-  WhereFilterOp,
-  OrderByDirection,
-  CollectionReference,
-  Query,
-  QueryCompositeFilterConstraint,
+  getDoc,
+  DocumentData,
 } from "firebase/firestore";
 import { db } from "@/libs/firebase";
 import { monthNumberToString } from "@/helpers/converter-mes";
+import { Filtros, construirConsulta } from "./_generics";
 
 export interface DespesasProps {
   id: string;
@@ -72,67 +71,72 @@ export async function createBulkDespesas(
   return batch.commit();
 }
 
-type Filtros = {
-  where?: Array<[string | FieldPath, WhereFilterOp, unknown]>;
-  orderBy?: Array<[string | FieldPath, OrderByDirection]>;
-};
+export async function updateDespesa(props: Omit<DespesasProps, "created_at">) {
+  const inputData = {
+    data: new Date(props.data),
+    data_termino: props.data_termino ? new Date(props.data_termino) : null,
+    descricao: props.descricao,
+    quantidade: props.quantidade,
+    local: props.local,
+    preco: props.preco,
+    total: props.total,
+  };
 
-function construirConsulta(
-  collectionRef: CollectionReference,
-  filtros?: Filtros
-) {
-  let queryResult;
+  const docRef = doc(db(), "despesas", props.id);
+  await updateDoc(docRef, inputData);
+}
 
-  if (filtros?.where) {
-    filtros.where.forEach(([field, op, value]) => {
-        queryResult = query(collectionRef, where(field, op, value));
-    });
-  }
+export async function removeDespesa(id: string) {
+  await deleteDoc(doc(db(), "despesas", id));
+}
 
-  if (filtros?.orderBy) {
-    filtros.orderBy.forEach(([campo, direcao]) => {
-      queryResult = query(collectionRef, orderBy(campo, direcao));
-    });
-  }
+function firebaseMapper(doc: DocumentData): DespesasProps {
+  const {
+    data,
+    descricao,
+    local,
+    data_termino,
+    quantidade,
+    preco,
+    total,
+    created_at,
+  } = doc.data();
 
-  return queryResult || collectionRef;
+  return {
+    id: doc.id,
+    data: data.toDate(),
+    data_termino: data_termino && data_termino.toDate(),
+    descricao,
+    local,
+    quantidade,
+    preco,
+    total,
+    created_at: created_at.toDate(),
+  };
 }
 
 export async function listarTodosDespesas(
   filtros?: Filtros
 ): Promise<DespesasProps[]> {
-  const despesas: DespesasProps[] = [];
   const despesasCollection = collection(db(), "despesas");
-
   const consulta = construirConsulta(despesasCollection, filtros);
   const querySnapshot = await getDocs(consulta);
-
-  querySnapshot.forEach((doc) => {
-    const {
-      data,
-      descricao,
-      local,
-      data_termino,
-      quantidade,
-      preco,
-      total,
-      created_at,
-    } = doc.data();
-
-    despesas.push({
-      id: doc.id,
-      data: data.toDate(),
-      data_termino: data_termino && data_termino.toDate(),
-      descricao,
-      local,
-      quantidade,
-      preco,
-      total,
-      created_at: created_at.toDate(),
-    });
-  });
+  const despesas = querySnapshot.docs.map((doc) => firebaseMapper(doc));
 
   return despesas;
+}
+
+export async function buscarDespesaPorId(id: string) {
+  const docRef = doc(db(), "despesas", id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const despesa = firebaseMapper(docSnap);
+
+    return despesa;
+  }
+
+  return null;
 }
 
 // Filtro: Total de Despesas por mês

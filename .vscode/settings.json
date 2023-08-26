@@ -3,8 +3,11 @@
         "Botao",
         "condicao",
         "descricao",
+        "diaria",
         "direcao",
         "Formulario",
-        "preco"
+        "Periodo",
+        "preco",
+        "unica"
     ]
 }

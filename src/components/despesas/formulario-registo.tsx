@@ -1,16 +1,22 @@
 "use client";
-import { createDespesa } from "@/services/despesas";
-import { useState } from "react";
-import { useForm, SubmitHandler, ValidateResult } from "react-hook-form";
+import {
+  DespesasProps,
+  buscarDespesaPorId,
+  createDespesa,
+  updateDespesa,
+} from "@/services/despesas";
+import { useCallback, useEffect, useState } from "react";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
-interface FormularioAdicionarProps {
+interface FormularioRegistoProps {
   id?: string;
+  open?: boolean;
   onLoading?(state: boolean): void;
 }
 
 type Inputs = {
-  data: Date;
-  data_termino: Date | null;
+  data: string;
+  data_termino: string | null;
   descricao: string;
   quantidade: number;
   local: string;
@@ -18,28 +24,41 @@ type Inputs = {
   total: number;
 };
 
-export function FormularioAdicionar(props: FormularioAdicionarProps) {
-  const { onLoading } = props;
+export function FormularioRegisto(props: FormularioRegistoProps) {
+  const { onLoading, open = false, id } = props;
+
   const {
     register,
     handleSubmit,
     watch,
     reset,
+    setValue,
     setError,
+    control,
     formState: { errors },
   } = useForm<Inputs>();
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const [loading, setLoading] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
+
+  const onSubmit: SubmitHandler<Inputs> = async (input) => {
     if (loading) return;
 
     try {
       setLoading(true);
-      await createDespesa({ ...data, total });
+
+      const data = new Date(input.data);
+      const data_termino = input.data_termino
+        ? new Date(input.data_termino)
+        : null;
+
+      if (!!id) {
+        await updateDespesa({ ...input, data, data_termino, id });
+      } else {
+        await createDespesa({ ...input, data, data_termino });
+      }
       onLoading && onLoading(true);
       reset();
-      setTotal(0);
     } catch (error) {
       console.log(error);
     } finally {
@@ -47,15 +66,47 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
     }
   };
 
-  const calcularTotal = (quantidade: number, preco: number) => {
-    if (Number.isNaN(quantidade) || Number.isNaN(preco)) {
-      setTotal(0);
-      return;
-    }
+  const calcularTotal = useCallback(
+    (quantidade: number, preco: number) => {
+      if (Number.isNaN(quantidade) || Number.isNaN(preco)) {
+        setValue("total", 0);
+        return;
+      }
 
-    const _total = quantidade * preco;
-    setTotal(_total);
-  };
+      const _total = quantidade * preco;
+      setValue("total", _total);
+    },
+    [setValue]
+  );
+
+  useEffect(() => {
+    (async () => {
+      if (id && open) {
+        setLoadingEdit(true);
+        const response = await buscarDespesaPorId(id);
+
+        if (response) {
+          reset({
+            ...response,
+            data: response.data.toISOString().substring(0, 10),
+            data_termino:
+              response?.data_termino?.toISOString().substring(0, 10) || null,
+          });
+          calcularTotal(response.quantidade, response.preco);
+        }
+
+        setLoadingEdit(false);
+      }
+    })();
+  }, [calcularTotal, id, open, reset]);
+
+  useEffect(() => {
+    if (!open) {
+      reset();
+    }
+  }, [open, reset]);
+
+  if (loadingEdit) return null;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -64,8 +115,11 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
           <label htmlFor="data">Data</label>
           <input
             type="date"
-            {...register("data", { required: "Campo Obrigatório" })}
+            {...register("data", {
+              required: "Campo Obrigatório",
+            })}
             className="block w-full rounded-lg border border-gray-300 bg-gray-100  p-2.5 text-sm text-gray-900"
+            defaultValue={new Date().toISOString().substring(0, 10)}
           />
           {errors.data && (
             <span className="text-red-600">{errors.data.message}</span>
@@ -84,7 +138,9 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
         <label htmlFor="descricao">Descrição</label>
         <input
           type="text"
-          {...register("descricao", { required: "Campo Obrigatório" })}
+          {...register("descricao", {
+            required: "Campo Obrigatório",
+          })}
           className="block w-full rounded-lg border border-gray-300 bg-gray-100  p-2.5 text-sm text-gray-900"
         />
         {errors.descricao && (
@@ -151,7 +207,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
             type="text"
             readOnly
             {...register("total")}
-            value={total}
+            // value={total}
             className="block w-full cursor-not-allowed rounded-lg border border-gray-300  bg-gray-100 p-2.5 text-sm text-gray-900"
           />
         </div>
@@ -163,7 +219,7 @@ export function FormularioAdicionar(props: FormularioAdicionarProps) {
           disabled={loading}
           className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 data-[loading=true]:cursor-wait data-[loading=true]:bg-gray-700"
         >
-          Adicionar
+          Guardar
         </button>
       </div>
     </form>

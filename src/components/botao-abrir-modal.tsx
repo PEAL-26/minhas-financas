@@ -1,13 +1,18 @@
 "use client";
-import { ReactNode, useState } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
+import { twMerge } from "tailwind-merge";
+import { ElementType, ReactNode, SVGProps, useState } from "react";
+import { IconBaseProps } from "react-icons";
 import { Modal } from "./modal";
 
 interface BotaoAbrirModalProps {
-  children?: ReactNode;
+  children?(open: boolean): ReactNode;
+  title?: string;
+  className?: string;
+  icon?: ElementType<IconBaseProps>;
 }
 
-export function BotaoAbrirModal({ children }: BotaoAbrirModalProps) {
+export function BotaoAbrirModal(props: BotaoAbrirModalProps) {
+  const { children, title, className, icon: Icon } = props;
   const [openModal, setModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -17,14 +22,18 @@ export function BotaoAbrirModal({ children }: BotaoAbrirModalProps) {
   return (
     <>
       <button
-        className="flex items-center justify-between gap-2 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        className={twMerge(
+          "group flex items-center justify-between gap-2 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300",
+          className
+        )}
         onClick={handleOpenModal}
       >
-        <AiOutlinePlus size={20} /> Adicionar
+        {Icon && <Icon size={20} />}
+        {title}
       </button>
 
       <Modal show={openModal} onClose={setModal}>
-        {children}
+        {children && children(openModal)}
       </Modal>
     </>
   );

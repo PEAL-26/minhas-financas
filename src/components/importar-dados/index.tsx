@@ -18,12 +18,13 @@ export function ImportarDados() {
     >
       <button
         type="button"
-        className="group rounded-lg  border border-gray-100 bg-gray-100  p-2.5 hover:bg-gray-300"
+        className="group flex gap-2 rounded-lg  border border-gray-100 bg-gray-100  p-2.5 hover:bg-gray-300"
       >
         <TfiImport
           className=" fill-gray-600 group-hover:fill-gray-900"
           size={18}
         />
+        Importar
       </button>
     </Tippy>
   );

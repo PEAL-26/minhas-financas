@@ -62,7 +62,7 @@ export function ExportarDados() {
       disabled={loading}
       data-loading={loading}
       onClick={exportToTxt}
-      className="group rounded-lg  border border-gray-100 bg-gray-100  p-2.5 hover:bg-gray-300 data-[loading=true]:cursor-wait"
+      className="flex gap-2 group rounded-lg  border border-gray-100 bg-gray-100  p-2.5 hover:bg-gray-300 data-[loading=true]:cursor-wait"
     >
       {loading && (
         <AiOutlineLoading
@@ -70,13 +70,13 @@ export function ExportarDados() {
           size={18}
         />
       )}
-
       {!loading && (
         <TfiExport
           className=" fill-gray-600 group-hover:fill-gray-900"
           size={18}
         />
       )}
+      Exportar
     </button>
   );
 }

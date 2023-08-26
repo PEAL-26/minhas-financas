@@ -1,4 +1,4 @@
-import { MainContent } from "@/components/main-content";
+import { MainContent } from "@/components/despesas";
 import Link from "next/link";
 
 export default function DespesasPage() {
