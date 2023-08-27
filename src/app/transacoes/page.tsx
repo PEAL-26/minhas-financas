@@ -1,6 +1,3 @@
-import { INTERVALO, PERIODO, TipoNecessidade } from "@/types/types";
-
-
 export default function TransacoesPage() {
   return (
     <main className="flex flex-col items-center justify-center p-10">
