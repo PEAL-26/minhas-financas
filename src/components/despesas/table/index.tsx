@@ -1,11 +1,11 @@
 "use client";
 import { ReactNode, useEffect, useState } from "react";
-import { DespesasProps } from "@/services/despesas";
-import { formatCurrencyKz } from "@/helpers/format-number";
 
-import { Filtro } from "./filtro";
-import { Pagination } from "./pagination";
+import { DespesasProps } from "@/services/despesas";
 import { TableEmpty } from "@/components/table-empty";
+import { TableFiltro } from "@/components/table-filtro";
+import { formatCurrencyKz } from "@/helpers/format-number";
+import { TablePagination } from "@/components/table-pagination";
 
 interface TableProps {
   data: DespesasProps[];
@@ -58,7 +58,7 @@ export function Table(props: TableProps) {
 
   return (
     <div className="relative overflow-x-auto p-2">
-      <Filtro onSearch={handleFilter} />
+      <TableFiltro onSearch={handleFilter} />
       <table className="w-full text-left text-sm text-gray-500 ">
         <thead className="bg-gray-50 text-xs uppercase text-gray-700">
           <tr>
@@ -110,13 +110,13 @@ export function Table(props: TableProps) {
             </tr>
           ))}
         </tbody>
-        <tfoot>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </tfoot>
+
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          colSpan={8}
+        />
       </table>
 
       <div className="flex h-5 w-full items-center justify-center">

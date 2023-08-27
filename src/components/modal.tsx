@@ -5,10 +5,11 @@ interface ModalProps {
   show?: boolean;
   onClose?(state: boolean): void;
   children?: ReactNode;
+  closeButton?: boolean;
 }
 
 export function Modal(props: ModalProps) {
-  const { children, show, onClose } = props;
+  const { children, show, onClose, closeButton = true } = props;
 
   useEffect(() => {
     if (show) {
@@ -32,9 +33,11 @@ export function Modal(props: ModalProps) {
         className="relative flex flex-col rounded-md bg-white p-5 pt-14 shadow"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={handleClose} className="absolute right-4 top-4">
-          <GrClose size={30} className="" />
-        </button>
+        {closeButton && (
+          <button onClick={handleClose} className="absolute right-4 top-4">
+            <GrClose size={30} className="" />
+          </button>
+        )}
         {children}
       </div>
     </div>

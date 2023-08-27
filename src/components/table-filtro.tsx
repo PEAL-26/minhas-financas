@@ -4,7 +4,7 @@ interface FiltroProps {
   onSearch?(filter: string): void;
 }
 
-export function Filtro(props: FiltroProps) {
+export function TableFiltro(props: FiltroProps) {
   const { onSearch } = props;
 
   return (

@@ -1,31 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
+import { AiOutlinePlus } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
+import { RendaProps, listarTodasRendas } from "@/services/rendas";
 
-import {
-  NecessidadeProps,
-  listarTodasNecessidades,
-} from "@/services/necessidades";
 import { Table } from "./table";
 import { Skeleton } from "../skeleton";
 import { BotaoAbrirModal } from "../botao-abrir-modal";
-import { FormularioRegistoNecessidade } from "./formulario-registo";
+import { FormularioRegistoRenda } from "./formulario-registo";
 
-export function Necessidades() {
-  const [necessidades, setNecessidades] = useState<NecessidadeProps[]>([]);
+export function Rendas() {
+  const [rendas, setRendas] = useState<RendaProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const listarNecessidades = async () => {
+  const listarRendas = async () => {
     try {
       setLoading(true);
       setError(false);
 
-      const response = await listarTodasNecessidades({
-        orderBy: [["prioridade", "desc"]],
-      });
+      const response = await listarTodasRendas();
 
-      setNecessidades(response);
+      setRendas(response);
     } catch (error) {
       setError(true);
       console.log(error);
@@ -35,24 +31,24 @@ export function Necessidades() {
   };
 
   useEffect(() => {
-    if (loading) listarNecessidades();
+    if (loading) listarRendas();
   }, [loading]);
 
   if (error) return null;
 
   return (
     <>
-      <BotaoAbrirModal title="Adicionar">
+      <BotaoAbrirModal title="Adicionar" icon={AiOutlinePlus}>
         {(open) => (
-          <FormularioRegistoNecessidade open={open} onLoading={setLoading} />
+          <FormularioRegistoRenda open={open} onLoading={setLoading} />
         )}
       </BotaoAbrirModal>
 
       <div className="mt-5 w-full">
-        {loading && <Skeleton cols={7} rows={5} />}
+        {loading && <Skeleton cols={5} rows={4} />}
         {!loading && (
           <Table
-            data={necessidades}
+            data={rendas}
             actionButtons={(id) => (
               <>
                 <BotaoAbrirModal
@@ -60,7 +56,7 @@ export function Necessidades() {
                   className="bg-transparent text-black hover:bg-transparent hover:text-blue-500 focus:ring-0"
                 >
                   {(open) => (
-                    <FormularioRegistoNecessidade
+                    <FormularioRegistoRenda
                       open={open}
                       onLoading={setLoading}
                       id={id}

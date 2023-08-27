@@ -11,7 +11,7 @@ import { Skeleton } from "../skeleton";
 import { ExportarDados } from "../exportar-dados";
 import { ImportarDados } from "../importar-dados";
 import { BotaoAbrirModal } from "../botao-abrir-modal";
-import { FormularioRegisto } from "./formulario-registo";
+import { FormularioRegistoDespesa } from "./formulario-registo";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import { BiTrashAlt } from "react-icons/bi";
@@ -39,6 +39,18 @@ export function MainContent() {
     }
   };
 
+  const handleRemoveDespesa = async (id: string) => {
+    try {
+      setError(false);
+
+      await removeDespesa(id);
+      await listarDespesas();
+    } catch (error) {
+      setError(true);
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (loading) listarDespesas();
   }, [loading]);
@@ -49,7 +61,9 @@ export function MainContent() {
     <>
       <div className="flex gap-2">
         <BotaoAbrirModal title="Adicionar" icon={AiOutlinePlus}>
-          {(open) => <FormularioRegisto open={open} onLoading={setLoading} />}
+          {(open) => (
+            <FormularioRegistoDespesa open={open} onLoading={setLoading} />
+          )}
         </BotaoAbrirModal>
         <ExportarDados />
         <ImportarDados />
@@ -61,29 +75,44 @@ export function MainContent() {
           <Table
             data={despesas}
             actionButtons={(id) => (
-              <div className="flex gap-1">
+              <>
                 <BotaoAbrirModal
                   icon={BsPencilSquare}
                   className="bg-transparent text-black hover:bg-transparent hover:text-blue-500 focus:ring-0"
                 >
                   {(open) => (
-                    <FormularioRegisto
+                    <FormularioRegistoDespesa
                       open={open}
                       onLoading={setLoading}
                       id={id}
                     />
                   )}
                 </BotaoAbrirModal>
-
-                <button
-                  onClick={async () => {
-                    await removeDespesa(id);
-                    await listarDespesas();
-                  }}
+                <BotaoAbrirModal
+                  icon={BiTrashAlt}
+                  className="bg-transparent text-red-500 hover:bg-transparent hover:text-red-700 focus:ring-0"
+                  closeButton={false}
                 >
-                  <BiTrashAlt size={24} className="text-red-500" />
-                </button>
-              </div>
+                  {(open) => (
+                    <div className="">
+                      <span className="text-center">
+                        Deseja remover esse item?
+                      </span>
+                      <div className="flex items-center justify-center gap-3">
+                        <button
+                          className="rounded bg-green-600 px-4 py-2 text-white"
+                          onClick={() => handleRemoveDespesa(id)}
+                        >
+                          Sim
+                        </button>
+                        <button className="rounded bg-red-500 px-4 py-2 text-white ">
+                          Não
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </BotaoAbrirModal>
+              </>
             )}
           />
         )}

@@ -9,14 +9,21 @@ interface BotaoAbrirModalProps {
   title?: string;
   className?: string;
   icon?: ElementType<IconBaseProps>;
+  close?(): void;
+  closeButton?: boolean;
 }
 
 export function BotaoAbrirModal(props: BotaoAbrirModalProps) {
-  const { children, title, className, icon: Icon } = props;
+  const { children, title, className, icon: Icon, closeButton =true} = props;
   const [openModal, setModal] = useState(false);
 
   const handleOpenModal = () => {
     setModal(true);
+  };
+
+  const handleClose = () => {
+    setModal(false);
+    close && close();
   };
 
   return (
@@ -32,7 +39,7 @@ export function BotaoAbrirModal(props: BotaoAbrirModalProps) {
         {title}
       </button>
 
-      <Modal show={openModal} onClose={setModal}>
+      <Modal closeButton={closeButton} show={openModal} onClose={setModal}>
         {children && children(openModal)}
       </Modal>
     </>

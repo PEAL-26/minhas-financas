@@ -8,7 +8,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
-interface FormularioRegistoProps {
+interface FormularioRegistoDespesaProps {
   id?: string;
   open?: boolean;
   onLoading?(state: boolean): void;
@@ -24,7 +24,7 @@ type Inputs = {
   total: number;
 };
 
-export function FormularioRegisto(props: FormularioRegistoProps) {
+export function FormularioRegistoDespesa(props: FormularioRegistoDespesaProps) {
   const { onLoading, open = false, id } = props;
 
   const {
