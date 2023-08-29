@@ -1,7 +1,13 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Transações",
+  description: "",
+};
+
 export default function TransacoesPage() {
   return (
-    <main className="flex flex-col items-center justify-center p-10">
-      <h2 className="mb-10 text-center text-lg font-bold">Transacoes</h2>
+    <>
       {/* Produto\Serviço | Descrição | Categoria | Prioridade | Tipo | Valor | Estado */}
       {/* 
           Produto\Serviço -> Contem o nome de todos produtos
@@ -11,6 +17,6 @@ export default function TransacoesPage() {
           Tipo            -> Única | Diária | Mensal | Anual 
           Valor           -> 89898.99
       */}
-    </main>
+    </>
   );
 }

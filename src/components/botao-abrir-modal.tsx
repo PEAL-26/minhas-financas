@@ -14,7 +14,7 @@ interface BotaoAbrirModalProps {
 }
 
 export function BotaoAbrirModal(props: BotaoAbrirModalProps) {
-  const { children, title, className, icon: Icon, closeButton =true} = props;
+  const { children, title, className, icon: Icon, closeButton = true } = props;
   const [openModal, setModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -30,7 +30,7 @@ export function BotaoAbrirModal(props: BotaoAbrirModalProps) {
     <>
       <button
         className={twMerge(
-          "group flex items-center justify-between gap-2 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300",
+          "group flex items-center justify-between gap-2 rounded-full bg-white p-2 px-5 py-2.5 text-center text-sm font-medium text-green-500 shadow hover:bg-green-600  hover:text-white",
           className
         )}
         onClick={handleOpenModal}

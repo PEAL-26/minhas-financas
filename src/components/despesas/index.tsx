@@ -6,7 +6,7 @@ import {
   removeDespesa,
 } from "@/services/despesas";
 
-import { Table } from "./table";
+import { TableDespesas } from "./table";
 import { Skeleton } from "../skeleton";
 import { ExportarDados } from "../exportar-dados";
 import { ImportarDados } from "../importar-dados";
@@ -15,6 +15,7 @@ import { FormularioRegistoDespesa } from "./formulario-registo";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsPencilSquare } from "react-icons/bs";
 import { BiTrashAlt } from "react-icons/bi";
+import { Container } from "../container";
 
 export function MainContent() {
   const [despesas, setDespesas] = useState<DespesasProps[]>([]);
@@ -58,6 +59,24 @@ export function MainContent() {
   if (error) return null;
 
   return (
+    <Container.Root>
+      <Container.Header title="Despesas">
+        <div>
+          <BotaoAbrirModal icon={AiOutlinePlus} className="p-2">
+            {(open) => (
+              <FormularioRegistoDespesa open={open} onLoading={setLoading} />
+            )}
+          </BotaoAbrirModal>
+        </div>
+      </Container.Header>
+      <Container.Body>
+        {loading && <Skeleton />}
+        <></>
+      </Container.Body>
+    </Container.Root>
+  );
+
+  return (
     <>
       <div className="flex gap-2">
         <BotaoAbrirModal title="Adicionar" icon={AiOutlinePlus}>
@@ -72,7 +91,7 @@ export function MainContent() {
       <div className="mt-5 w-full">
         {loading && <Skeleton />}
         {!loading && (
-          <Table
+          <TableDespesas
             data={despesas}
             actionButtons={(id) => (
               <>

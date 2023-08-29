@@ -4,11 +4,16 @@ import {
 } from "@/components/dashboard";
 import { Despesas } from "@/components/dashboard/despesas";
 import { Necessidades } from "@/components/dashboard/necessidades";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "",
+};
 
 export default function Dashboard() {
   return (
-    <main className="flex flex-col items-center justify-center p-10">
-      <h2 className="mb-10 text-center text-lg font-bold">Dashboard</h2>
+    <>
       {/* Total de despesas Mensal*/}
       <TotalMonthlyExpenses />
 
@@ -20,6 +25,6 @@ export default function Dashboard() {
 
       {/* Despesas */}
       <Despesas />
-    </main>
+    </>
   );
 }

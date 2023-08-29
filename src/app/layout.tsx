@@ -1,27 +1,23 @@
-import { Sidebar } from "@/components/sidebar";
 import "../styles/globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata } from "next";
+import { Roboto_Flex as Roboto } from "next/font/google";
+
+const roboto = Roboto({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Minhas Finanças App",
+  title: { default: "Minhas Finanças", template: "%s | Minhas Finanças" },
   description: "",
 };
 
-export default function RootLayout({
-  children,
-}: {
+interface RootLayoutProps {
   children: React.ReactNode;
-}) {
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="pt">
-      <body className={inter.className}>
-        <Sidebar />
-        <main className="ml-[260px]">{children}</main>
-      </body>
+      <body className={`${roboto.className} bg-[#eee]`}>{children}</body>
     </html>
   );
 }
