@@ -1,9 +1,9 @@
 import {
   AveragePurchaseEachProduct,
   TotalMonthlyExpenses,
-} from "@/components/dashboard";
-import { Despesas } from "@/components/dashboard/despesas";
-import { Necessidades } from "@/components/dashboard/necessidades";
+} from "@/components/templates/dashboard";
+import { Despesas } from "@/components/templates/dashboard/despesas";
+import { Necessidades } from "@/components/templates/dashboard/necessidades";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

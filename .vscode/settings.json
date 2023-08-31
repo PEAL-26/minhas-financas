@@ -8,6 +8,8 @@
         "Formulario",
         "Periodo",
         "preco",
+        "Transacao",
+        "transacoes",
         "unica"
     ]
 }

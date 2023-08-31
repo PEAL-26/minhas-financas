@@ -3,6 +3,8 @@ import "../styles/globals.css";
 import type { Metadata } from "next";
 import { Roboto_Flex as Roboto } from "next/font/google";
 
+import { ThemeProvider } from "@/libs/material-tailwind";
+
 const roboto = Roboto({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,7 +19,9 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="pt">
-      <body className={`${roboto.className} bg-[#eee]`}>{children}</body>
+      <body className={`${roboto.className} bg-[#eee]`}>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

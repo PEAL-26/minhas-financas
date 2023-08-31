@@ -1,7 +1,9 @@
 import { ReactNode } from "react";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
-import { Sidebar } from "@/components/sidebar";
+
+import { Footer } from "@/components/layouts/footer";
+import { Sidebar } from "@/components/layouts/sidebar";
+import { Navbar } from "@/components/layouts/navbar";
+import { BreadcrumbsProvider } from "@/contexts/breadcrumbs-context";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -9,7 +11,7 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
-    <>
+    <BreadcrumbsProvider>
       <Sidebar />
       <main className="p-4 xl:ml-[260px] ">
         <Navbar />
@@ -18,6 +20,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
           <Footer />
         </div>
       </main>
-    </>
+    </BreadcrumbsProvider>
   );
 }

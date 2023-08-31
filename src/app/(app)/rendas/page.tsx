@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { Rendas } from "@/components/rendas";
+import { Rendas } from "@/components/templates/rendas";
 
 export const metadata: Metadata = {
   title: "Rendas",

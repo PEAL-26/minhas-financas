@@ -1,5 +1,6 @@
-import { MainContent } from "@/components/despesas";
 import { Metadata } from "next";
+
+import { MainContent } from "@/components/templates/despesas";
 
 export const metadata: Metadata = {
   title: "Despesas",
