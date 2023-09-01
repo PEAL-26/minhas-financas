@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 interface ContainerProps {
   title?: string;
   className?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export function ContainerHeader(props: ContainerProps) {

@@ -13,7 +13,7 @@ import { BellIcon, ClockIcon, CreditCardIcon } from "@heroicons/react/24/solid";
 export function Notifications() {
   return (
     <div className="flex items-center">
-      <Menu>
+      <Menu placement="bottom-end">
         <MenuHandler>
           <IconButton variant="text" color="blue-gray">
             <BellIcon className="h-5 w-5 text-blue-gray-500" />

@@ -7,7 +7,7 @@ export function TableRow(props: TableRowProps) {
   const { children, className, ...rest } = props;
 
   return (
-    <tr className={twMerge("", className)} {...rest}>
+    <tr className={twMerge("hover:bg-gray-50", className)} {...rest}>
       {children}
     </tr>
   );

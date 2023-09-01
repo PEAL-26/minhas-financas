@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { MinusCircleIcon } from "@heroicons/react/24/solid";
 
 import { Table } from "@/components/compounds/table";
 import { formatCurrencyKz } from "@/helpers/format-number";
@@ -8,13 +7,10 @@ import { Container } from "@/components/compounds/container";
 import { useBreadcrumbsContext } from "@/contexts/breadcrumbs-context";
 import { DespesasProps, listarTodosDespesas } from "@/services/despesas";
 
-import { DespesasModalAdd } from "./action-modals";
+import { ActionButtonsAdd, ActionButtonsMenu } from "./action-buttons";
 
 export function MainContent() {
-  useBreadcrumbsContext(
-    { title: "Dashboard", url: "/" },
-    { title: "Despesas" }
-  );
+  const { setBreadcrumbs } = useBreadcrumbsContext();
 
   const [despesas, setDespesas] = useState<DespesasProps[]>([]);
   const [loading, setLoading] = useState(true);
@@ -25,34 +21,9 @@ export function MainContent() {
       setLoading(true);
       setError(false);
 
-      // const response = await listarTodosDespesas({
-      //   orderBy: [["data", "desc"]],
-      // });
-
-      const response: DespesasProps[] = [
-        {
-          created_at: new Date(),
-          data: new Date(),
-          data_termino: new Date(),
-          descricao: "Descrição",
-          id: "kshjdvjhdfbj",
-          preco: 1000,
-          quantidade: 1,
-          total: 100000,
-          local: "khsjvdvhbdfb",
-        },
-        {
-          created_at: new Date(),
-          data: new Date(),
-          data_termino: new Date(),
-          descricao: "Descrição",
-          id: "kshjdvjhdfbj",
-          preco: 1000,
-          quantidade: 1,
-          total: 100000,
-          local: "khsjvdvhbdfb",
-        },
-      ];
+      const response = await listarTodosDespesas({
+        orderBy: [["data", "desc"]],
+      });
 
       setDespesas(response);
     } catch (error) {
@@ -64,6 +35,11 @@ export function MainContent() {
   };
 
   useEffect(() => {
+    setBreadcrumbs([{ title: "Dashboard", url: "/" }, { title: "Despesas" }]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (loading) listarDespesas();
   }, [loading]);
 
@@ -72,7 +48,7 @@ export function MainContent() {
   return (
     <Container.Root>
       <Container.Header title="Despesas">
-        <DespesasModalAdd loading={setLoading} />
+        <ActionButtonsAdd loading={setLoading} />
       </Container.Header>
       <Container.Body>
         <Table.Root>
@@ -100,7 +76,7 @@ export function MainContent() {
                 <Table.Data data={despesa.quantidade.toString()} />
                 <Table.Data data={formatCurrencyKz(despesa.total)} />
                 <Table.Data>
-                  <MinusCircleIcon />
+                  <ActionButtonsMenu id={despesa.id} />
                 </Table.Data>
               </Table.Row>
             ))}

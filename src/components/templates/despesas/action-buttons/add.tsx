@@ -1,9 +1,9 @@
 import { AiOutlinePlus } from "react-icons/ai";
 import { Modal } from "@/components/modals";
 import { FormularioRegistoDespesa } from "../formulario-registo";
-import { DespesasModalProps } from "./types";
+import { ActionButtonsProps } from "./types";
 
-export function DespesasModalEdit({ loading }: DespesasModalProps) {
+export function ActionButtonsAdd({ loading }: ActionButtonsProps) {
   return (
     <div>
       <Modal.OpenButton icon={AiOutlinePlus} className="p-2">

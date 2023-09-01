@@ -33,11 +33,11 @@ export function ModalRoot(props: ModalRootProps) {
         className="relative flex flex-col rounded-md bg-white p-5 pt-14 shadow"
         onClick={(e) => e.stopPropagation()}
       >
-        {closeButton && (
+        {/* {closeButton && (
           <button onClick={handleClose} className="absolute right-4 top-4">
             <GrClose size={30} className="" />
           </button>
-        )}
+        )} */}
         {children}
       </div>
     </div>

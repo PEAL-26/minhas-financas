@@ -29,7 +29,7 @@ export function BreadcrumbsProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export const useBreadcrumbsContext = (...pages: Page[]) => {
+export const useBreadcrumbsContext = () => {
   const context = useContext(BreadcrumbsContext);
 
   if (!context) {
@@ -37,8 +37,6 @@ export const useBreadcrumbsContext = (...pages: Page[]) => {
       "useBreadcrumbsContext deve ser usado dentro do BreadcrumbsProvider."
     );
   }
-
-   context.setBreadcrumbs(pages);
 
   return context;
 };
