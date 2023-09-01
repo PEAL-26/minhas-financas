@@ -1,15 +1,16 @@
 import { ReactNode, useEffect } from "react";
 import { GrClose } from "react-icons/gr";
+import { twMerge } from "tailwind-merge";
 
 interface ModalRootProps {
   show?: boolean;
   onClose?(state: boolean): void;
   children?: ReactNode;
-  closeButton?: boolean;
+  className?: string;
 }
 
 export function ModalRoot(props: ModalRootProps) {
-  const { children, show, onClose, closeButton = true } = props;
+  const { children, show, className, onClose } = props;
 
   useEffect(() => {
     if (show) {
@@ -30,14 +31,12 @@ export function ModalRoot(props: ModalRootProps) {
       onClick={(e) => e.target == e.currentTarget && handleClose()}
     >
       <div
-        className="relative flex flex-col rounded-md bg-white p-5 pt-14 shadow"
+        className={twMerge(
+          "relative flex flex-col rounded-md bg-white p-5 pt-14 shadow",
+          className
+        )}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* {closeButton && (
-          <button onClick={handleClose} className="absolute right-4 top-4">
-            <GrClose size={30} className="" />
-          </button>
-        )} */}
         {children}
       </div>
     </div>

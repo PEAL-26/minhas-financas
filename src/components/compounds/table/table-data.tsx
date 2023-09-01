@@ -13,7 +13,7 @@ export function TableData(props: TableDataProps) {
       {...rest}
     >
       <Typography className="text-xs font-semibold text-blue-gray-600">
-        {data || children}
+        {data || children || ""}
       </Typography>
     </td>
   );

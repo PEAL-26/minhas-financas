@@ -7,6 +7,7 @@ import {
   MdTrendingUp,
 } from "react-icons/md";
 import Image from "next/image";
+import LinkNext from "next/link";
 
 import { Link } from "./link";
 import { Search } from "./search";
@@ -17,7 +18,10 @@ export function Sidebar() {
       data-open={true}
       className="fixed inset-0 z-50 h-full w-[260px] border-r border-r-gray-300/50 bg-white px-4 shadow-lg transition-transform duration-300 data-[open=false]:-translate-x-80 data-[open=true]:translate-x-0 xl:translate-x-0"
     >
-      <div className="flex items-center justify-center gap-2 py-4">
+      <LinkNext
+        href="/"
+        className="flex items-center justify-center gap-2 py-4 hover:bg-transparent"
+      >
         <Image
           src={"/images/logo-w736.png"}
           height={36}
@@ -28,7 +32,7 @@ export function Sidebar() {
         <span className="text-center text-xl font-bold text-[#616973]">
           Minhas Finanças
         </span>
-      </div>
+      </LinkNext>
       <div className="w-full border-t border-t-gray-200" />
       <div className="mt-5 flex min-h-screen flex-col gap-2 overflow-y-auto">
         <Search />

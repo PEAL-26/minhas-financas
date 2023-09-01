@@ -17,8 +17,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 
-import { EditModal } from "./edit";
-import { RemoveModal } from "./remove";
+import { ActionEdit } from "../edit";
+import { ActionRemove } from "../remove";
+import { MenusItem } from "@/components/compounds/menus/item";
 
 interface ActionButtonProps {
   id?: string;
@@ -62,10 +63,10 @@ export function ActionButtonsMenu({ id }: ActionButtonProps) {
             onClick={handleOpenEdit}
           >
             <div className="flex h-6 w-6  items-center  justify-center rounded-full bg-green-600">
-              <PencilIcon width={16} className="text-white " />
+              <PencilIcon width={14} className="text-white " />
             </div>
             <Typography variant="small" className="whitespace-nowrap">
-              Alterar
+              Editar
             </Typography>
           </MenuItem>
           <MenuItem
@@ -82,8 +83,8 @@ export function ActionButtonsMenu({ id }: ActionButtonProps) {
         </MenuList>
       </Menu>
 
-      <EditModal open={openEdit} />
-      <RemoveModal open={openEdit} />
+      <ActionEdit id={id} open={openEdit} close={setOpenEdit} />
+      <ActionRemove id={id} open={openRemove} close={setOpenRemove} />
     </>
   );
 }

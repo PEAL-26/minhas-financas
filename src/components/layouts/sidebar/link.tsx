@@ -3,6 +3,7 @@ import LinkNext from "next/link";
 import { usePathname } from "next/navigation";
 import { ElementType, ReactNode } from "react";
 import { IconBaseProps } from "react-icons";
+import { twMerge } from "tailwind-merge";
 
 interface LinkProps {
   children?: ReactNode;
@@ -12,7 +13,7 @@ interface LinkProps {
 }
 
 export function Link(props: LinkProps) {
-  const { href, children, icon: Icon } = props;
+  const { href, className, children, icon: Icon } = props;
   const pathname = usePathname();
   const linkActive = href == pathname;
 
@@ -20,9 +21,10 @@ export function Link(props: LinkProps) {
     <LinkNext
       href={href}
       data-active={linkActive}
-      className={
-        "flex items-center gap-3 rounded px-4 py-3 text-[#3c4858] data-[active=true]:bg-green-500 data-[active=true]:hover:shadow-green-400 data-[active=true]:text-white data-[active=false]:hover:bg-gray-200/50"
-      }
+      className={twMerge(
+        "flex items-center gap-3 rounded px-4 py-3 text-[#3c4858] data-[active=true]:bg-green-500 data-[active=true]:text-white data-[active=false]:hover:bg-gray-200/50 data-[active=true]:hover:shadow-green-400",
+        className
+      )}
     >
       {Icon && <Icon size={24} />}
       {children}

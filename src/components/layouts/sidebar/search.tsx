@@ -4,19 +4,17 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 export function Search() {
   return (
     <div className="flex w-full items-center">
-      <Input
-        variant="outlined"
-        label="Pesquisar"
+      <input
+        placeholder="Pesquisar"
         color="green"
-        className="w-full border-0 ring-0"
+        className="w-full border-b border-b-gray-300 outline-none ring-0"
       />
-      <IconButton
-        variant="outlined"
-        className="h-10 w-10 rounded-full border-gray-200 hover:shadow"
+      <button
+        className="rounded-full border border-gray-200 p-1 hover:shadow"
         onClick={() => {}}
       >
-        <MagnifyingGlassIcon />
-      </IconButton>
+        <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+      </button>
     </div>
   );
 }
