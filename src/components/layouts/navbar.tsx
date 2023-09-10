@@ -7,10 +7,12 @@ import { Notifications } from "./notifications";
 export function Navbar() {
   return (
     <MTNavbar color={"transparent"} fullWidth>
-      <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
-        <SidebarMenu />
+      <div className="flex flex-col justify-between gap-6 lg:flex-row-reverse">
+        <div className="flex items-center justify-between">
+          <SidebarMenu />
+          <Notifications />
+        </div>
         <Breadcrumbs />
-        <Notifications />
       </div>
     </MTNavbar>
   );
