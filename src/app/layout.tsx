@@ -3,7 +3,7 @@ import "../styles/globals.css";
 import type { Metadata } from "next";
 import { Roboto_Flex as Roboto } from "next/font/google";
 
-import { ThemeProvider } from "@/libs/material-tailwind";
+import { Providers } from "@/providers";
 
 const roboto = Roboto({ subsets: ["latin"] });
 
@@ -20,7 +20,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="pt">
       <body className={`${roboto.className} bg-[#eee]`}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

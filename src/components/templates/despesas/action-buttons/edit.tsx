@@ -1,7 +1,7 @@
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { IconButton } from "@/libs/material-tailwind";
 
 import Modal from "@/components/modals";
-import { IconButton } from "@/libs/material-tailwind";
 import { Container } from "@/components/compounds/container";
 
 import { FormularioRegistoDespesa } from "../formulario-registo";

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { Table } from "@/components/compounds/table";
 import { formatCurrencyKz } from "@/helpers/format-number";
@@ -8,47 +9,34 @@ import { useBreadcrumbsContext } from "@/contexts/breadcrumbs-context";
 import { DespesasProps, listarTodosDespesas } from "@/services/despesas";
 
 import { ActionButtonsAdd, ActionButtonsMenu } from "./action-buttons";
+import { useLogicTable } from "./logic";
 
 export function MainContent() {
   const { setBreadcrumbs } = useBreadcrumbsContext();
 
-  const [despesas, setDespesas] = useState<DespesasProps[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  const listarDespesas = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-
-      const response = await listarTodosDespesas({
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ["despesas"],
+    queryFn: () =>
+      listarTodosDespesas({
         orderBy: [["data", "desc"]],
-      });
+      }),
+  });
 
-      setDespesas(response);
-    } catch (error) {
-      setError(true);
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    currentPage,
+    paginatedData,
+    total,
+    totalPages,
+    handleFilter,
+    handlePageChange,
+  } = useLogicTable({ data: data || [], itemsPerPage: 10 });
 
-  useEffect(() => {
-    setBreadcrumbs([{ title: "Dashboard", url: "/" }, { title: "Despesas" }]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (loading) listarDespesas();
-  }, [loading]);
-
-  if (error) return null;
+  if (isError) return null;
 
   return (
     <Container.Root>
       <Container.Header title="Despesas">
-        <ActionButtonsAdd loading={setLoading} />
+        <ActionButtonsAdd />
       </Container.Header>
       <Container.Body>
         <Table.Root>
@@ -65,8 +53,8 @@ export function MainContent() {
             ]}
           />
           <Table.Body>
-            {loading && <Table.Loading />}
-            {despesas.map((despesa, index) => (
+            {isLoading && <Table.Loading />}
+            {paginatedData.map((despesa, index) => (
               <Table.Row key={index}>
                 <Table.Data data={despesa.descricao} />
                 <Table.Data data={despesa.local} />
@@ -81,6 +69,12 @@ export function MainContent() {
               </Table.Row>
             ))}
           </Table.Body>
+          <Table.Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            colSpan={8}
+          />
         </Table.Root>
       </Container.Body>
     </Container.Root>

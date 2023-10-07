@@ -2,8 +2,11 @@
 import { twMerge } from "tailwind-merge";
 import { IconBaseProps } from "react-icons";
 import { ElementType, ReactElement, ReactNode, useState } from "react";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import { IconButton } from "@/libs/material-tailwind";
 
 import { ModalRoot } from "./modal-root";
+import { Container } from "../compounds/container";
 
 type Open = () => void;
 
@@ -53,8 +56,25 @@ export function ModalOpenButton(props: ModalOpenButtonProps) {
         </button>
       )}
 
-      <ModalRoot closeButton={closeButton} show={openModal} onClose={setModal}>
-        {children && children(openModal)}
+      <ModalRoot
+        show={openModal}
+        onClose={setModal}
+        className="bg-transparent p-0"
+      >
+        {/* <Modal show={open} onClose={close} className="bg-transparent p-0"> */}
+        <Container.Root>
+          <Container.Header title="Adicionar">
+            <IconButton variant="text" color="white" onClick={handleClose}>
+              <XMarkIcon className="h-6 w-6" />
+            </IconButton>
+          </Container.Header>
+          <Container.Body className="p-5 pt-0">
+            {children && children(openModal)}
+          </Container.Body>
+        </Container.Root>
+        {/* </Modal> */}
+
+        {/* {children && children(openModal)} */}
       </ModalRoot>
     </>
   );

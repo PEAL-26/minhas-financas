@@ -28,7 +28,7 @@ export function Sidebar() {
 
     if (isDevice) {
       setShow(isOpen);
-      
+
       if (show) {
         body.classList.add("overflow-hidden");
       } else {
@@ -43,6 +43,10 @@ export function Sidebar() {
       body.classList.remove("overflow-hidden");
     };
   }, [isDevice, isOpen, show]);
+
+  useEffect(() => {
+    close();
+  }, [isDevice]);
 
   return (
     <div

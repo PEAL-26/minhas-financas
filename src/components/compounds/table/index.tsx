@@ -4,6 +4,7 @@ import { TableHeader } from "./table-headers";
 import { TableBody } from "./table-body";
 import { TableLoading } from "./table-loading";
 import { TableData } from "./table-data";
+import { TablePagination } from "./table-pagination";
 
 export const Table = {
   Row: TableRow,
@@ -12,4 +13,5 @@ export const Table = {
   Body: TableBody,
   Header: TableHeader,
   Loading: TableLoading,
+  Pagination: TablePagination,
 };

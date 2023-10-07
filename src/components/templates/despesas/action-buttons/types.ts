@@ -1,4 +1,4 @@
 export interface ActionButtonsProps {
   id?: string;
-  loading(state: boolean): void;
+  loading?(state: boolean): void;
 }

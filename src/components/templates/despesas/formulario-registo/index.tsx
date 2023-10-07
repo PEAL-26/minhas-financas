@@ -1,4 +1,6 @@
 "use client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import {
   DespesasProps,
   buscarDespesaPorId,
@@ -41,6 +43,22 @@ export function FormularioRegistoDespesa(props: FormularioRegistoDespesaProps) {
   const [loading, setLoading] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
 
+  const queryClient = useQueryClient();
+
+  const mutationCreate = useMutation({
+    mutationFn: createDespesa,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["despesas"] });
+    },
+  });
+
+  const mutationUpdate = useMutation({
+    mutationFn: updateDespesa,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["despesas"] });
+    },
+  });
+
   const onSubmit: SubmitHandler<Inputs> = async (input) => {
     if (loading) return;
 
@@ -53,9 +71,11 @@ export function FormularioRegistoDespesa(props: FormularioRegistoDespesaProps) {
         : null;
 
       if (!!id) {
-        await updateDespesa({ ...input, data, data_termino, id });
+        mutationUpdate.mutate({ ...input, data, data_termino, id });
+        // await updateDespesa({ ...input, data, data_termino, id });
       } else {
-        await createDespesa({ ...input, data, data_termino });
+        mutationCreate.mutate({ ...input, data, data_termino });
+        // await createDespesa({ ...input, data, data_termino });
       }
       onLoading && onLoading(true);
       reset();

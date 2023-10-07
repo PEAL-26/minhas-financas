@@ -19,7 +19,6 @@ import {
 
 import { ActionEdit } from "../edit";
 import { ActionRemove } from "../remove";
-import { MenusItem } from "@/components/compounds/menus/item";
 
 interface ActionButtonProps {
   id?: string;

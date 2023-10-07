@@ -1,4 +1,6 @@
 import React from "react";
+import { IconButton, Typography } from "@material-tailwind/react";
+import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 interface PaginationProps {
   currentPage: number;
@@ -14,32 +16,27 @@ export const TablePagination = (props: PaginationProps) => {
     <tfoot>
       <tr>
         <td colSpan={colSpan}>
-          <nav className="mt-4 flex items-center justify-end">
-            <button
+          <nav className="flex items-center justify-end gap-8 p-4">
+            <IconButton
+              size="sm"
+              variant="outlined"
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage <= 1}
-              className={`rounded-l px-3 py-1 ${
-                currentPage <= 1
-                  ? "bg-gray-200"
-                  : "bg-gray-300 hover:bg-gray-400"
-              }`}
             >
-              Anterior
-            </button>
-            <span className="px-4 py-1 text-gray-700">
-              Página {currentPage} de {totalPages}
-            </span>
-            <button
+              <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+            </IconButton>
+            <Typography color="gray" className="font-normal">
+              Página <strong className="text-gray-900">{currentPage}</strong> of{" "}
+              <strong className="text-gray-900">{totalPages}</strong>
+            </Typography>
+            <IconButton
+              size="sm"
+              variant="outlined"
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className={`rounded-r px-3 py-1 ${
-                currentPage === totalPages
-                  ? "bg-gray-200"
-                  : "bg-gray-300 hover:bg-gray-400"
-              }`}
             >
-              Próxima
-            </button>
+              <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+            </IconButton>
           </nav>
         </td>
       </tr>
