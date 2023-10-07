@@ -12,7 +12,9 @@ export function TableHeader({ cols }: TableHeaderProps) {
           cols.map((el) => (
             <th
               key={el}
-              className="border-b border-green-50 px-5 py-3 text-left"
+              className={`border-b border-green-50 px-5 py-3 text-left ${
+                el === "" ? "w-10" : ""
+              }`}
             >
               <Typography
                 variant="small"

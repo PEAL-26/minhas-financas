@@ -1,101 +1,36 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-
-import {
-  PrioridadeType,
-  TIPO_NECESSIDADE,
-  createNecessidade,
-  updateNecessidade,
-  buscarNecessidadePorId,
-  TipoNecessidadeKey,
-} from "@/services/necessidades";
+import { Loading } from "@/components/compounds/loading";
+import { useFormularioRegisto } from "./use-formulario-registo";
+import { TIPO_NECESSIDADE, TipoNecessidadeKey } from "@/services/necessidades";
 
 interface FormularioRegistoNecessidadeProps {
   id?: string;
-  open?: boolean;
-  onLoading?(state: boolean): void;
 }
-
-type Inputs = {
-  item: string;
-  descricao?: string;
-  categoria: string;
-  prioridade: PrioridadeType;
-  tipo: TipoNecessidadeKey;
-  valor: number;
-};
 
 export function FormularioRegistoNecessidade(
   props: FormularioRegistoNecessidadeProps
 ) {
-  const { onLoading, open = false, id } = props;
+  const { id } = props;
+  const {
+    isLoading,
+    saving,
+    errors,
+    register,
+    handleSubmit,
+    onSubmit,
+    setError,
+  } = useFormularioRegisto(id);
+
   const tiposNecessidades = Object.keys(
     TIPO_NECESSIDADE
   ) as TipoNecessidadeKey[];
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    setValue,
-    setError,
-    formState: { errors },
-  } = useForm<Inputs>();
-
-  const [loading, setLoading] = useState(false);
-  const [loadingEdit, setLoadingEdit] = useState(false);
-
-  const onSubmit: SubmitHandler<Inputs> = async (input) => {
-    if (loading) return;
-
-    try {
-      setLoading(true);
-
-      let tipo = Object({});
-      tipo[input.tipo] = TIPO_NECESSIDADE[input.tipo];
-
-      const dataInput = { ...input, tipo };
-
-      if (!!id) {
-        await updateNecessidade({ ...dataInput, id });
-      } else {
-        await createNecessidade(dataInput);
-      }
-
-      onLoading && onLoading(true);
-      reset();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      if (id && open) {
-        setLoadingEdit(true);
-        const response = await buscarNecessidadePorId(id);
-
-        if (response) {
-          const tipo = Object.keys(response.tipo)[0] as TipoNecessidadeKey;
-          reset({ ...response, tipo });
-        }
-
-        setLoadingEdit(false);
-      }
-    })();
-  }, [id, open, reset]);
-
-  useEffect(() => {
-    if (!open) {
-      reset();
-    }
-  }, [open, reset]);
-
-  if (loadingEdit) return null;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center p-10">
+        <Loading size={112} />
+      </div>
+    );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -152,9 +87,7 @@ export function FormularioRegistoNecessidade(
             value={1}
           >
             <option value={0}>Mínima</option>
-            <option value={1}>
-              Normal
-            </option>
+            <option value={1}>Normal</option>
             <option value={2}>Máxima</option>
           </select>
           {errors.prioridade && (
@@ -207,8 +140,8 @@ export function FormularioRegistoNecessidade(
       <div className="mt-5 flex items-center justify-center gap-3">
         <button
           type="submit"
-          data-loading={loading}
-          disabled={loading}
+          data-loading={saving}
+          disabled={saving}
           className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 data-[loading=true]:cursor-wait data-[loading=true]:bg-gray-700"
         >
           Guardar

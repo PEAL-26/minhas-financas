@@ -1,132 +1,31 @@
 "use client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-import {
-  DespesasProps,
-  buscarDespesaPorId,
-  createDespesa,
-  updateDespesa,
-} from "@/services/despesas";
-import { useCallback, useEffect, useState } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { Loading } from "@/components/compounds/loading";
+import { useFormularioRegisto } from "./use-formulario-registo";
 
 interface FormularioRegistoDespesaProps {
   id?: string;
-  open?: boolean;
-  onLoading?(state: boolean): void;
 }
 
-type Inputs = {
-  data: string;
-  data_termino: string | null;
-  descricao: string;
-  quantidade: number;
-  local: string;
-  preco: number;
-  total: number;
-};
-
 export function FormularioRegistoDespesa(props: FormularioRegistoDespesaProps) {
-  const { onLoading, open = false, id } = props;
-
+  const { id } = props;
   const {
+    isLoading,
+    saving,
+    errors,
     register,
     handleSubmit,
+    onSubmit,
     watch,
-    reset,
-    setValue,
+    calcularTotal,
     setError,
-    control,
-    formState: { errors },
-  } = useForm<Inputs>();
+  } = useFormularioRegisto(id);
 
-  const [loading, setLoading] = useState(false);
-  const [loadingEdit, setLoadingEdit] = useState(false);
-
-  const queryClient = useQueryClient();
-
-  const mutationCreate = useMutation({
-    mutationFn: createDespesa,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas"] });
-    },
-  });
-
-  const mutationUpdate = useMutation({
-    mutationFn: updateDespesa,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas"] });
-    },
-  });
-
-  const onSubmit: SubmitHandler<Inputs> = async (input) => {
-    if (loading) return;
-
-    try {
-      setLoading(true);
-
-      const data = new Date(input.data);
-      const data_termino = input.data_termino
-        ? new Date(input.data_termino)
-        : null;
-
-      if (!!id) {
-        mutationUpdate.mutate({ ...input, data, data_termino, id });
-        // await updateDespesa({ ...input, data, data_termino, id });
-      } else {
-        mutationCreate.mutate({ ...input, data, data_termino });
-        // await createDespesa({ ...input, data, data_termino });
-      }
-      onLoading && onLoading(true);
-      reset();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const calcularTotal = useCallback(
-    (quantidade: number, preco: number) => {
-      if (Number.isNaN(quantidade) || Number.isNaN(preco)) {
-        setValue("total", 0);
-        return;
-      }
-
-      const _total = quantidade * preco;
-      setValue("total", _total);
-    },
-    [setValue]
-  );
-
-  useEffect(() => {
-    (async () => {
-      if (id && open) {
-        setLoadingEdit(true);
-        const response = await buscarDespesaPorId(id);
-
-        if (response) {
-          reset({
-            ...response,
-            data: response.data.toISOString().substring(0, 10),
-            data_termino:
-              response?.data_termino?.toISOString().substring(0, 10) || null,
-          });
-          calcularTotal(response.quantidade, response.preco);
-        }
-
-        setLoadingEdit(false);
-      }
-    })();
-  }, [calcularTotal, id, open, reset]);
-
-  useEffect(() => {
-    if (!open) {
-      reset();
-    }
-  }, [open, reset]);
-
-  if (loadingEdit) return null;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center p-10">
+        <Loading size={112} />
+      </div>
+    );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -235,8 +134,8 @@ export function FormularioRegistoDespesa(props: FormularioRegistoDespesaProps) {
       <div className="mt-5 flex items-center justify-center gap-3">
         <button
           type="submit"
-          data-loading={loading}
-          disabled={loading}
+          data-loading={saving}
+          disabled={saving}
           className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 data-[loading=true]:cursor-wait data-[loading=true]:bg-gray-700"
         >
           Guardar

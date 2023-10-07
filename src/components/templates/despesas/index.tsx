@@ -1,19 +1,21 @@
 "use client";
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { AiOutlinePlus } from "react-icons/ai";
 
 import { Table } from "@/components/compounds/table";
 import { formatCurrencyKz } from "@/helpers/format-number";
 import { Container } from "@/components/compounds/container";
 import { useBreadcrumbsContext } from "@/contexts/breadcrumbs-context";
-import { DespesasProps, listarTodosDespesas } from "@/services/despesas";
+import { listarTodosDespesas } from "@/services/despesas";
+import { useModalContext } from "@/contexts/modal-context";
+import { useLogicTable } from "@/hooks/use-table";
+import { ButtonDefault } from "@/components/compounds/button-default";
 
-import { ActionButtonsAdd, ActionButtonsMenu } from "./action-buttons";
-import { useLogicTable } from "./logic";
+import { FormularioRegistoDespesa } from "./formulario-registo";
+import { MenuActions } from "./menu-actions";
 
 export function MainContent() {
-  const { setBreadcrumbs } = useBreadcrumbsContext();
-
+  const { showModalRegisto } = useModalContext();
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["despesas"],
     queryFn: () =>
@@ -31,12 +33,19 @@ export function MainContent() {
     handlePageChange,
   } = useLogicTable({ data: data || [], itemsPerPage: 10 });
 
+  const handleAddDespesa = () =>
+    showModalRegisto("Adicionar despesa", <FormularioRegistoDespesa />);
+
   if (isError) return null;
 
   return (
     <Container.Root>
       <Container.Header title="Despesas">
-        <ActionButtonsAdd />
+        <ButtonDefault
+          icon={AiOutlinePlus}
+          onClick={handleAddDespesa}
+          className="p-2.5"
+        />
       </Container.Header>
       <Container.Body>
         <Table.Root>
@@ -53,7 +62,7 @@ export function MainContent() {
             ]}
           />
           <Table.Body>
-            {isLoading && <Table.Loading />}
+            {isLoading && <Table.Loading cols={8} rows={10} />}
             {paginatedData.map((despesa, index) => (
               <Table.Row key={index}>
                 <Table.Data data={despesa.descricao} />
@@ -64,17 +73,19 @@ export function MainContent() {
                 <Table.Data data={despesa.quantidade.toString()} />
                 <Table.Data data={formatCurrencyKz(despesa.total)} />
                 <Table.Data>
-                  <ActionButtonsMenu id={despesa.id} />
+                  <MenuActions id={despesa.id} />
                 </Table.Data>
               </Table.Row>
             ))}
           </Table.Body>
-          <Table.Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            colSpan={8}
-          />
+          {!isLoading && (
+            <Table.Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              colSpan={8}
+            />
+          )}
         </Table.Root>
       </Container.Body>
     </Container.Root>

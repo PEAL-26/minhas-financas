@@ -12,22 +12,22 @@ type Open = () => void;
 
 interface ModalOpenButtonProps {
   children?(open: boolean): ReactNode;
-  title?: string;
+  titleButton?: string;
+  titleModal?: string;
   className?: string;
   icon?: ElementType<IconBaseProps>;
   iconClassName?: string;
   close?(): void;
-  closeButton?: boolean;
   buttonCustom?(open: Open): ReactElement;
 }
 
 export function ModalOpenButton(props: ModalOpenButtonProps) {
   const {
     children,
-    title,
+    titleButton,
+    titleModal,
     className,
     icon: Icon,
-    closeButton = true,
     buttonCustom: ButtonCustom,
   } = props;
   const [openModal, setModal] = useState(false);
@@ -52,7 +52,7 @@ export function ModalOpenButton(props: ModalOpenButtonProps) {
           onClick={handleOpenModal}
         >
           {Icon && <Icon size={20} />}
-          {title}
+          {titleButton}
         </button>
       )}
 
@@ -61,9 +61,8 @@ export function ModalOpenButton(props: ModalOpenButtonProps) {
         onClose={setModal}
         className="bg-transparent p-0"
       >
-        {/* <Modal show={open} onClose={close} className="bg-transparent p-0"> */}
         <Container.Root>
-          <Container.Header title="Adicionar">
+          <Container.Header title={titleModal}>
             <IconButton variant="text" color="white" onClick={handleClose}>
               <XMarkIcon className="h-6 w-6" />
             </IconButton>
@@ -72,9 +71,6 @@ export function ModalOpenButton(props: ModalOpenButtonProps) {
             {children && children(openModal)}
           </Container.Body>
         </Container.Root>
-        {/* </Modal> */}
-
-        {/* {children && children(openModal)} */}
       </ModalRoot>
     </>
   );

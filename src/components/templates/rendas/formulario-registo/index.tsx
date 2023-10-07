@@ -1,83 +1,30 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-
-import { createRenda, updateRenda, buscarRendaPorId } from "@/services/rendas";
+import { Loading } from "@/components/compounds/loading";
+import { useFormularioRegisto } from "./use-formulario-registo";
 
 interface FormularioRegistoRendaProps {
   id?: string;
-  open?: boolean;
-  onLoading?(state: boolean): void;
 }
 
-type Inputs = {
-  tipo: string;
-  descricao: string;
-  moeda: string;
-  valor: number;
-};
-
 export function FormularioRegistoRenda(props: FormularioRegistoRendaProps) {
-  const { onLoading, open = false, id } = props;
+  const { id } = props;
 
   const {
+    isLoading,
+    saving,
+    errors,
     register,
     handleSubmit,
-    watch,
-    reset,
-    setValue,
+    onSubmit,
     setError,
-    formState: { errors },
-  } = useForm<Inputs>();
+  } = useFormularioRegisto(id);
 
-  const [loading, setLoading] = useState(false);
-  const [loadingEdit, setLoadingEdit] = useState(false);
-
-  const onSubmit: SubmitHandler<Inputs> = async (input) => {
-    if (loading) return;
-
-    try {
-      setLoading(true);
-
-      const dataInput = { ...input };
-
-      if (!!id) {
-        await updateRenda({ ...dataInput, id });
-      } else {
-        await createRenda(dataInput);
-      }
-
-      onLoading && onLoading(true);
-      reset();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      if (id && open) {
-        setLoadingEdit(true);
-        const response = await buscarRendaPorId(id);
-
-        if (response) {
-          reset({ ...response });
-        }
-
-        setLoadingEdit(false);
-      }
-    })();
-  }, [id, open, reset]);
-
-  useEffect(() => {
-    if (!open) {
-      reset();
-    }
-  }, [open, reset]);
-
-  if (loadingEdit) return null;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center p-10">
+        <Loading size={112} />
+      </div>
+    );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
@@ -159,8 +106,8 @@ export function FormularioRegistoRenda(props: FormularioRegistoRendaProps) {
       <div className="tipos-center mt-5 flex justify-center gap-3">
         <button
           type="submit"
-          data-loading={loading}
-          disabled={loading}
+          data-loading={saving}
+          disabled={saving}
           className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 data-[loading=true]:cursor-wait data-[loading=true]:bg-gray-700"
         >
           Guardar

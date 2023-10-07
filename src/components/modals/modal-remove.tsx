@@ -1,22 +1,45 @@
 import Modal from "@/components/modals";
+import { useAlertContext } from "@/contexts/alert-context";
 import { Typography, Button } from "@/libs/material-tailwind";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ModalRemoveProps {
+  id: string;
   open: boolean;
   close?(state: boolean): void;
-  onYes?(): void;
+  onYes?(id: string): Promise<void>;
+  queryKey?: string[];
 }
 
 export function ModalRemove(props: ModalRemoveProps) {
-  const { open, close, onYes } = props;
+  const { id, open, queryKey, close, onYes } = props;
+
+  const { showAlert } = useAlertContext();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: onYes,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
+    },
+  });
 
   const handleCancel = () => {
     close && close(false);
   };
 
-  const handleYes = () => {
-    onYes && onYes();
+  const handleYes = async () => {
+    try {
+      if (mutation.isLoading) return;
+
+      await mutation.mutateAsync(id);
+      handleCancel();
+    } catch (error) {
+      showAlert(
+        <span className="text-center text-white">Erro ao remover registo!</span>
+      );
+    }
   };
 
   return (
@@ -33,8 +56,10 @@ export function ModalRemove(props: ModalRemoveProps) {
             Sim, remover
           </Button>
           <Button
+            disabled={mutation.isLoading}
+            data-loading={mutation.isLoading}
             variant="outlined"
-            className="border-red-500 text-red-500"
+            className="border-red-500 text-red-500 data-[loading=true]:cursor-wait"
             onClick={handleCancel}
           >
             Cancelar
