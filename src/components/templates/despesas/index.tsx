@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AiOutlinePlus } from "react-icons/ai";
 
@@ -15,6 +16,8 @@ import { FormularioRegistoDespesa } from "./formulario-registo";
 import { MenuActions } from "./menu-actions";
 
 export function MainContent() {
+  const { setBreadcrumbs } = useBreadcrumbsContext();
+
   const { showModalRegisto } = useModalContext();
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["despesas"],
@@ -35,6 +38,10 @@ export function MainContent() {
 
   const handleAddDespesa = () =>
     showModalRegisto("Adicionar despesa", <FormularioRegistoDespesa />);
+
+  useEffect(() => {
+    setBreadcrumbs([{ title: "Dashboard", url: "/" }, { title: "Despesas" }]);
+  }, [setBreadcrumbs]);
 
   if (isError) return null;
 

@@ -14,9 +14,12 @@ import { formatCurrencyKz } from "@/helpers/format-number";
 import { MenuActions } from "./menu-actions";
 import { ButtonDefault } from "@/components/compounds/button-default";
 import { useModalContext } from "@/contexts/modal-context";
+import { useEffect } from "react";
+import { useBreadcrumbsContext } from "@/contexts/breadcrumbs-context";
 
 export function Necessidades() {
   const { showModalRegisto } = useModalContext();
+  const { setBreadcrumbs } = useBreadcrumbsContext();
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["necessidades"],
@@ -37,6 +40,13 @@ export function Necessidades() {
 
   const handleAddNecessidade = () =>
     showModalRegisto("Adicionar necessidade", <FormularioRegistoNecessidade />);
+
+  useEffect(() => {
+    setBreadcrumbs([
+      { title: "Dashboard", url: "/" },
+      { title: "Necessidades" },
+    ]);
+  }, [setBreadcrumbs]);
 
   if (isError) return null;
 

@@ -1,6 +1,7 @@
 // import admin, { ServiceAccount, cert } from 'firebase-admin/app'
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth as getAuthFirebase } from "firebase/auth";
 
 import { firebaseConfig } from "@/config/firebase-config";
 
@@ -16,3 +17,4 @@ const verifyApp = () => {
 
 export const app = verifyApp();
 export const db = () => getFirestore(app);
+export const getAuth = () => getAuthFirebase(app);

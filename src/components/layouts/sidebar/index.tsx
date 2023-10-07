@@ -21,38 +21,58 @@ import { CloseSideBar } from "./close-sidebar";
 export function Sidebar() {
   const isDevice = useMediaQuery("(max-width: 959px)");
   const { isOpen, close } = useSidebarContext();
-  const [show, setShow] = useState(false);
+  const [className, setClassName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  // useEffect(() => {
+  //   const body = document.body;
+
+  //   // if (isDevice) {
+  //   //  open()// setShow(isOpen);
+
+  //   //   if (show) {
+  //   //     body.classList.add("overflow-hidden");
+  //   //   } else {
+  //   //     body.classList.remove("overflow-hidden");
+  //   //   }
+  //   // } else {
+  //   //   setShow(true);
+  //   // }
+
+  //   // return () => {
+  //   //   setShow(false);
+  //   //   body.classList.remove("overflow-hidden");
+  //   // };
+  // }, [isDevice, isOpen, show]);
+
+  // useEffect(() => {
+  //   if (isDevice) close();
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
-    const body = document.body;
+    setIsLoading(false);
+    console.log({ isDevice, openSidebar });
+  }, []);
 
-    if (isDevice) {
-      setShow(isOpen);
+  const openSidebar = {
+    true: "data-[open=false]:-translate-x-full md:data-[open=true]:translate-x-0 ",
+    false: "",
+  }[isDevice ? "true" : "false"];
 
-      if (show) {
-        body.classList.add("overflow-hidden");
-      } else {
-        body.classList.remove("overflow-hidden");
-      }
-    } else {
-      setShow(true);
-    }
+  // console.log({ isDevice, openSidebar });
 
-    return () => {
-      setShow(false);
-      body.classList.remove("overflow-hidden");
-    };
-  }, [isDevice, isOpen, show]);
-
-  useEffect(() => {
-    close();
-  }, [isDevice]);
+  if (isDevice && isLoading) return null;
 
   return (
     <div
       onClick={(e) => e.target == e.currentTarget && isDevice && close()}
-      data-open={show}
-      className="fixed inset-0 z-50 bg-black/30 transition-transform duration-300 data-[open=false]:-translate-x-[1023px] data-[open=true]:translate-x-0 lg:inset-y-0 lg:w-[260px] lg:translate-x-0"
+      data-open={isOpen}
+      className={twMerge(
+        "fixed inset-0 z-50 transition-transform duration-300  lg:inset-y-0 lg:w-[260px] lg:translate-x-0",
+        openSidebar
+      )}
     >
       <aside
         className={twMerge(

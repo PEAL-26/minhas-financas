@@ -3,7 +3,7 @@ import { useSidebarContext } from "@/contexts/sidebar-menu-context";
 import { IconButton } from "@/libs/material-tailwind";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 
-export function SidebarMenu() {
+export function SidebarMenuButton() {
   const { open } = useSidebarContext();
 
   return (

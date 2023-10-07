@@ -1,0 +1,77 @@
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Checkbox,
+  Input,
+  Typography,
+} from "@/libs/material-tailwind";
+import { Metadata } from "next";
+import Link from "next/link";
+
+import { FcGoogle } from "react-icons/fc";
+
+export const metadata: Metadata = {
+  title: "Inscrever-se",
+  description: "",
+};
+
+export default function InscreverSePage() {
+  return (
+    <div className="container mx-auto p-4">
+      <Card className="absolute left-2/4 top-2/4 w-full max-w-[24rem] -translate-x-2/4 -translate-y-2/4">
+        <CardHeader
+          variant="gradient"
+          color="green"
+          className="mb-4 grid h-28 place-items-center"
+        >
+          <Typography variant="h3" color="white">
+            Registo
+          </Typography>
+        </CardHeader>
+        <CardBody className="flex flex-col gap-4">
+          <Input label="Nome" size="lg" />
+          <Input type="email" label="Email" size="lg" />
+          <Input type="password" label="Senha" size="lg" />
+          <div className="-ml-2.5">
+            <Checkbox
+              label="Eu concordo com os Termos e Condições"
+              color="green"
+            />
+          </div>
+        </CardBody>
+        <CardFooter className="pt-0">
+          <Button variant="gradient" color="green" fullWidth className="h-14">
+            Inscrever-se
+          </Button>
+          <Typography variant="small" className="flex justify-center">
+            ou
+          </Typography>
+          <Button
+            variant="outlined"
+            fullWidth
+            className="flex h-14 items-center justify-center gap-2"
+          >
+            <FcGoogle size={28} />
+            Continuar com o Google
+          </Button>
+          <Typography variant="small" className="mt-6 flex justify-center">
+            Já tem uma conta?
+            <Link href="/inscrever-se">
+              <Typography
+                as="span"
+                variant="small"
+                color="green"
+                className="ml-1 font-bold"
+              >
+                Login
+              </Typography>
+            </Link>
+          </Typography>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}

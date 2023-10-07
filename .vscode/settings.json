@@ -5,6 +5,7 @@
         "descricao",
         "diaria",
         "direcao",
+        "Firestore",
         "Formulario",
         "Periodo",
         "preco",

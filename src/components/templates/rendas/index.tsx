@@ -11,9 +11,12 @@ import { listarTodasRendas } from "@/services/rendas";
 
 import { MenuActions } from "./menu-actions";
 import { FormularioRegistoRenda } from "./formulario-registo";
+import { useEffect } from "react";
+import { useBreadcrumbsContext } from "@/contexts/breadcrumbs-context";
 
 export function Rendas() {
   const { showModalRegisto } = useModalContext();
+  const { setBreadcrumbs } = useBreadcrumbsContext();
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["rendas"],
@@ -31,6 +34,10 @@ export function Rendas() {
 
   const handleAddRenda = () =>
     showModalRegisto("Adicionar renda", <FormularioRegistoRenda />);
+
+  useEffect(() => {
+    setBreadcrumbs([{ title: "Dashboard", url: "/" }, { title: "Rendas" }]);
+  }, [setBreadcrumbs]);
 
   if (isError) return null;
 

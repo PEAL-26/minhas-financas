@@ -1,5 +1,11 @@
 "use client";
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 
 type Page = {
   title: string;
@@ -18,9 +24,9 @@ const BreadcrumbsContext = createContext<BreadcrumbsContextProps>(
 export function BreadcrumbsProvider({ children }: { children: ReactNode }) {
   const [pages, setPages] = useState<Page[]>([]);
 
-  const setBreadcrumbs = (pages: Page[]) => {
+  const setBreadcrumbs = useCallback((pages: Page[]) => {
     setPages(pages);
-  };
+  }, []);
 
   return (
     <BreadcrumbsContext.Provider value={{ pages, setBreadcrumbs }}>

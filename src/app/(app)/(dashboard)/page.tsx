@@ -1,5 +1,6 @@
 import {
   AveragePurchaseEachProduct,
+  DashboardContainer,
   TotalMonthlyExpenses,
 } from "@/components/templates/dashboard";
 import { Despesas } from "@/components/templates/dashboard/despesas";
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function Dashboard() {
   return (
-    <>
+    <DashboardContainer>
       {/* Total de despesas Mensal*/}
       <TotalMonthlyExpenses />
 
@@ -25,6 +26,6 @@ export default function Dashboard() {
 
       {/* Despesas */}
       <Despesas />
-    </>
+    </DashboardContainer>
   );
 }

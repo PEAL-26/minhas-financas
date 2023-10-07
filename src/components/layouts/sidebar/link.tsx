@@ -15,7 +15,10 @@ interface LinkProps {
 export function Link(props: LinkProps) {
   const { href, className, children, icon: Icon } = props;
   const pathname = usePathname();
-  const linkActive = href == pathname;
+
+  const activeHome = href === pathname && href === "/";
+  const refSearch = activeHome ? href : href.substring(1);
+  const linkActive = !!(refSearch && pathname.includes(refSearch));
 
   return (
     <LinkNext

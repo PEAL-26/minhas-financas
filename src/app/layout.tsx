@@ -19,7 +19,10 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="pt">
-      <body className={`${roboto.className} bg-[#eee]`}>
+      <body
+        suppressHydrationWarning={true}
+        className={`${roboto.className} bg-[#eee]`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

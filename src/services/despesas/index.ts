@@ -15,61 +15,13 @@ import {
 } from "firebase/firestore";
 import { db } from "@/libs/firebase";
 import { monthNumberToString } from "@/helpers/converter-mes";
-import { Filtros, construirConsulta } from "./_generics";
+import { Filtros, construirConsulta } from "../_generics";
 
-export interface DespesasProps {
-  id: string;
-  data: Date;
-  data_termino: Date | null;
-  descricao: string;
-  quantidade: number;
-  local?: string;
-  preco: number;
-  total: number;
-  created_at: Date;
-}
+// TODO Remover depois da refactoração
+import { DespesasProps } from './types'
 
-export async function createDespesa(
-  props: Omit<DespesasProps, "id" | "created_at">
-) {
-  const inputData = {
-    data: new Date(props.data),
-    data_termino: props.data_termino ? new Date(props.data_termino) : null,
-    descricao: props.descricao,
-    quantidade: props.quantidade,
-    local: props.local,
-    preco: props.preco,
-    total: props.total,
-    created_at: new Date(),
-  };
-
-  const postCollection = collection(db(), "despesas");
-  await addDoc(postCollection, inputData);
-}
-
-export async function createBulkDespesas(
-  input: Omit<DespesasProps, "id" | "created_at">[]
-) {
-  const inputData = input.map((props) => ({
-    data: new Date(props.data),
-    data_termino: props.data_termino ? new Date(props.data_termino) : null,
-    descricao: props.descricao,
-    quantidade: props.quantidade,
-    local: props.local,
-    preco: props.preco,
-    total: props.total,
-    created_at: new Date(),
-  }));
-
-  const batch = writeBatch(db());
-
-  inputData.forEach((data) => {
-    const docRef = doc(collection(db(), "despesas"));
-    batch.set(docRef, data);
-  });
-
-  return batch.commit();
-}
+export * from "./create";
+export * from "./types";
 
 export async function updateDespesa(props: Omit<DespesasProps, "created_at">) {
   const inputData = {
