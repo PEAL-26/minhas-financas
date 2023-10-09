@@ -18,6 +18,14 @@ import { Link } from "./link";
 import { Search } from "./search";
 import { CloseSideBar } from "./close-sidebar";
 
+const LINKS = [
+  { ulr: "/dashboard", title: "Dashboard", icon: MdOutlineDashboard },
+  { ulr: "/transacoes", title: "Transações", icon: MdSwapVert },
+  { ulr: "/rendas", title: "Rendas", icon: MdTrendingUp },
+  { ulr: "/despesas", title: "Despesas", icon: MdTrendingDown },
+  { ulr: "/necessidades", title: "Necessidades", icon: MdFormatListBulleted },
+];
+
 export function Sidebar() {
   const isDevice = useMediaQuery("(max-width: 959px)");
   const { isOpen, close } = useSidebarContext();
@@ -51,11 +59,6 @@ export function Sidebar() {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, []);
 
-  useEffect(() => {
-    setIsLoading(false);
-    console.log({ isDevice, openSidebar });
-  }, []);
-
   const openSidebar = {
     true: "data-[open=false]:-translate-x-full md:data-[open=true]:translate-x-0 ",
     false: "",
@@ -80,14 +83,14 @@ export function Sidebar() {
         )}
       >
         <LinkNext
-          href="/"
+          href="/dashboard"
           className="flex items-center justify-center gap-2 py-4 hover:bg-transparent"
         >
           <Image
             src={"/images/logo-w736.png"}
             height={36}
             width={36}
-            alt="logo-minhas-finacas"
+            alt="logo-minhas-financas"
             className="object-cover "
           />
           <span className="text-center text-xl font-bold text-[#616973]">
@@ -97,21 +100,11 @@ export function Sidebar() {
         <div className="w-full border-t border-t-gray-200" />
         <div className="mt-5 flex min-h-screen flex-col gap-2 overflow-y-auto">
           <Search />
-          <Link href={"/"} icon={MdOutlineDashboard}>
-            Dashboard
-          </Link>
-          <Link href={"/transacoes"} icon={MdSwapVert}>
-            Transações
-          </Link>
-          <Link href={"/rendas"} icon={MdTrendingUp}>
-            Rendas
-          </Link>
-          <Link href={"/despesas"} icon={MdTrendingDown}>
-            Despesas
-          </Link>
-          <Link href={"/necessidades"} icon={MdFormatListBulleted}>
-            Necessidades
-          </Link>
+          {LINKS.map((link, index) => (
+            <Link key={index} href={link.ulr} icon={link.icon}>
+              {link.title}
+            </Link>
+          ))}
         </div>
       </aside>
       <CloseSideBar />

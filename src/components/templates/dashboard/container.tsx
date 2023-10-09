@@ -8,6 +8,6 @@ export function DashboardContainer({ children }: { children: ReactNode }) {
   useEffect(() => {
     setBreadcrumbs([{ title: "Dashboard" }]);
   }, [setBreadcrumbs]);
-    
-  return <>{children}</>;
+
+  return <div className="mt-12">{children}</div>;
 }

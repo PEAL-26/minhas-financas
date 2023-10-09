@@ -32,9 +32,9 @@ export default function InscreverSePage() {
           </Typography>
         </CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <Input label="Nome" size="lg" />
-          <Input type="email" label="Email" size="lg" />
-          <Input type="password" label="Senha" size="lg" />
+          <Input label="Nome" size="md" color="green" />
+          <Input type="email" label="Email" size="md" color="green" />
+          <Input type="password" label="Senha" size="md" color="green" />
           <div className="-ml-2.5">
             <Checkbox
               label="Eu concordo com os Termos e Condições"

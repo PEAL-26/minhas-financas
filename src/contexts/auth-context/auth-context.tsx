@@ -16,8 +16,9 @@ import {
   User as UserFirebase,
   signOut,
 } from "firebase/auth";
-import { getAuth } from "@/libs/firebase";
-import { useProtectedRoute } from "./use-protected-route";
+import { auth } from "@/libs/firebase";
+import Cookies from "js-cookie";
+
 import {
   AuthContextProps,
   LoginWithEmailPassword,
@@ -25,26 +26,30 @@ import {
   User,
 } from "./types";
 
+auth.languageCode = "pt";
+
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
-  useProtectedRoute(user);
+  const handleSetUser = (currentUser: UserFirebase) => {
+    const user = {
+      id: currentUser.uid,
+      name: currentUser.displayName || "",
+      email: currentUser.email || "",
+      avatar: currentUser.photoURL || undefined,
+    };
 
-  const handleSetUser = (user: UserFirebase) => {
-    setUser({
-      id: user.uid,
-      name: user.displayName || "",
-      email: user.email || "",
-      avatar: user.photoURL || undefined,
+    setUser(user);
+    const SETE_DIAS = 7;
+    Cookies.set("user", JSON.stringify(user), {
+      expires: SETE_DIAS,
+      path: "/",
     });
   };
 
   const loginWithEmailPassword = async (input: LoginWithEmailPassword) => {
-    const auth = getAuth();
-    auth.languageCode = "pt";
-
     await setPersistence(auth, browserLocalPersistence);
     const { user } = await signInWithEmailAndPassword(
       auth,
@@ -56,9 +61,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signWithEmailPassword = async (input: SignWithEmailPassword) => {
-    const auth = getAuth();
-    auth.languageCode = "pt";
-
     await setPersistence(auth, browserLocalPersistence);
     const { user } = await createUserWithEmailAndPassword(
       auth,
@@ -69,9 +71,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const loginWithGoogle = async () => {
-    const auth = getAuth();
-    auth.languageCode = "pt";
-
     await setPersistence(auth, browserLocalPersistence);
     const provider = new GoogleAuthProvider();
     provider.addScope("https://www.googleapis.com/auth/userinfo.profile");
@@ -81,14 +80,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    const auth = getAuth();
-
+    Cookies.remove("user", { path: "/" });
     return signOut(auth);
   };
 
   useEffect(() => {
-    const { currentUser } = getAuth();
-    if (currentUser) handleSetUser(currentUser);
+    const currentUser = Cookies.get("user");
+    if (currentUser) {
+      const user = JSON.parse(currentUser);
+      setUser(user);
+    }
   }, []);
 
   return (

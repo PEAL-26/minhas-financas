@@ -3,7 +3,7 @@ import { initializeApp, getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth as getAuthFirebase } from "firebase/auth";
 
-import { firebaseConfig } from "@/config/firebase-config";
+import { firebaseConfig } from "@/configs/firebase-config";
 
 // Initialize Firebase
 const verifyApp = () => {
@@ -17,4 +17,4 @@ const verifyApp = () => {
 
 export const app = verifyApp();
 export const db = () => getFirestore(app);
-export const getAuth = () => getAuthFirebase(app);
+export const auth = getAuthFirebase(app);

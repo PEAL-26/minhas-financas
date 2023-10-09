@@ -9,7 +9,6 @@ export function Search() {
           id="pesquisar"
           className="peer block w-full appearance-none border-0 border-b border-gray-300 bg-transparent px-0 py-1 text-sm text-gray-900 focus:border-green-400 focus:outline-none focus:ring-0 "
           placeholder=""
-          required
         />
         <label
           htmlFor="pesquisar"

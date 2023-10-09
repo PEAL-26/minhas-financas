@@ -8,11 +8,9 @@ import {
   Checkbox,
   Input,
   Typography,
-  IconButton,
 } from "@/libs/material-tailwind";
 import { Metadata } from "next";
 import Link from "next/link";
-import { FcGoogle } from "react-icons/fc";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -34,8 +32,8 @@ export default function LoginPage() {
         </CardHeader>
         <form>
           <CardBody className="flex flex-col gap-4">
-            <Input type="email" label="Email" size="lg" />
-            <Input type="password" label="Senha" size="lg" />
+            <Input type="email" label="Email" size="md" color="green" />
+            <Input type="password" label="Senha" size="md" color="green" />
             <div className="-ml-2.5">
               <Checkbox label="Lembrar-me" color="green" />
             </div>

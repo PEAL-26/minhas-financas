@@ -7,7 +7,6 @@ import { Sidebar } from "@/components/layouts/sidebar";
 
 import { SidebarProvider } from "@/contexts/sidebar-menu-context";
 import { BreadcrumbsProvider } from "@/contexts/breadcrumbs-context";
-import { VerifyAuth } from "@/contexts/auth-context/auth-verify";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -20,7 +19,6 @@ export const metadata: Metadata = {
 
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
-    <VerifyAuth>
       <BreadcrumbsProvider>
         <SidebarProvider>
           <Sidebar />
@@ -33,6 +31,5 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </main>
         </SidebarProvider>
       </BreadcrumbsProvider>
-    </VerifyAuth>
   );
 }

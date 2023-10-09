@@ -1,10 +1,12 @@
 import {
   AveragePurchaseEachProduct,
   DashboardContainer,
+  DashboardStatisticsCards,
   TotalMonthlyExpenses,
+  Despesas,
+  Necessidades,
+  DashboardStatisticsChart,
 } from "@/components/templates/dashboard";
-import { Despesas } from "@/components/templates/dashboard/despesas";
-import { Necessidades } from "@/components/templates/dashboard/necessidades";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,14 +17,19 @@ export const metadata: Metadata = {
 export default function Dashboard() {
   return (
     <DashboardContainer>
+
+      <DashboardStatisticsCards />
+
+      <DashboardStatisticsChart />
+
       {/* Total de despesas Mensal*/}
-      <TotalMonthlyExpenses />
+      {/* <TotalMonthlyExpenses /> */}
 
       {/* Media de compra de cada produto */}
-      <AveragePurchaseEachProduct />
+      {/* <AveragePurchaseEachProduct /> */}
 
       {/* Necessidades */}
-      <Necessidades />
+      {/* <Necessidades /> */}
 
       {/* Despesas */}
       <Despesas />

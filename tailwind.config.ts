@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import forms from "@tailwindcss/forms";
 import withMT from "@material-tailwind/react/utils/withMT";
 
 const fontFamily = {
@@ -21,7 +20,7 @@ const config: Config = {
     },
     fontFamily,
   },
-  plugins: [forms],
+  plugins: [],
 };
 
 export default withMT(config);

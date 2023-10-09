@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "apexcharts",
         "Botao",
         "condicao",
         "descricao",
@@ -7,11 +8,15 @@
         "direcao",
         "Firestore",
         "Formulario",
+        "heroicons",
         "Periodo",
         "preco",
+        "Roboto",
+        "tailwindcss",
         "tanstack",
         "Transacao",
         "transacoes",
-        "unica"
+        "unica",
+        "xaxis"
     ]
 }
