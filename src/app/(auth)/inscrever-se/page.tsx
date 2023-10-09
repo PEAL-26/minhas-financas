@@ -35,11 +35,21 @@ export default function InscreverSePage() {
           <Input label="Nome" size="md" color="green" />
           <Input type="email" label="Email" size="md" color="green" />
           <Input type="password" label="Senha" size="md" color="green" />
-          <div className="-ml-2.5">
-            <Checkbox
-              label="Eu concordo com os Termos e Condições"
-              color="green"
-            />
+          <div className="-ml-2.5 inline-flex items-center">
+            <Checkbox color="green" />
+            <Typography variant="small" className="flex justify-center">
+              Eu concordo com os
+              <Link href="/termos" target="_blank">
+                <Typography
+                  as="span"
+                  variant="small"
+                  color="green"
+                  className="ml-1 font-bold"
+                >
+                  Termos e Condições
+                </Typography>
+              </Link>
+            </Typography>
           </div>
         </CardBody>
         <CardFooter className="pt-0">
@@ -59,7 +69,7 @@ export default function InscreverSePage() {
           </Button>
           <Typography variant="small" className="mt-6 flex justify-center">
             Já tem uma conta?
-            <Link href="/inscrever-se">
+            <Link href="/login">
               <Typography
                 as="span"
                 variant="small"

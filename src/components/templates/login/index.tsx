@@ -1,12 +1,11 @@
 "use client";
 import { ReactNode } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { CardBody, Checkbox, Input } from "@/libs/material-tailwind";
+import { CardBody, Input } from "@/libs/material-tailwind";
 
 type Inputs = {
   email: string;
   password: string;
-  remember: boolean;
 };
 
 export function LoginForm({ children }: { children: ReactNode }) {
@@ -45,13 +44,6 @@ export function LoginForm({ children }: { children: ReactNode }) {
           color="green"
           {...register("password")}
         />
-        <div className="-ml-2.5">
-          <Checkbox
-            label="Lembrar-me"
-            color="green"
-            {...register("remember")}
-          />
-        </div>
       </CardBody>
       {children}
     </form>

@@ -9,17 +9,17 @@ export function middleware(req: NextRequest) {
   const dashboardURL = new URL("/dashboard", req.url);
   const { pathname } = req.nextUrl;
 
-  if (!user) {
-    if (PUBLIC_ROUTES.includes(pathname)) {
-      return NextResponse.next();
-    }
+  // if (!user) {
+  //   if (PUBLIC_ROUTES.includes(pathname)) {
+  //     return NextResponse.next();
+  //   }
 
-    return NextResponse.redirect(loginURL);
-  }
+  //   return NextResponse.redirect(loginURL);
+  // }
 
-  if (AUTH_ROUTES.includes(pathname)) {
-    return NextResponse.redirect(dashboardURL);
-  }
+  // if (AUTH_ROUTES.includes(pathname)) {
+  //   return NextResponse.redirect(dashboardURL);
+  // }
 }
 
 export const config = {

@@ -25,12 +25,14 @@ import {
   SignWithEmailPassword,
   User,
 } from "./types";
+import { useRouter } from "next/navigation";
 
 auth.languageCode = "pt";
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const router = useRouter()
   const [user, setUser] = useState<User | null>(null);
 
   const handleSetUser = (currentUser: UserFirebase) => {
@@ -58,6 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     handleSetUser(user);
+    router.replace('/dashboard')
   };
 
   const signWithEmailPassword = async (input: SignWithEmailPassword) => {
@@ -67,7 +70,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       input.email,
       input.password
     );
+
     handleSetUser(user);
+
   };
 
   const loginWithGoogle = async () => {
@@ -77,6 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { user } = await signInWithPopup(auth, provider);
     handleSetUser(user);
+    router.replace("/dashboard");
   };
 
   const logout = async () => {
