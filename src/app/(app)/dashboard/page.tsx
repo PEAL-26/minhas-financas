@@ -20,7 +20,7 @@ export default function Dashboard() {
 
       <DashboardStatisticsCards />
 
-      <DashboardStatisticsChart />
+      {/* <DashboardStatisticsChart /> */}
 
       {/* Total de despesas Mensal*/}
       {/* <TotalMonthlyExpenses /> */}

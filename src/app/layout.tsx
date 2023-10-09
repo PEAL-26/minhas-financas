@@ -23,7 +23,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         suppressHydrationWarning={true}
         className={`${roboto.className} bg-[#eee]`}
       >
-        <Providers>{children}</Providers>
+        {/* <Providers>{children}</Providers> */}
       </body>
     </html>
   );

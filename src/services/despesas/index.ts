@@ -18,9 +18,10 @@ import { monthNumberToString } from "@/helpers/converter-mes";
 import { Filtros, construirConsulta } from "../_generics";
 
 // TODO Remover depois da refactoração
-import { DespesasProps } from './types'
+import { DespesasProps } from "./types";
 
 export * from "./create";
+export * from "./create-bulk";
 export * from "./types";
 
 export async function updateDespesa(props: Omit<DespesasProps, "created_at">) {

@@ -1,3 +1,4 @@
+import { LoginForm } from "@/components/templates/login";
 import { LoginGoogleButton } from "@/components/templates/login/login-google-button";
 import {
   Button,
@@ -30,16 +31,15 @@ export default function LoginPage() {
             Login
           </Typography>
         </CardHeader>
-        <form>
-          <CardBody className="flex flex-col gap-4">
-            <Input type="email" label="Email" size="md" color="green" />
-            <Input type="password" label="Senha" size="md" color="green" />
-            <div className="-ml-2.5">
-              <Checkbox label="Lembrar-me" color="green" />
-            </div>
-          </CardBody>
+        <LoginForm>
           <CardFooter className="pt-0">
-            <Button variant="gradient" color="green" fullWidth className="h-14">
+            <Button
+              type="submit"
+              variant="gradient"
+              color="green"
+              fullWidth
+              className="h-14"
+            >
               Entrar
             </Button>
             <Typography variant="small" className="flex justify-center">
@@ -60,7 +60,7 @@ export default function LoginPage() {
               </Link>
             </Typography>
           </CardFooter>
-        </form>
+        </LoginForm>
       </Card>
     </div>
   );
