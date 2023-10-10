@@ -16,6 +16,7 @@ import {
 import { db } from "@/libs/firebase";
 import { monthNumberToString } from "@/helpers/converter-mes";
 import { Filtros, construirConsulta } from "../_generics";
+import Cookies from "js-cookie";
 
 // TODO Remover depois da refactoração
 import { DespesasProps } from "./types";

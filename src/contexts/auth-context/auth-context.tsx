@@ -60,7 +60,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     handleSetUser(user);
-    router.replace('/dashboard')
   };
 
   const signWithEmailPassword = async (input: SignWithEmailPassword) => {
@@ -82,7 +81,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { user } = await signInWithPopup(auth, provider);
     handleSetUser(user);
-    router.replace("/dashboard");
   };
 
   const logout = async () => {

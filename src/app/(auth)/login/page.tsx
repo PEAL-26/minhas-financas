@@ -31,36 +31,7 @@ export default function LoginPage() {
             Login
           </Typography>
         </CardHeader>
-        <LoginForm>
-          <CardFooter className="pt-0">
-            <Button
-              type="submit"
-              variant="gradient"
-              color="green"
-              fullWidth
-              className="h-14"
-            >
-              Entrar
-            </Button>
-            <Typography variant="small" className="flex justify-center">
-              ou
-            </Typography>
-            <LoginGoogleButton />
-            <Typography variant="small" className="mt-6 flex justify-center">
-              Não tem uma conta?
-              <Link href="/inscrever-se">
-                <Typography
-                  as="span"
-                  variant="small"
-                  color="green"
-                  className="ml-1 font-bold"
-                >
-                  Inscrever-se
-                </Typography>
-              </Link>
-            </Typography>
-          </CardFooter>
-        </LoginForm>
+        <LoginForm />
       </Card>
     </div>
   );

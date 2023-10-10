@@ -1,3 +1,4 @@
+import { InscreveSeForm } from "@/components/templates/inscrever-se";
 import {
   Button,
   Card,
@@ -31,56 +32,7 @@ export default function InscreverSePage() {
             Registo
           </Typography>
         </CardHeader>
-        <CardBody className="flex flex-col gap-4">
-          <Input label="Nome" size="md" color="green" />
-          <Input type="email" label="Email" size="md" color="green" />
-          <Input type="password" label="Senha" size="md" color="green" />
-          <div className="-ml-2.5 inline-flex items-center">
-            <Checkbox color="green" />
-            <Typography variant="small" className="flex justify-center">
-              Eu concordo com os
-              <Link href="/termos" target="_blank">
-                <Typography
-                  as="span"
-                  variant="small"
-                  color="green"
-                  className="ml-1 font-bold"
-                >
-                  Termos e Condições
-                </Typography>
-              </Link>
-            </Typography>
-          </div>
-        </CardBody>
-        <CardFooter className="pt-0">
-          <Button variant="gradient" color="green" fullWidth className="h-14">
-            Inscrever-se
-          </Button>
-          <Typography variant="small" className="flex justify-center">
-            ou
-          </Typography>
-          <Button
-            variant="outlined"
-            fullWidth
-            className="flex h-14 items-center justify-center gap-2"
-          >
-            <FcGoogle size={28} />
-            Continuar com o Google
-          </Button>
-          <Typography variant="small" className="mt-6 flex justify-center">
-            Já tem uma conta?
-            <Link href="/login">
-              <Typography
-                as="span"
-                variant="small"
-                color="green"
-                className="ml-1 font-bold"
-              >
-                Login
-              </Typography>
-            </Link>
-          </Typography>
-        </CardFooter>
+        <InscreveSeForm />
       </Card>
     </div>
   );

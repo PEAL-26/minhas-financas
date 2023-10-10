@@ -20,7 +20,7 @@ export interface AuthContextProps {
   user: User | null;
   isAuthenticated: boolean;
   signWithEmailPassword(input: SignWithEmailPassword): Promise<void>;
-  loginWithEmailPassword(input: SignWithEmailPassword): Promise<void>;
+  loginWithEmailPassword(input: LoginWithEmailPassword): Promise<void>;
   loginWithGoogle(): Promise<void>;
   logout(): Promise<void>;
 }
