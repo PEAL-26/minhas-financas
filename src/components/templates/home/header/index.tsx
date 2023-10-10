@@ -9,7 +9,7 @@ export function HomeHeader() {
   const router = useRouter();
 
   return (
-    <header className="bg-white">
+    <header id="home" className="bg-white">
       <div className="container mx-auto flex items-center justify-between py-3">
         <Link href="/" className="inline-flex items-center gap-2">
           <Image

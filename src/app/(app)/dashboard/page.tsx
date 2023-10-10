@@ -22,6 +22,8 @@ export default function Dashboard() {
 
       {/* <DashboardStatisticsChart /> */}
 
+      {/* TODO Calendário */}
+
       {/* Total de despesas Mensal*/}
       {/* <TotalMonthlyExpenses /> */}
 
