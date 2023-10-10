@@ -1,4 +1,8 @@
-import { HomeHeader } from "@/components/templates/home";
+import {
+  HomeHeader,
+  HomeHero,
+  HomeExcellent,
+} from "@/components/templates/home";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,5 +11,11 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <HomeHeader />;
+  return (
+    <div className="flex flex-1 flex-col bg-white">
+      <HomeHeader />
+      <HomeHero />
+      <HomeExcellent />
+    </div>
+  );
 }

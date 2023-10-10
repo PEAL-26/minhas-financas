@@ -9,8 +9,6 @@ export function middleware(req: NextRequest, res: NextResponse) {
   const dashboardURL = new URL("/dashboard", req.url);
   const { pathname } = req.nextUrl;
 
-  console.log(pathname);
-
   if (!user) {
     if (PUBLIC_ROUTES.includes(pathname)) {
       return NextResponse.next();
