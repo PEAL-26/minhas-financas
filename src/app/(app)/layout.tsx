@@ -12,11 +12,6 @@ interface AppLayoutProps {
   children: ReactNode;
 }
 
-export const metadata: Metadata = {
-  title: { default: "Minhas Finanças", template: "%s | Minhas Finanças" },
-  description: "",
-};
-
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
       <BreadcrumbsProvider>
