@@ -9,14 +9,18 @@ export function middleware(req: NextRequest, res: NextResponse) {
   const dashboardURL = new URL("/dashboard", req.url);
   const { pathname } = req.nextUrl;
 
-  console.log({ pathname });
+  console.log({
+    PUBLIC_ROUTES: PUBLIC_ROUTES.includes(pathname),
+    loginURL,
+    dashboardURL,
+    pathname,
+  });
 
   if (!user) {
     if (PUBLIC_ROUTES.includes(pathname)) {
       return NextResponse.next();
     }
 
-    console.log(2, PUBLIC_ROUTES.includes(pathname));
     return NextResponse.redirect(loginURL);
   }
 
