@@ -10,23 +10,26 @@ export function middleware(req: NextRequest, res: NextResponse) {
   const { pathname } = req.nextUrl;
 
   console.log({
-    PUBLIC_ROUTES: PUBLIC_ROUTES.includes(pathname),
-    loginURL,
-    dashboardURL,
+    loginURL: loginURL.href,
+    dashboardURL: dashboardURL.href,
     pathname,
+    redirect: !user && !PUBLIC_ROUTES.includes(pathname),
+    PUBLIC_ROUTES: PUBLIC_ROUTES.includes(pathname),
+    AUTH_ROUTES: AUTH_ROUTES.includes(pathname),
+    user: !user,
   });
 
-  if (!user) {
-    if (PUBLIC_ROUTES.includes(pathname)) {
-      return NextResponse.next();
-    }
-
+  if (!user && !PUBLIC_ROUTES.includes(pathname)) {
     return NextResponse.redirect(loginURL);
   }
 
   if (AUTH_ROUTES.includes(pathname)) {
     return NextResponse.redirect(dashboardURL);
   }
+
+  // if (PUBLIC_ROUTES.includes(pathname)) {
+  //   return NextResponse.next();
+  // }
 }
 
 export const config = {
