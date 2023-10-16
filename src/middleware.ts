@@ -4,32 +4,18 @@ const AUTH_ROUTES = ["/login", "/inscrever-se"];
 const PUBLIC_ROUTES = ["/", "/termos", ...AUTH_ROUTES];
 
 export function middleware(req: NextRequest, res: NextResponse) {
-  const user = req.cookies.get("user")?.value;
+  const isAuthenticated = req.cookies.get("user")?.value;
   const loginURL = new URL("/login", req.url);
   const dashboardURL = new URL("/dashboard", req.url);
   const { pathname } = req.nextUrl;
 
-  console.log({
-    loginURL: loginURL.href,
-    dashboardURL: dashboardURL.href,
-    pathname,
-    redirect: !user && !PUBLIC_ROUTES.includes(pathname),
-    PUBLIC_ROUTES: PUBLIC_ROUTES.includes(pathname),
-    AUTH_ROUTES: AUTH_ROUTES.includes(pathname),
-    user: !user,
-  });
-
-  if (!user && !PUBLIC_ROUTES.includes(pathname)) {
+  if (!isAuthenticated && !PUBLIC_ROUTES.includes(pathname)) {
     return NextResponse.redirect(loginURL);
   }
 
-  if (AUTH_ROUTES.includes(pathname)) {
+  if (isAuthenticated && AUTH_ROUTES.includes(pathname)) {
     return NextResponse.redirect(dashboardURL);
   }
-
-  // if (PUBLIC_ROUTES.includes(pathname)) {
-  //   return NextResponse.next();
-  // }
 }
 
 export const config = {
