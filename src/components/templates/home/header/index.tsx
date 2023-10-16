@@ -1,13 +1,9 @@
-"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-
-import { Button } from "@/libs/material-tailwind";
+import { HeaderRegister } from "./register";
 
 export function HomeHeader() {
-  const router = useRouter();
-
   return (
     <header id="home" className="bg-white">
       <div className="container mx-auto flex items-center justify-between py-3">
@@ -30,18 +26,7 @@ export function HomeHeader() {
             FAQs
           </Link>
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="text"
-            onClick={() => router.push("/login")}
-            className="text-[#616973]"
-          >
-            Login
-          </Button>
-          <Button color="green" onClick={() => router.push("/inscrever-se")}>
-            Inscrever-se
-          </Button>
-        </div>
+        <HeaderRegister />
       </div>
     </header>
   );
