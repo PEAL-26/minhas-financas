@@ -8,6 +8,7 @@ const MENUS = [
   { href: '/expenses', title: 'Despesas' },
   { href: '/wallet', title: 'Carteira' },
   { href: '/wishlist', title: 'Lista de Desejos' },
+  { href: '/settings', title: 'Configurações' },
 ];
 
 export function AppLayout({ children }: { children: ReactNode }) {
@@ -15,7 +16,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
     <>
       <div className="flex gap-2">
         {MENUS.map((menu, index) => (
-          <Link key={index} href={menu.href}>{menu.title}</Link>
+          <Link key={index} href={menu.href}>
+            {menu.title}
+          </Link>
         ))}
       </div>
 

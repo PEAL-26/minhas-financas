@@ -1,16 +1,16 @@
 import { Metadata } from 'next';
 
-import { MainContent } from '@/components/templates/despesas';
+import { PageLayout } from '@/components/layouts/page';
 
 export const metadata: Metadata = {
   title: 'Despesas',
   description: '',
 };
 
-export default function DespesasPage() {
+export default function Page() {
   return (
-    <>
-      <MainContent />
-    </>
+    <PageLayout title={String(metadata.title)}>
+      <></>
+    </PageLayout>
   );
 }

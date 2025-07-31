@@ -1,4 +1,4 @@
-import { DashboardContainer } from '@/components/templates/dashboard';
+import { PageLayout } from '@/components/layouts/page';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,26 +6,28 @@ export const metadata: Metadata = {
   description: '',
 };
 
-export default function Dashboard() {
+export default function Page() {
   return (
-    <DashboardContainer>
-      {/* <DashboardStatisticsCards /> */}
+    <PageLayout title="Dashboard">
+      <>
+        {/* <DashboardStatisticsCards /> */}
 
-      {/* <DashboardStatisticsChart /> */}
+        {/* <DashboardStatisticsChart /> */}
 
-      {/* TODO Calendário */}
+        {/* TODO Calendário */}
 
-      {/* Total de despesas Mensal*/}
-      {/* <TotalMonthlyExpenses /> */}
+        {/* Total de despesas Mensal*/}
+        {/* <TotalMonthlyExpenses /> */}
 
-      {/* Media de compra de cada produto */}
-      {/* <AveragePurchaseEachProduct /> */}
+        {/* Media de compra de cada produto */}
+        {/* <AveragePurchaseEachProduct /> */}
 
-      {/* Necessidades */}
-      {/* <Necessidades /> */}
+        {/* Necessidades */}
+        {/* <Necessidades /> */}
 
-      {/* Despesas */}
-      {/* <Despesas /> */}
-    </DashboardContainer>
+        {/* Despesas */}
+        {/* <Despesas /> */}
+      </>
+    </PageLayout>
   );
 }

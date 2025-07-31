@@ -1,4 +1,4 @@
-import { Rendas } from '@/components/templates/rendas';
+import { PageLayout } from '@/components/layouts/page';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,10 +6,10 @@ export const metadata: Metadata = {
   description: '',
 };
 
-export default function RendasPage() {
+export default function Page() {
   return (
-    <>
-      <Rendas />
-    </>
+    <PageLayout title={String(metadata.title)}>
+      <></>
+    </PageLayout>
   );
 }

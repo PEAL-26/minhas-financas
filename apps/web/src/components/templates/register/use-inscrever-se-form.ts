@@ -1,15 +1,19 @@
 import { useAuthContext } from '@/contexts/auth';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 type Inputs = {
+  name: string;
   email: string;
   password: string;
+  terms: boolean;
 };
 
-export function useLoginForm() {
+export function useInscreverSeForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const { loginWithEmailPassword } = useAuthContext();
+  const { signWithEmailPassword } = useAuthContext();
+  const router = useRouter();
 
   const {
     register,
@@ -24,7 +28,8 @@ export function useLoginForm() {
   const onSubmit: SubmitHandler<Inputs> = async (input) => {
     try {
       setIsLoading(true);
-      await loginWithEmailPassword(input);
+      await signWithEmailPassword(input);
+      router.push('/dashboard');
     } catch (error) {
       console.log(error);
     } finally {
@@ -32,5 +37,10 @@ export function useLoginForm() {
     }
   };
 
-  return { handleSubmit: handleSubmit(onSubmit), register, errors, isLoading };
+  return {
+    handleSubmit: handleSubmit(onSubmit),
+    register,
+    errors,
+    isLoading,
+  };
 }

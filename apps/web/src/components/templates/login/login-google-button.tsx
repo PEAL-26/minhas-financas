@@ -4,7 +4,7 @@ import { FcGoogle } from 'react-icons/fc';
 
 import { Loading } from '@/components/ui/loading';
 import { useAlertContext } from '@/contexts/alert-context';
-import { useAuthContext } from '@/contexts/auth-context';
+import { useAuthContext } from '@/contexts/auth';
 
 export function LoginGoogleButton() {
   const { loginWithGoogle } = useAuthContext();

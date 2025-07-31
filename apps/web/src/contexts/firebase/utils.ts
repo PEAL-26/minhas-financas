@@ -3,7 +3,7 @@ import { getApps, initializeApp } from 'firebase/app';
 import { getAuth as getAuthFirebase } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
-import { firebaseConfig } from '@/configs/firebase-config';
+import { firebaseConfig } from '@/configs/firebase';
 
 // Initialize Firebase
 const verifyApp = () => {

@@ -2,6 +2,7 @@ interface SkeletonPros {
   rows?: number;
   cols?: number;
 }
+
 export function Skeleton({ rows = 5, cols = 8 }: SkeletonPros) {
   return (
     <div className="w-full animate-pulse space-y-4 rounded p-4 shadow">

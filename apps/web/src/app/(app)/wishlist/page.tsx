@@ -1,15 +1,15 @@
-import { Necessidades } from '@/components/templates/necessidades';
+import { PageLayout } from '@/components/layouts/page';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Necessidades',
+  title: 'Lista de Desejos',
   description: '',
 };
 
-export default function NecessidadesPage() {
+export default function Page() {
   return (
-    <>
-      <Necessidades />
-    </>
+    <PageLayout title={String(metadata.title)}>
+      <></>
+    </PageLayout>
   );
 }

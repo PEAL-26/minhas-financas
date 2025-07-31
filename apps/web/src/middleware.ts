@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const AUTH_ROUTES = ['/login', '/inscrever-se'];
-const PUBLIC_ROUTES = ['/', '/termos', ...AUTH_ROUTES];
+const AUTH_ROUTES = ['/login', '/register'];
+const PUBLIC_ROUTES = ['/', '/terms', ...AUTH_ROUTES];
 
 export function middleware(req: NextRequest, res: NextResponse) {
   // const isAuthenticated = req.cookies.get('user')?.value;
