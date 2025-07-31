@@ -1,4 +1,4 @@
-import { StatisticsCard } from '@/components/compounds/cards';
+import { StatisticsCard } from '@/components/ui/cards';
 import { Typography } from '@/libs/material-tailwind';
 
 import { ColorMTType } from '@/styles/colors';

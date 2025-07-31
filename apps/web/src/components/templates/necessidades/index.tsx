@@ -1,7 +1,7 @@
 'use client';
-import { ButtonDefault } from '@/components/compounds/button-default';
-import { Container } from '@/components/compounds/container';
-import { Table } from '@/components/compounds/table';
+import { ButtonDefault } from '@/components/ui/button-default';
+import { Container } from '@/components/ui/container';
+import { Table } from '@/components/ui/table';
 import { useBreadcrumbsContext } from '@/contexts/breadcrumbs-context';
 import { useModalContext } from '@/contexts/modal-context';
 import { formatCurrencyKz } from '@/helpers/format-number';

@@ -1,5 +1,5 @@
 'use client';
-import { Alert } from '@/components/compounds/alert';
+import { Alert } from '@/components/ui/alert';
 import { ReactNode, createContext, useContext, useState } from 'react';
 
 interface AlertContextProps {

@@ -1,5 +1,5 @@
-import { Container } from '@/components/compounds/container';
 import { Modal } from '@/components/modals';
+import { Container } from '@/components/ui/container';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { ReactNode } from 'react';
 
@@ -17,7 +17,7 @@ export function ModalRegistoContext(props: ModalRegistoContextProps) {
     <Modal.Root show={show} onClose={close} className="bg-transparent p-0">
       <Container.Root>
         <Container.Header title={title}>
-          <button  color="white" onClick={handleHide}>
+          <button color="white" onClick={handleHide}>
             <XMarkIcon className="h-6 w-6" />
           </button>
         </Container.Header>

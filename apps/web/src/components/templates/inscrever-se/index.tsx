@@ -1,6 +1,6 @@
 'use client';
-import { Input } from '@/components/compounds/input';
-import { Loading } from '@/components/compounds/loading';
+import { Input } from '@/components/ui/input';
+import { Loading } from '@/components/ui/loading';
 import { Button, Typography } from '@/libs/material-tailwind';
 
 import Link from 'next/link';

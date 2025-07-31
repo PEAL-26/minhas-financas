@@ -1,5 +1,5 @@
 'use client';
-import { Loading } from '@/components/compounds/loading';
+import { Loading } from '@/components/ui/loading';
 import { useFormularioRegisto } from './use-formulario-registo';
 
 interface FormularioRegistoDespesaProps {

@@ -1,5 +1,5 @@
-import { CardBody, CardHeader } from '@/components/compounds/cards';
 import { LoginForm } from '@/components/templates/login';
+import { CardBody, CardHeader } from '@/components/ui/cards';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

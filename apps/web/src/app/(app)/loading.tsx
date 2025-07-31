@@ -1,4 +1,4 @@
-import { Loading } from '@/components/compounds/loading';
+import { Loading } from '@/components/ui/loading';
 
 export default function LoadingPage() {
   return (

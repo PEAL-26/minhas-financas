@@ -4,7 +4,7 @@ import { cn } from '@repo/ui/lib/utils';
 import { ElementType, ReactElement, ReactNode, useState } from 'react';
 import { IconBaseProps } from 'react-icons';
 
-import { Container } from '../compounds/container';
+import { Container } from '../ui/container';
 import { ModalRoot } from './modal-root';
 
 type Open = () => void;

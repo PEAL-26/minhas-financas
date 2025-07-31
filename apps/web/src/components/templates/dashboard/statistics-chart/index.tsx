@@ -1,4 +1,4 @@
-import { StatisticsChart } from '@/components/compounds/charts';
+import { StatisticsChart } from '@/components/ui/charts';
 import { Typography } from '@/libs/material-tailwind';
 import { ClockIcon } from '@heroicons/react/24/solid';
 import { statisticsChartsData } from './statistics-charts-data';

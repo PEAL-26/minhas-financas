@@ -1,5 +1,5 @@
 'use client';
-import { Loading } from '@/components/compounds/loading';
+import { Loading } from '@/components/ui/loading';
 import { TIPO_NECESSIDADE, TipoNecessidadeKey } from '@/services/necessidades';
 import { useFormularioRegisto } from './use-formulario-registo';
 
