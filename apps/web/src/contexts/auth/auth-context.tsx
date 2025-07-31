@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
 
-  const handleSetUser = (currentUser: any/*UserFirebase*/) => {
+  const handleSetUser = (currentUser: any /*UserFirebase*/) => {
     const user = {
       id: currentUser.uid,
       name: currentUser.displayName || '',
@@ -45,14 +45,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginWithEmailPassword = async (input: LoginWithEmailPassword) => {
     //await setPersistence(auth, browserLocalPersistence);
     //const { user } = await signInWithEmailAndPassword(auth, input.email, input.password);
-
     //handleSetUser(user);
   };
 
   const signWithEmailPassword = async (input: SignWithEmailPassword) => {
     //await setPersistence(auth, browserLocalPersistence);
     //const { user } = await createUserWithEmailAndPassword(auth, input.email, input.password);
-
     //handleSetUser(user);
   };
 
@@ -60,7 +58,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // await setPersistence(auth, browserLocalPersistence);
     // const provider = new GoogleAuthProvider();
     // provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
-
     // const { user } = await signInWithPopup(auth, provider);
     // handleSetUser(user);
   };
@@ -68,7 +65,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     // Cookies.remove('user', { path: '/' });
     // await signOut(auth);
-
     // router.push('/login');
   };
 

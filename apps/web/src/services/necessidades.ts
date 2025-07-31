@@ -10,7 +10,7 @@
 //   updateDoc,
 //   writeBatch,
 // } from 'firebase/firestore';
-import { Filtros, construirConsulta } from './_generics';
+import { Filtros } from './_generics';
 
 export type PrioridadeType = 0 | 1 | 2;
 
@@ -92,8 +92,7 @@ export async function createBulkNecessidades(
 
   // return batch.commit();
 
-
-  return { } as any
+  return {} as any;
 }
 
 export async function updateNecessidade(props: NecessidadeProps) {
@@ -111,7 +110,7 @@ export async function updateNecessidade(props: NecessidadeProps) {
   //   await updateDoc(docRef, inputData);
   // }
 
-  return {} as any
+  return {} as any;
 }
 
 export async function removeNecessidade(id: string) {
@@ -126,7 +125,7 @@ export async function listarTodasNecessidades(filtros?: Filtros): Promise<Necess
 
   // return necessidades;
 
-  return {} as any
+  return {} as any;
 }
 
 export async function buscarNecessidadePorId(id: string) {
@@ -135,8 +134,8 @@ export async function buscarNecessidadePorId(id: string) {
 
   // return docSnap.exists() ? firebaseMapper(docSnap) : null;
 
-  return {} as any
- }
+  return {} as any;
+}
 
 export function getTipoNecessidadeValue(tipo: TipoNecessidade, key: TipoNecessidadeKeyType) {
   return TIPO_NECESSIDADE[Object.keys(tipo)[0] as TipoNecessidadeKey][key];

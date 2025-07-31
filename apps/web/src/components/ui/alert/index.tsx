@@ -1,7 +1,7 @@
 'use client';
+import { cn } from '@repo/ui/lib/utils';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import { cn } from '@repo/ui/lib/utils';
 
 export interface AlertProps {
   children: ReactNode;

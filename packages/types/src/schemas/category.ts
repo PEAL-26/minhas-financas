@@ -1,1 +1,1 @@
-export const categorySchema = {}
+export const categorySchema = {};

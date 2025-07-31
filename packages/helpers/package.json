@@ -1,0 +1,22 @@
+{
+  "name": "@repo/helpers",
+  "description": "",
+  "version": "1.0.0",
+  "author": "",
+  "devDependencies": {
+    "@repo/config-eslint": "1.0.0",
+    "@repo/config-prettier": "1.0.0",
+    "@repo/config-typescript": "1.0.0",
+    "eslint": "^9.32.0",
+    "prettier": "^3.6.2"
+  },
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier ./src --write"
+  }
+}

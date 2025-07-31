@@ -92,7 +92,7 @@ export default function ImportarDadosInput() {
 
       <div
         data-success={success}
-        className="bg-gray/50 rounded-t-lg p-2 transition-all duration-500 data-[success=true]:hidden"
+        className="rounded-t-lg bg-gray/50 p-2 transition-all duration-500 data-[success=true]:hidden"
       >
         <label htmlFor="content" className="sr-only">
           Seus dados
@@ -100,7 +100,7 @@ export default function ImportarDadosInput() {
         <textarea
           id="content"
           rows={6}
-          className="bg-gray/50 h-full w-full resize-none overflow-y-auto rounded-md border border-white/20 p-2 text-sm text-black placeholder-black focus:border-white/70 focus:outline-0 focus:ring-0"
+          className="h-full w-full resize-none overflow-y-auto rounded-md border border-white/20 bg-gray/50 p-2 text-sm text-black placeholder-black focus:border-white/70 focus:outline-0 focus:ring-0"
           placeholder="Dados a importar content..."
           required
           value={content}
@@ -115,7 +115,7 @@ export default function ImportarDadosInput() {
           onClick={handleImportar}
           className="inline-flex items-center rounded-lg bg-white px-4 py-2.5 text-center text-xs font-medium text-black data-[loading=true]:cursor-not-allowed data-[loading=false]:hover:bg-white/70 max-sm:ml-5"
         >
-          {isLoading && <AiOutlineLoading className="fill-gray text-gray h-3 w-3 animate-spin" />}
+          {isLoading && <AiOutlineLoading className="h-3 w-3 animate-spin fill-gray text-gray" />}
           {!isLoading && <>Importar</>}
         </button>
       </div>

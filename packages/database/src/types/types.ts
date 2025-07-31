@@ -42,6 +42,12 @@ export interface ListPaginateConfigs extends DatabaseConfig {
   page?: number;
 }
 
+export interface ListPaginateRepositoryOption {
+  query?: string;
+  size?: number;
+  page?: number;
+}
+
 export interface PaginatedResult<T> {
   data: T[];
   totalItems: number;

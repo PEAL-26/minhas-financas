@@ -10,7 +10,7 @@
 //   updateDoc,
 //   writeBatch,
 // } from 'firebase/firestore';
-import { Filtros, construirConsulta } from './_generics';
+import { Filtros } from './_generics';
 
 export interface RendaProps {
   id?: string;
@@ -21,7 +21,7 @@ export interface RendaProps {
   created_at?: Date;
 }
 
-function firebaseMapper(doc:any /*DocumentData*/): RendaProps {
+function firebaseMapper(doc: any /*DocumentData*/): RendaProps {
   const { tipo, descricao, moeda, valor, created_at } = doc.data();
 
   return {
@@ -55,7 +55,6 @@ export async function createRenda(props: Omit<RendaProps, 'id' | 'created_at'>) 
   //   valor: props.valor,
   //   created_at: new Date(),
   // };
-
   // const postCollection = collection(db(), 'rendas');
   // await addDoc(postCollection, inputData);
 }
@@ -81,7 +80,6 @@ export async function updateRenda(props: Omit<RendaProps, 'created_at'>) {
   //   moeda: props.moeda,
   //   valor: props.valor,
   // };
-
   // if (props.id) {
   //   const docRef = doc(db(), 'rendas', props.id);
   //   await updateDoc(docRef, inputData);
@@ -100,7 +98,7 @@ export async function listarTodasRendas(filtros?: Filtros): Promise<RendaProps[]
 
   // return rendas;
 
-  return []
+  return [];
 }
 
 export async function buscarRendaPorId(id: string) {
@@ -109,5 +107,5 @@ export async function buscarRendaPorId(id: string) {
 
   // return docSnap.exists() ? firebaseMapper(docSnap) : null;
 
-  return null
+  return null;
 }

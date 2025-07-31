@@ -17,7 +17,6 @@ export async function createDespesa(
   //   total: props.total,
   //   created_at: new Date(),
   // };
-
   // const postCollection = collection(db(), 'despesas');
   // await addDoc(postCollection, inputData);
 }

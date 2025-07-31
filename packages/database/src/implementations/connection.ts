@@ -1,7 +1,7 @@
 import * as drizzleExpoSqlite from 'drizzle-orm/expo-sqlite';
 import * as expoSqlite from 'expo-sqlite';
 
-import { DatabaseSQLite } from '.';
+import { DatabaseSQLite } from './sqlite';
 
 const DATABASE_NAME = 'minhas_financas.db';
 

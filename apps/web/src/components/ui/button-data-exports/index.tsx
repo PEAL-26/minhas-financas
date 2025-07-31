@@ -55,7 +55,7 @@ export function ExportarDados() {
       className="group flex gap-2 rounded-lg border border-gray-100 bg-gray-100 p-2.5 hover:bg-gray-300 data-[loading=true]:cursor-wait"
     >
       {loading && (
-        <AiOutlineLoading className="fill-gray text-gray h-3 w-3 animate-spin" size={18} />
+        <AiOutlineLoading className="h-3 w-3 animate-spin fill-gray text-gray" size={18} />
       )}
       {!loading && <TfiExport className="fill-gray-600 group-hover:fill-gray-900" size={18} />}
       Exportar

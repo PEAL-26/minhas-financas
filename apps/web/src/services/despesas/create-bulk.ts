@@ -14,13 +14,10 @@ export async function createBulkDespesas(input: Omit<DespesasProps, 'id' | 'crea
   //   total: props.total,
   //   created_at: new Date(),
   // }));
-
   // const batch = writeBatch(db());
-
   // inputData.forEach((data) => {
   //   const docRef = doc(collection(db(), 'despesas'));
   //   batch.set(docRef, data);
   // });
-
   // return batch.commit();
 }

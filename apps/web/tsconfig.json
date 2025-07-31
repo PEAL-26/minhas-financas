@@ -6,11 +6,8 @@
         "./src/*"
       ],
       "@repo/database/*": [
-        "../../packages/database/src/database/*"
+        "../../packages/database/src/*"
       ],
-      "@repo/database/schemas/*": [
-        "../../packages/database/src/database/schemas*"
-      ]
     }
   },
   "include": [

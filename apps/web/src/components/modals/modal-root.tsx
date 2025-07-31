@@ -1,5 +1,5 @@
-import { ReactNode, useEffect } from 'react';
 import { cn } from '@repo/ui/lib/utils';
+import { ReactNode, useEffect } from 'react';
 
 interface ModalRootProps {
   show?: boolean;
@@ -30,10 +30,7 @@ export function ModalRoot(props: ModalRootProps) {
       onClick={(e) => e.target == e.currentTarget && handleClose()}
     >
       <div
-        className={cn(
-          'relative flex flex-col rounded-md bg-white p-5 pt-14 shadow',
-          className,
-        )}
+        className={cn('relative flex flex-col rounded-md bg-white p-5 pt-14 shadow', className)}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

@@ -13,7 +13,7 @@ export type Filtros = {
   // orderBy?: Array<[string | FieldPath, OrderByDirection]>;
 } & any;
 
-export function construirConsulta(collectionRef: any/*CollectionReference*/, filtros?: Filtros) {
+export function construirConsulta(collectionRef: any /*CollectionReference*/, filtros?: Filtros) {
   // let queryResult;
 
   // if (filtros?.where) {
@@ -30,7 +30,7 @@ export function construirConsulta(collectionRef: any/*CollectionReference*/, fil
 
   // return queryResult || collectionRef;
 
-  return {} as any
+  return {} as any;
 }
 
 export type Replace<T, R> = Omit<T, keyof R> & R;

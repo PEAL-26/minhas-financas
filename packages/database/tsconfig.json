@@ -2,7 +2,11 @@
   "extends": "@repo/config-typescript/base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@repo/database/*": [
+        "../../packages/database/src/*"
+      ]
+    }
   },
   "include": [
     "."

@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-export const wishlist = sqliteTable('wishlist', {
+export const wallet = sqliteTable('wallet', {
   id: text('id').primaryKey().unique(),
   title: text('title').notNull(),
   accountId: text('account_id').notNull(),

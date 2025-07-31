@@ -1,19 +1,10 @@
 {
   "name": "@repo/database",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "description": "",
-  "exports": {
-    "./*": "./src/database/*.ts",
-    "./schemas/*": "./src/schemas/*.ts",
-    "./repositories/*": "./src/repositories/*.ts",
-    "./drizzle.config": "./drizzle.config.ts"
+  "version": "1.0.0",
+  "author": "",
+  "dependencies": {
+    "@repo/types": "1.0.0"
   },
   "devDependencies": {
     "@repo/config-eslint": "1.0.0",
@@ -22,7 +13,22 @@
     "eslint": "^9.32.0",
     "prettier": "^3.6.2"
   },
-  "dependencies": {
-    "@repo/types": "1.0.0"
+  "exports": {
+    "./*": "./src/database/*.ts",
+    "./contexts/*": "./src/contexts/*.tsx",
+    "./hooks/*": "./src/hooks/*.ts",
+    "./repositories/*": "./src/repositories/*.ts",
+    "./schemas/*": "./src/schemas/*.ts",
+    "./types/*": "./src/types/*.ts",
+    "./drizzle.config": "./drizzle.config.ts"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "peerDependencies": {
+    "react": "18.3.1"
+  },
+  "scripts": {
+    "format": "prettier ./src --write"
   }
 }

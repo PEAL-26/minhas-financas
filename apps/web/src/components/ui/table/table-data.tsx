@@ -1,6 +1,6 @@
 import { Typography } from '@/libs/material-tailwind';
-import { HTMLProps } from 'react';
 import { cn } from '@repo/ui/lib/utils';
+import { HTMLProps } from 'react';
 
 interface TableDataProps extends HTMLProps<HTMLTableCellElement> {}
 

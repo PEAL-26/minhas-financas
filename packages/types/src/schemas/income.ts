@@ -1,1 +1,1 @@
-export const incomeSchema = {}
+export const incomeSchema = {};

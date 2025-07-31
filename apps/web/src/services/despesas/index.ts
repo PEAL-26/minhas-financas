@@ -1,4 +1,3 @@
-import { monthNumberToString } from '@/helpers/months';
 // import { db } from '@/libs/firebase';
 // import {
 //   DocumentData,
@@ -40,7 +39,7 @@ export async function removeDespesa(id: string) {
   //await deleteDoc(doc(db(), 'despesas', id));
 }
 
-function firebaseMapper(doc: any/*DocumentData*/): DespesasProps {
+function firebaseMapper(doc: any /*DocumentData*/): DespesasProps {
   // const { data, descricao, local, data_termino, quantidade, preco, total, created_at } = doc.data();
 
   // return {
@@ -58,14 +57,14 @@ function firebaseMapper(doc: any/*DocumentData*/): DespesasProps {
   return {} as any;
 }
 
-export async function listarTodosDespesas(filtros?: any/*Filtros*/): Promise<DespesasProps[]> {
+export async function listarTodosDespesas(filtros?: any /*Filtros*/): Promise<DespesasProps[]> {
   // const despesasCollection = collection(db(), 'despesas');
   // const consulta = construirConsulta(despesasCollection, filtros);
   // const querySnapshot = await getDocs(consulta);
   // const despesas = querySnapshot.docs.map((doc) => firebaseMapper(doc));
 
   // return despesas;
-  return {} as any
+  return {} as any;
 }
 
 export async function buscarDespesaPorId(id: string) {
@@ -80,7 +79,7 @@ export async function buscarDespesaPorId(id: string) {
 
   // return null;
 
-  return {} as any
+  return {} as any;
 }
 
 // Filtro: Total de Despesas por mês

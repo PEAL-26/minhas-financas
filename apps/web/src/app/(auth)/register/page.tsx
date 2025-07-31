@@ -1,4 +1,3 @@
-import { InscreveSeForm } from '@/components/templates/register';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,9 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function InscreverSePage() {
-  return (
-    <div className="container mx-auto p-4">
-    
-    </div>
-  );
+  return <div className="container mx-auto p-4"></div>;
 }

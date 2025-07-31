@@ -1,1 +1,1 @@
-export const locationSchema = {}
+export const locationSchema = {};

@@ -1,1 +1,1 @@
-export const accountSchema = {}
+export const accountSchema = {};

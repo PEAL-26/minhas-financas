@@ -1,1 +1,1 @@
-export const wishlistSchema = {}
+export const wishlistSchema = {};

@@ -1,12 +1,12 @@
-import { SQLiteDatabase } from 'expo-sqlite';
-import { IDatabase } from './interfaces';
 import {
   DatabaseConfig,
   Field,
+  IConnection,
+  IDatabase,
   ListPaginateConfigs,
   PaginatedResult,
   UpdateBulkData,
-} from './types';
+} from '../types';
 import {
   fieldsMap,
   generateCreateFields,
@@ -17,8 +17,25 @@ import {
   serialize,
 } from './utils';
 
-export class DatabaseSQLite implements IDatabase {
-  constructor(private connection: SQLiteDatabase) {}
+export class DatabaseSQLite<
+  T,
+  TSQLiteStatement,
+  TTransaction,
+  SQLiteBindParams,
+  SQLiteRunResult extends { lastInsertRowId: any },
+  SQLiteVariadicBindParams extends Array<T>,
+> implements IDatabase
+{
+  constructor(
+    private connection: IConnection<
+      T,
+      TSQLiteStatement,
+      TTransaction,
+      SQLiteBindParams,
+      SQLiteRunResult,
+      SQLiteVariadicBindParams
+    >,
+  ) {}
 
   async transaction(callback: () => Promise<void>) {
     return this.connection.withTransactionAsync(callback);

@@ -1,5 +1,5 @@
-import { HTMLProps } from 'react';
 import { cn } from '@repo/ui/lib/utils';
+import { HTMLProps } from 'react';
 
 interface TableBodyProps extends HTMLProps<HTMLTableSectionElement> {}
 
