@@ -4,15 +4,16 @@ import { Wallet } from './wallet';
 
 export type Income = {
   id: string;
-  name: string;
+  title: string;
   wallet?: Wallet | null;
-  description: string;
+  description?: string | null;
   amount: number;
   type: RECURRENCE_TYPE_ENUM;
   recurrence?: RECURRENCE_ENUM | number | null;
   duration?: number | null;
   startDate?: Date | null;
   endDate?: Date | null;
+  currency?: string;
   estimatedDateReceipt?: Date | null;
   status: INCOME_STATUS_ENUM;
   createdAt: Date;

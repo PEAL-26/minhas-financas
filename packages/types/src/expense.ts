@@ -1,3 +1,4 @@
+import { Category } from './category';
 import { Income } from './income';
 import { Price } from './location';
 import { PRIORITY_ENUM } from './priority';
@@ -9,7 +10,9 @@ export type Expense = {
   id: string;
   wishlist?: Wishlist | null;
   income?: Income | null;
-  description: string | null;
+  category?: Category | null;
+  title: string;
+  description?: string | null;
   estimatedDate?: Date | null;
   priority: PRIORITY_ENUM;
   type: RECURRENCE_TYPE_ENUM;

@@ -5,6 +5,8 @@ export type Account = {
   currencies?: string[];
   siteUrl?: string | null;
   swiftCode?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export enum ACCOUNT_TYPE {

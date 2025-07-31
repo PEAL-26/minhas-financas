@@ -12,17 +12,18 @@ export type TransactionExpense = {
   amount: number;
   quantity: number;
   total: number;
-  local?: Location;
+  location?: Location;
   income?: Income;
 };
 
 export type Transaction = {
   id: string;
   type: TRANSACTION_TYPE_ENUM;
+  date: Date;
   incomes?: TransactionIncome[];
   expenses?: TransactionExpense[];
   totalAmount: number;
-  date: Date;
+  note: string | null;
   createdAt: Date;
   updatedAt: Date;
 };
