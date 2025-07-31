@@ -3,6 +3,12 @@ import type { Config } from 'tailwindcss';
 import tailwindcssAnimate from 'tailwindcss-animate';
 import { colors } from './src/styles/colors';
 
+const fontFamily = {
+  sans: ['Roboto', 'sans-serif'],
+  serif: ['Roboto Slab', 'serif'],
+  body: ['Roboto', 'sans-serif'],
+};
+
 const config = {
   darkMode: ['class'],
   content: ['./src/**/*.{ts,tsx}', '../../packages/ui/src/components/**/*.{ts,tsx}'],
@@ -17,6 +23,7 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
     },
+    fontFamily,
   },
   plugins: [tailwindcssAnimate, forms],
 } satisfies Config;

@@ -1,7 +1,7 @@
 'use client';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '@repo/ui/lib/utils';
 
 export interface AlertProps {
   children: ReactNode;
@@ -40,7 +40,7 @@ export function Alert(props: AlertProps) {
   return (
     <div
       data-show={isShow}
-      className={twMerge(
+      className={cn(
         'fixed z-[999999] w-full bg-red-600 transition-transform duration-300 ease-in-out data-[show=false]:-translate-y-full data-[show=true]:translate-y-0',
       )}
       role="alert"

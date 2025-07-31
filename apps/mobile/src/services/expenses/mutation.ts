@@ -1,4 +1,4 @@
-import { db } from '@/db/connection';
+import { db } from '@repo/database/connection';
 import { getIdValue, getIdValueOrCreate, getRecurrence } from '../utils';
 
 type Entity = { id: number; name: string };

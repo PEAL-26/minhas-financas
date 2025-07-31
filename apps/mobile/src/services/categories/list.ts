@@ -1,4 +1,4 @@
-import { db } from '@/db/connection';
+import { db } from '@repo/database/connection';
 
 export type ListCategoriesParams = {
   query?: string;

@@ -1,22 +1,22 @@
 'use client';
-import { auth } from '@/libs/firebase';
-import {
-  GoogleAuthProvider,
-  User as UserFirebase,
-  browserLocalPersistence,
-  createUserWithEmailAndPassword,
-  setPersistence,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-} from 'firebase/auth';
+// import { auth } from '@/libs/firebase';
+// import {
+//   GoogleAuthProvider,
+//   User as UserFirebase,
+//   browserLocalPersistence,
+//   createUserWithEmailAndPassword,
+//   setPersistence,
+//   signInWithEmailAndPassword,
+//   signInWithPopup,
+//   signOut,
+// } from 'firebase/auth';
 import Cookies from 'js-cookie';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 import { AuthContextProps, LoginWithEmailPassword, SignWithEmailPassword, User } from './types';
 
-auth.languageCode = 'pt';
+// auth.languageCode = 'pt';
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
 
-  const handleSetUser = (currentUser: UserFirebase) => {
+  const handleSetUser = (currentUser: any/*UserFirebase*/) => {
     const user = {
       id: currentUser.uid,
       name: currentUser.displayName || '',
@@ -43,33 +43,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const loginWithEmailPassword = async (input: LoginWithEmailPassword) => {
-    await setPersistence(auth, browserLocalPersistence);
-    const { user } = await signInWithEmailAndPassword(auth, input.email, input.password);
+    //await setPersistence(auth, browserLocalPersistence);
+    //const { user } = await signInWithEmailAndPassword(auth, input.email, input.password);
 
-    handleSetUser(user);
+    //handleSetUser(user);
   };
 
   const signWithEmailPassword = async (input: SignWithEmailPassword) => {
-    await setPersistence(auth, browserLocalPersistence);
-    const { user } = await createUserWithEmailAndPassword(auth, input.email, input.password);
+    //await setPersistence(auth, browserLocalPersistence);
+    //const { user } = await createUserWithEmailAndPassword(auth, input.email, input.password);
 
-    handleSetUser(user);
+    //handleSetUser(user);
   };
 
   const loginWithGoogle = async () => {
-    await setPersistence(auth, browserLocalPersistence);
-    const provider = new GoogleAuthProvider();
-    provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+    // await setPersistence(auth, browserLocalPersistence);
+    // const provider = new GoogleAuthProvider();
+    // provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
 
-    const { user } = await signInWithPopup(auth, provider);
-    handleSetUser(user);
+    // const { user } = await signInWithPopup(auth, provider);
+    // handleSetUser(user);
   };
 
   const logout = async () => {
-    Cookies.remove('user', { path: '/' });
-    await signOut(auth);
+    // Cookies.remove('user', { path: '/' });
+    // await signOut(auth);
 
-    router.push('/login');
+    // router.push('/login');
   };
 
   useEffect(() => {

@@ -1,6 +1,5 @@
-import { CardHeader, Typography } from '@/libs/material-tailwind';
+import { cn } from '@repo/ui/lib/utils';
 import { ReactNode } from 'react';
-import { twMerge } from 'tailwind-merge';
 
 interface ContainerProps {
   title?: string;
@@ -12,15 +11,9 @@ export function ContainerHeader(props: ContainerProps) {
   const { title, className, children } = props;
 
   return (
-    <CardHeader
-      variant="gradient"
-      color="green"
-      className={twMerge('mb-8 flex items-center justify-between p-6', className)}
-    >
-      <Typography variant="h6" color="white">
-        {title}
-      </Typography>
+    <div className={cn('mb-8 flex items-center justify-between p-6', className)}>
+      <h6 color="white">{title}</h6>
       {children}
-    </CardHeader>
+    </div>
   );
 }

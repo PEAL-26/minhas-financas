@@ -1,9 +1,8 @@
 'use client';
-import { IconButton } from '@/libs/material-tailwind';
 import { XMarkIcon } from '@heroicons/react/24/solid';
+import { cn } from '@repo/ui/lib/utils';
 import { ElementType, ReactElement, ReactNode, useState } from 'react';
 import { IconBaseProps } from 'react-icons';
-import { twMerge } from 'tailwind-merge';
 
 import { Container } from '../compounds/container';
 import { ModalRoot } from './modal-root';
@@ -45,7 +44,7 @@ export function ModalOpenButton(props: ModalOpenButtonProps) {
     <>
       {(ButtonCustom && ButtonCustom(() => handleOpenModal())) || (
         <button
-          className={twMerge(
+          className={cn(
             'group flex items-center justify-between gap-2 rounded-full bg-white p-2 px-5 py-2.5 text-center text-sm font-medium text-green-500 shadow hover:bg-green-600 hover:text-white',
             className,
           )}
@@ -59,9 +58,9 @@ export function ModalOpenButton(props: ModalOpenButtonProps) {
       <ModalRoot show={openModal} onClose={setModal} className="bg-transparent p-0">
         <Container.Root>
           <Container.Header title={titleModal}>
-            <IconButton variant="text" color="white" onClick={handleClose}>
+            <button onClick={handleClose}>
               <XMarkIcon className="h-6 w-6" />
-            </IconButton>
+            </button>
           </Container.Header>
           <Container.Body className="p-5 pt-0">{children && children(openModal)}</Container.Body>
         </Container.Root>

@@ -1,5 +1,5 @@
-import { db } from '@/db/connection';
 import { TransactionTypes } from '@/types';
+import { db } from '@repo/database/connection';
 import { getIdValue } from '../utils';
 
 export type MutationTransaction = {

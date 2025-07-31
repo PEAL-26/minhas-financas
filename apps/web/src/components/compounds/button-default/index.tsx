@@ -1,6 +1,6 @@
 import { ElementType, HTMLProps } from 'react';
 import { IconBaseProps } from 'react-icons';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '@repo/ui/lib/utils';
 
 interface ButtonDefaultProps extends HTMLProps<HTMLButtonElement> {
   title?: string;
@@ -13,7 +13,7 @@ export function ButtonDefault(props: ButtonDefaultProps) {
   return (
     <button
       type={type}
-      className={twMerge(
+      className={cn(
         'group inline-flex items-center justify-between gap-2 rounded-full bg-white px-5 py-2.5 text-center text-sm font-medium text-green-500 shadow hover:bg-green-600 hover:text-white',
         className,
       )}

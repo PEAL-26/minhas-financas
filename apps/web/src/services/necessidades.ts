@@ -1,15 +1,15 @@
-import { db } from '@/libs/firebase';
-import {
-  DocumentData,
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  writeBatch,
-} from 'firebase/firestore';
+// import { db } from '@/libs/firebase';
+// import {
+//   DocumentData,
+//   addDoc,
+//   collection,
+//   deleteDoc,
+//   doc,
+//   getDoc,
+//   getDocs,
+//   updateDoc,
+//   writeBatch,
+// } from 'firebase/firestore';
 import { Filtros, construirConsulta } from './_generics';
 
 export type PrioridadeType = 0 | 1 | 2;
@@ -46,7 +46,7 @@ export interface NecessidadeProps {
   valor: number;
 }
 
-function firebaseMapper(doc: DocumentData): NecessidadeProps {
+function firebaseMapper(doc: any /*DocumentData*/): NecessidadeProps {
   const { item, descricao, categoria, prioridade, tipo, valor } = doc.data();
 
   return {
@@ -75,59 +75,68 @@ function necessidadeMapper(renda: NecessidadeProps): NecessidadeProps {
 }
 
 export async function createNecessidade(input: Omit<NecessidadeProps, 'id'>) {
-  const postCollection = collection(db(), 'necessidades');
-  await addDoc(postCollection, input);
+  // const postCollection = collection(db(), 'necessidades');
+  // await addDoc(postCollection, input);
 }
 
 export async function createBulkNecessidades(
   inputs: Omit<NecessidadeProps, 'id' | 'created_at'>[],
 ) {
-  const batch = writeBatch(db());
+  // const batch = writeBatch(db());
 
-  inputs.map((props) => {
-    const data = necessidadeMapper({ ...props, id: undefined });
-    const docRef = doc(collection(db(), 'necessidades'));
-    batch.set(docRef, data);
-  });
+  // inputs.map((props) => {
+  //   const data = necessidadeMapper({ ...props, id: undefined });
+  //   const docRef = doc(collection(db(), 'necessidades'));
+  //   batch.set(docRef, data);
+  // });
 
-  return batch.commit();
+  // return batch.commit();
+
+
+  return { } as any
 }
 
 export async function updateNecessidade(props: NecessidadeProps) {
-  const inputData = {
-    item: props.item,
-    descricao: props.descricao,
-    categoria: props.categoria,
-    prioridade: props.prioridade,
-    tipo: props.tipo,
-    valor: props.valor,
-  };
+  // const inputData = {
+  //   item: props.item,
+  //   descricao: props.descricao,
+  //   categoria: props.categoria,
+  //   prioridade: props.prioridade,
+  //   tipo: props.tipo,
+  //   valor: props.valor,
+  // };
 
-  if (props.id) {
-    const docRef = doc(db(), 'necessidades', props.id);
-    await updateDoc(docRef, inputData);
-  }
+  // if (props.id) {
+  //   const docRef = doc(db(), 'necessidades', props.id);
+  //   await updateDoc(docRef, inputData);
+  // }
+
+  return {} as any
 }
 
 export async function removeNecessidade(id: string) {
-  await deleteDoc(doc(db(), 'necessidades', id));
+  // await deleteDoc(doc(db(), 'necessidades', id));
 }
 
 export async function listarTodasNecessidades(filtros?: Filtros): Promise<NecessidadeProps[]> {
-  const necessidadesCollection = collection(db(), 'necessidades');
-  const consulta = construirConsulta(necessidadesCollection, filtros);
-  const querySnapshot = await getDocs(consulta);
-  const necessidades = querySnapshot.docs.map((doc) => firebaseMapper(doc));
+  // const necessidadesCollection = collection(db(), 'necessidades');
+  // const consulta = construirConsulta(necessidadesCollection, filtros);
+  // const querySnapshot = await getDocs(consulta);
+  // const necessidades = querySnapshot.docs.map((doc) => firebaseMapper(doc));
 
-  return necessidades;
+  // return necessidades;
+
+  return {} as any
 }
 
 export async function buscarNecessidadePorId(id: string) {
-  const docRef = doc(db(), 'necessidades', id);
-  const docSnap = await getDoc(docRef);
+  // const docRef = doc(db(), 'necessidades', id);
+  // const docSnap = await getDoc(docRef);
 
-  return docSnap.exists() ? firebaseMapper(docSnap) : null;
-}
+  // return docSnap.exists() ? firebaseMapper(docSnap) : null;
+
+  return {} as any
+ }
 
 export function getTipoNecessidadeValue(tipo: TipoNecessidade, key: TipoNecessidadeKeyType) {
   return TIPO_NECESSIDADE[Object.keys(tipo)[0] as TipoNecessidadeKey][key];

@@ -7,13 +7,10 @@
     "next": "^13.5.4"
   },
   "exports": {
-    "./*": {
-      "types": "./*.ts",
-      "default": "./*.ts"
-    }
+    "./base": "./base.js"
   },
   "keywords": [],
   "license": "ISC",
   "main": "base.ts",
-  "type": "module"
+  "type": "commonjs"
 }

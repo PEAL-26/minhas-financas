@@ -1,4 +1,4 @@
-import { db } from '@/db/connection';
+import { db } from '@repo/database/connection';
 
 export async function getIdValue(tableName: string, id?: number) {
   let value = null;

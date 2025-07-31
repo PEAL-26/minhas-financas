@@ -16,7 +16,7 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function Layout({ children }: RootLayoutProps) {
   return (
     <html lang="pt">
       <body suppressHydrationWarning={true} className={`${roboto.className} bg-[#eee]`}>

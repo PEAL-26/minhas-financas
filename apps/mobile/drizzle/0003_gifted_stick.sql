@@ -1,1 +1,0 @@
-ALTER TABLE `incomes` ADD `date` integer NOT NULL;

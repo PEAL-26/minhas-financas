@@ -1,4 +1,25 @@
-export type Location = {};
+export type Location = {
+  id: string;
+  name: string;
+  type: LOCATION_TYPE_ENUM;
+  province?: string;
+  city?: string;
+  address?: string | null;
+  coordinate?: Coordinate | null;
+  contacts?: string[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type Coordinate = {
+  latitude: number;
+  longitude: number;
+};
+
+export type Price = {
+  location: Location;
+  amount: number;
+};
 
 export enum LOCATION_TYPE_ENUM {
   PHYSICAL = 'physical',

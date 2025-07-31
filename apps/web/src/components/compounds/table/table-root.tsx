@@ -1,5 +1,5 @@
 import { HTMLProps } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '@repo/ui/lib/utils';
 
 interface TableProps extends HTMLProps<HTMLTableElement> {}
 
@@ -7,7 +7,7 @@ export function TableRoot(props: TableProps) {
   const { children, className, ...rest } = props;
 
   return (
-    <table className={twMerge('w-full table-auto', className)} {...rest}>
+    <table className={cn('w-full table-auto', className)} {...rest}>
       {children}
     </table>
   );

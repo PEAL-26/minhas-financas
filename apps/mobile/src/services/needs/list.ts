@@ -1,5 +1,5 @@
-import { db } from '@/db/connection';
 import { OperationTypes } from '@/types';
+import { db } from '@repo/database/connection';
 
 export type ListNeedsParams = {
   query?: string;

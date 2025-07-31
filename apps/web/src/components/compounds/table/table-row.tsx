@@ -1,5 +1,5 @@
 import { HTMLProps } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '@repo/ui/lib/utils';
 
 interface TableRowProps extends HTMLProps<HTMLTableRowElement> {}
 
@@ -7,7 +7,7 @@ export function TableRow(props: TableRowProps) {
   const { children, className, ...rest } = props;
 
   return (
-    <tr className={twMerge('hover:bg-gray-50', className)} {...rest}>
+    <tr className={cn('hover:bg-gray-50', className)} {...rest}>
       {children}
     </tr>
   );

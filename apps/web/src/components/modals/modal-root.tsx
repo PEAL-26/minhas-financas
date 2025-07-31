@@ -1,5 +1,5 @@
 import { ReactNode, useEffect } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '@repo/ui/lib/utils';
 
 interface ModalRootProps {
   show?: boolean;
@@ -30,7 +30,7 @@ export function ModalRoot(props: ModalRootProps) {
       onClick={(e) => e.target == e.currentTarget && handleClose()}
     >
       <div
-        className={twMerge(
+        className={cn(
           'relative flex flex-col rounded-md bg-white p-5 pt-14 shadow',
           className,
         )}

@@ -3,7 +3,15 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@repo/database/*": [
+        "../../packages/database/src/database/*"
+      ],
+      "@repo/database/schemas/*": [
+        "../../packages/database/src/database/schemas*"
+      ]
     }
   },
   "include": [

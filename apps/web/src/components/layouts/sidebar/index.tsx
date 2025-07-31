@@ -9,7 +9,7 @@ import {
   MdTrendingDown,
   MdTrendingUp,
 } from 'react-icons/md';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '@repo/ui/lib/utils';
 
 import { useSidebarContext } from '@/contexts/sidebar-menu-context';
 import useMediaQuery from '@/hooks/use-media-query';
@@ -72,13 +72,13 @@ export function Sidebar() {
     <div
       onClick={(e) => e.target == e.currentTarget && isDevice && close()}
       data-open={isOpen}
-      className={twMerge(
+      className={cn(
         'fixed inset-0 z-50 transition-transform duration-300 lg:inset-y-0 lg:w-[260px] lg:translate-x-0',
         openSidebar,
       )}
     >
       <aside
-        className={twMerge(
+        className={cn(
           'h-full w-[260px] border-r border-r-gray-300/50 bg-white px-4 shadow-lg',
         )}
       >

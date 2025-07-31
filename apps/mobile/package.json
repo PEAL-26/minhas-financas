@@ -7,6 +7,7 @@
     "@hookform/resolvers": "^3.10.0",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
+    "@repo/database": "1.0.0",
     "@repo/types": "1.0.0",
     "@repo/ui": "1.0.0",
     "@rn-primitives/checkbox": "^1.1.0",

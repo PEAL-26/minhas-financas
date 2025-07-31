@@ -1,7 +1,7 @@
 'use client';
 import { ReactNode } from 'react';
 
-export function DashboardContainer({ children }: { children: ReactNode }) {
+export function DashboardContainer({ children }: { children?: ReactNode }) {
   // const { setBreadcrumbs } = useBreadcrumbsContext();
 
   // useEffect(() => {

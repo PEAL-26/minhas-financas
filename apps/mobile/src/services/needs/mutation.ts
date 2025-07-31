@@ -1,5 +1,5 @@
-import { db } from '@/db/connection';
 import { OperationTypes, Status } from '@/types';
+import { db } from '@repo/database/connection';
 import { getIdValueOrCreate, getRecurrence } from '../utils';
 
 export type MutationNeed = {

@@ -1,6 +1,5 @@
-import { Card } from '@/libs/material-tailwind';
+import { cn } from '@repo/ui/lib/utils';
 import { ReactNode } from 'react';
-import { twMerge } from 'tailwind-merge';
 
 interface ContainerProps {
   children: ReactNode;
@@ -12,7 +11,7 @@ export function ContainerRoot(props: ContainerProps) {
 
   return (
     <div className="mb-8 mt-12 flex w-full flex-col gap-12">
-      <Card className={twMerge('', className)}>{children}</Card>
+      <div className={cn('', className)}>{children}</div>
     </div>
   );
 }

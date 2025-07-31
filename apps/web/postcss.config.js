@@ -1,1 +1,6 @@
-export { default } from "@repo/ui/postcss.config";
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  }
+}
