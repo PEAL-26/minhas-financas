@@ -1,0 +1,37 @@
+{
+  "name": "@repo/ui",
+  "description": "",
+  "version": "1.0.0",
+  "author": "",
+  "dependencies": {
+    "lucide-react": "^0.534.0"
+  },
+  "devDependencies": {
+    "@repo/config-eslint": "1.0.0",
+    "@repo/config-prettier": "1.0.0",
+    "@repo/config-typescript": "1.0.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "clsx": "^2.1.1",
+    "eslint": "^9.32.0",
+    "prettier": "^3.6.2",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.3.3"
+  },
+  "exports": {
+    "./*": "./src/components/*.tsx",
+    "./lib/*": "./src/lib/*.ts",
+    "./hooks/*": "./src/hooks/*.ts",
+    "./colors": "./src/styles/colors.ts",
+    "./globals.css": "./src/styles/globals.css",
+    "./postcss.config": "./postcss.config.mjs",
+    "./tailwind.config": "./tailwind.config.ts"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier ./src --write"
+  },
+  "type": "module"
+}

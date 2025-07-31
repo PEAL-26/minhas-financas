@@ -1,0 +1,26 @@
+{
+  "name": "@repo/config-eslint",
+  "description": "",
+  "version": "1.0.0",
+  "author": "",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.29.0",
+    "@tanstack/eslint-plugin-query": "^5.81.2",
+    "eslint": "^9.32.0",
+    "eslint-config-expo": "~8.0.1",
+    "eslint-config-next": "13.4.5",
+    "eslint-plugin-prettier": "^5.4.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.34.0"
+  },
+  "exports": {
+    "./base": "./base.js",
+    "./expo": "./expo.js",
+    "./nextjs": "./nextjs.js"
+  },
+  "keywords": [],
+  "license": "ISC"
+}

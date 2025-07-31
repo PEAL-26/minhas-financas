@@ -1,0 +1,19 @@
+{
+  "name": "@repo/config-nextjs",
+  "description": "",
+  "version": "1.0.0",
+  "author": "peal-26",
+  "dependencies": {
+    "next": "^13.5.4"
+  },
+  "exports": {
+    "./*": {
+      "types": "./*.ts",
+      "default": "./*.ts"
+    }
+  },
+  "keywords": [],
+  "license": "ISC",
+  "main": "base.ts",
+  "type": "module"
+}

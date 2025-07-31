@@ -1,0 +1,17 @@
+{
+  "name": "@repo/config-prettier",
+  "description": "",
+  "version": "1.0.0",
+  "author": "",
+  "devDependencies": {
+    "eslint": "^9.32.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.12",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "type": "commonjs"
+}

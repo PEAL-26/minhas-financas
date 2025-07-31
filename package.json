@@ -1,0 +1,57 @@
+{
+  "name": "minhas-financas",
+  "version": "1.0.0",
+  "author": "peal-26",
+  "devDependencies": {
+    "eslint": "^9.32.0",
+    "lint-staged": "^16.1.0",
+    "prettier": "^3.6.2",
+    "syncpack": "^13.0.4",
+    "turbo": "^2.5.4"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "dinheiro",
+    "finanças",
+    "finance",
+    "gestão",
+    "management",
+    "money",
+    "organização",
+    "organization"
+  ],
+  "license": "ISC",
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "packageManager": "npm@10.0.0",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "build:graph": "turbo run build --graph=turbo-graph.jpg",
+    "build:mobile": "turbo run build --filter=mobile",
+    "build:web": "turbo run build --filter=web",
+    "dev": "turbo run dev",
+    "dev:mobile": "turbo run dev --filter=mobile",
+    "dev:web": "turbo run dev --filter=web",
+    "format": "turbo run format && npm run syncpack:format",
+    "lint": "turbo run lint",
+    "syncpack:fix": "npx syncpack fix-mismatches",
+    "syncpack:format": "npx syncpack format",
+    "syncpack:list": "npx syncpack -- list",
+    "syncpack:list:mismatches": "npx syncpack list-mismatches",
+    "syncpack:update": "npx syncpack update"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
