@@ -4,12 +4,19 @@
   "version": "1.0.0",
   "author": "",
   "dependencies": {
-    "@repo/types": "1.0.0"
+    "@electric-sql/pglite": "^0.3.6",
+    "@electric-sql/react": "^1.0.7",
+    "@repo/types": "1.0.0",
+    "case-naming-converter": "^1.1.2",
+    "drizzle-orm": "^0.44.4",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@repo/config-eslint": "1.0.0",
     "@repo/config-prettier": "1.0.0",
     "@repo/config-typescript": "1.0.0",
+    "@types/pg": "^8.15.5",
+    "drizzle-kit": "^0.31.4",
     "eslint": "^9.32.0",
     "prettier": "^3.6.2"
   },

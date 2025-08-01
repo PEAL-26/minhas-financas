@@ -20,7 +20,7 @@ interface RootLayoutProps {
 export default function Layout({ children }: RootLayoutProps) {
   return (
     <html lang="pt">
-      <body suppressHydrationWarning={true} className={`${roboto.className} bg-[#eee]`}>
+      <body suppressHydrationWarning={true} className={`${roboto.className} bg-primary`}>
         <Providers>{children}</Providers>
       </body>
     </html>

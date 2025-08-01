@@ -6,19 +6,19 @@ import { expenseToEntityMap } from './mappers';
 export class ExpenseRepository implements IExpenseRepository {
   constructor(private database: IDatabase) {}
 
- async  create(data: ExpenseCreateData): Promise<void> {
+  async create(data: ExpenseCreateData): Promise<void> {
     await this.database.insert('expenses', data);
   }
 
- async  update(data: Partial<ExpenseCreateData>, id: string): Promise<void> {
+  async update(data: Partial<ExpenseCreateData>, id: string): Promise<void> {
     await this.database.update('expenses', data, id);
   }
 
- async  delete(id: string): Promise<void> {
-     await this.database.delete('expenses', { id });
+  async delete(id: string): Promise<void> {
+    await this.database.delete('expenses', { id });
   }
 
- async  getById(id: string): Promise<Expense | null> {
+  async getById(id: string): Promise<Expense | null> {
     const result = await this.database.getFirst('expenses', { where: { id } });
     if (!result) return null;
     return expenseToEntityMap(result);

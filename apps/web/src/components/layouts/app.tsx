@@ -1,29 +1,18 @@
-import Link from 'next/link';
+'use client';
 import { ReactNode } from 'react';
-
-const MENUS = [
-  { href: '/dashboard', title: 'Dashboard' },
-  { href: '/transactions', title: 'Transações' },
-  { href: '/incomes', title: 'Rendas' },
-  { href: '/expenses', title: 'Despesas' },
-  { href: '/wallet', title: 'Carteira' },
-  { href: '/wishlist', title: 'Lista de Desejos' },
-  { href: '/settings', title: 'Configurações' },
-];
+import { SidebarMenus } from '../ui/sidebar-menus';
 
 export function AppLayout({ children }: { children: ReactNode }) {
   return (
-    <>
-      <div className="flex gap-2">
-        {MENUS.map((menu, index) => (
-          <Link key={index} href={menu.href}>
-            {menu.title}
-          </Link>
-        ))}
+    <div className="flex h-screen w-screen flex-1 p-4">
+      <div className="flex h-full w-52 flex-col justify-between gap-2 py-8 pr-4">
+        <div className="flex items-center justify-center">Header</div>
+        <SidebarMenus />
+        <div>footer (user & notifications)</div>
       </div>
 
-      {children}
-    </>
+      <div className="h-full w-full flex-1 rounded-[25px] bg-white p-4">{children}</div>
+    </div>
   );
 }
 

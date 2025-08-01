@@ -23,7 +23,7 @@ export type Transaction = {
   incomes?: TransactionIncome[];
   expenses?: TransactionExpense[];
   totalAmount: number;
-  note: string | null;
+  note?: string | null;
   createdAt: Date;
   updatedAt: Date;
 };

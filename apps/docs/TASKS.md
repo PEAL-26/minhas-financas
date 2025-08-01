@@ -4,9 +4,9 @@ Este documento detalha as tarefas necessárias para implementar todas as funcion
 
 ## 🏗️ Arquitetura e Configuração Base
 
--   [ ] **Configurar Módulo de Tipos Compartilhados (`packages/types`):**
-    -   [ ] Criar esquemas Zod para todas as tabelas do banco de dados (`category`, `transaction`, `expense`, `income`, `need`, `local`).
-    -   [ ] Definir e exportar os tipos TypeScript inferidos dos esquemas Zod.
+-   [x] **Configurar Módulo de Tipos Compartilhados (`packages/types`):**
+    -   [x] Criar esquemas Zod para todas as tabelas do banco de dados (`category`, `transaction`, `expense`, `income`, `wishlist`, `location`).
+    -   [x] Definir e exportar os tipos TypeScript inferidos dos esquemas Zod.
 -   [ ] **Configurar Módulo de UI Compartilhada (`packages/ui`):**
     -   [ ] Criar componentes de UI genéricos (Botão, Input, Card, etc.) para serem usados tanto na web quanto no mobile.
 -   [ ] **Configurar Contexto de Autenticação:**

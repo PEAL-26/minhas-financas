@@ -1,6 +1,7 @@
 export const colors = {
   white: '#FFFFFF',
   black: '#1E1E1E',
+  background: '#eeeeee',
   primary: {
     DEFAULT: '#2AB546',
     0: '#F5FFF7',

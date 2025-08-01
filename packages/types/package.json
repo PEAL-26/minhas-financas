@@ -3,6 +3,9 @@
   "description": "",
   "version": "1.0.0",
   "author": "",
+  "dependencies": {
+    "zod": "^4.0.14"
+  },
   "devDependencies": {
     "@repo/config-eslint": "1.0.0",
     "@repo/config-prettier": "1.0.0",

@@ -4,7 +4,7 @@ Este documento descreve as futuras melhorias e implementações planejadas para 
 
 ## Melhorias
 
-- [ ] **Tipagem e Validação de Dados**
+- [x] **Tipagem e Validação de Dados**
   - **Descrição:** Utilizar o Zod para criar esquemas de validação para todas as entidades do banco de dados e garantir a integridade dos dados em toda a aplicação.
 
 - [ ] **Gerenciamento de Estado Centralizado**
