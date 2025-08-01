@@ -5,12 +5,13 @@ export type DatabaseConfigSelect = {
 };
 
 export type DatabaseWhereFieldValue = string | number | boolean | undefined | null;
+export type WhereOp = 'equal' | 'like';
 export type DatabaseWhereField =
   | DatabaseWhereFieldValue
   | {
       value: DatabaseWhereFieldValue;
       as?: string;
-      op?: 'equal' | 'like';
+      op?: WhereOp;
     };
 
 export type DatabaseWhere = {

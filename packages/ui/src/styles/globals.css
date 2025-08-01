@@ -6,11 +6,33 @@
   :root {
     --radius: 0.5rem;
   }
-}
-
-@layer base {
   * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    height: calc(100% - 50px);
+    padding: 100px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 1rem;
+    cursor: pointer !important;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: #3d3e4171;
+    border-radius: 1.4rem;
+  }
+
+  .webkit-center {
+    text-align: -webkit-center;
   }
 }

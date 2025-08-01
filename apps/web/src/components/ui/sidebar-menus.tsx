@@ -1,3 +1,5 @@
+'use client';
+import { activeMenu } from '@/helpers/active-menu';
 import { cn } from '@repo/ui/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -9,30 +11,21 @@ const MENUS = [
   { href: '/expenses', title: 'Despesas' },
   { href: '/wallet', title: 'Carteira' },
   { href: '/wishlist', title: 'Lista de Desejos' },
-  { href: '/settings', title: 'Configurações' },
+  // { href: '/settings', title: 'Configurações' },
 ];
 
 export function SidebarMenus() {
   const pathname = usePathname();
 
-  const activeMenu = (href: string) => {
-    const className = {
-      active: 'bg-white text-primary',
-      inactive: '',
-    }[pathname !== '/' && pathname.startsWith(href) ? 'active' : 'inactive'];
-
-    return className;
-  };
-
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex h-full flex-col justify-center gap-2 overflow-y-auto">
       {MENUS.map((menu, index) => (
         <Link
           key={index}
           href={menu.href}
           className={cn(
             'rounded-md p-2 text-base font-medium text-white transition-all duration-300 hover:bg-white hover:text-primary',
-            activeMenu(menu.href),
+            activeMenu(menu.href, pathname) ? 'bg-white text-primary' : '',
           )}
         >
           {menu.title}

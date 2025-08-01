@@ -3,7 +3,6 @@ import 'react-native-reanimated';
 import '../styles/global.css';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { useFonts } from 'expo-font';
@@ -21,8 +20,6 @@ import { colors } from '@/styles/colors';
 import migrations from '../../drizzle/migrations';
 
 SplashScreen.preventAutoHideAsync();
-
-const queryClient = new QueryClient();
 
 export default function RootLayout() {
   useDrizzleStudio(openDatabase);
@@ -61,18 +58,16 @@ export default function RootLayout() {
         <SafeAreaProvider>
           <SafeAreaView style={{ flex: 1 }}>
             <AutocompleteDropdownContextProvider>
-              <QueryClientProvider client={queryClient}>
-                <Stack>
-                  <Stack.Screen
-                    name="(tabs)"
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
-                  <Stack.Screen name="+not-found" />
-                </Stack>
-                <StatusBar style="dark" translucent animated backgroundColor="transparent" />
-              </QueryClientProvider>
+              <Stack>
+                <Stack.Screen
+                  name="(tabs)"
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+              <StatusBar style="dark" translucent animated backgroundColor="transparent" />
             </AutocompleteDropdownContextProvider>
           </SafeAreaView>
         </SafeAreaProvider>

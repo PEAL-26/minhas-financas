@@ -1,10 +1,9 @@
 'use client';
 import Chart from '@/libs/react-apexcharts';
-import { ColorMTType } from '@/styles/colors';
 import { ReactNode } from 'react';
 
 interface StatisticsChartProps {
-  color?: ColorMTType;
+  color?: string;
   chart: Object;
   title: ReactNode;
   description: ReactNode;

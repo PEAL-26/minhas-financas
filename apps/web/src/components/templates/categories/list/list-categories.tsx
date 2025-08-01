@@ -1,30 +1,45 @@
 'use client';
 
-import { useCategory } from '@repo/database/hooks/category';
-import { useEffect } from 'react';
+import { DataTable } from '@/components/ui/table/data';
+import {
+  useCreateCategory,
+  useDeleteCategory,
+  useListPaginationCategory,
+  useUpdateCategory,
+} from '@repo/database/hooks/category';
 
 export function ListCategoriesTemplate() {
-  const { listAll, create } = useCategory({ operation: 'listAll' });
+  const { data, ...rest } = useListPaginationCategory({ size: 100 });
+  const { handle, error, isSubmitting, isSuccess } = useCreateCategory();
+  const update = useUpdateCategory();
+  const _delete = useDeleteCategory();
 
-  const handleCreate = async () => {
-    await create();
-    const result = await listAll();
-
-    console.log(result);
-  };
-
-  useEffect(() => {
-    listAll().then((result) => console.log(result));
-  }, []);
+  console.log('create', { error, isSubmitting, isSuccess });
+  console.log('list', rest);
 
   return (
     <div className="flex flex-col p-4">
       <button
-        onClick={handleCreate}
         className="w-fit rounded-md bg-primary p-2 font-bold text-white hover:cursor-pointer hover:bg-primary-600"
+        onClick={() => handle({ name: 'Teste' })}
       >
-        Criar
+        Salvar
       </button>
+
+      <div className="flex flex-col gap-2">
+        {data.map((item, index) => (
+          <div key={index} className="border-b">
+            {JSON.stringify(item, null, 2)}{' '}
+            <button onClick={() => update.handle({ name: 'Nome alterado' }, item.id)}>
+              Editar
+            </button>
+            {' | '}
+            <button onClick={() => _delete.handle(item.id)}>Eliminar</button>
+          </div>
+        ))}
+      </div>
+
+      <DataTable />
     </div>
   );
 }

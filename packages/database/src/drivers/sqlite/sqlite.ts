@@ -6,7 +6,7 @@ import {
   ListPaginateConfigs,
   PaginatedResult,
   UpdateBulkData,
-} from '../types';
+} from '../../types';
 import {
   fieldsMap,
   generateCreateFields,

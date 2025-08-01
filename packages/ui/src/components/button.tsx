@@ -14,7 +14,7 @@ export function Button(props: ButtonDefaultProps) {
     <button
       type={type}
       className={cn(
-        'group inline-flex items-center justify-between gap-2 rounded-full bg-white px-5 py-2.5 text-center text-sm font-medium text-green-500 shadow hover:bg-green-600 hover:text-white',
+        //'group inline-flex items-center justify-between gap-2 rounded-full bg-white px-5 py-2.5 text-center text-sm font-medium text-green-500 shadow hover:bg-green-600 hover:text-white',
         className,
       )}
       {...rest}

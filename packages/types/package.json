@@ -14,7 +14,8 @@
     "prettier": "^3.6.2"
   },
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": "./src/*.ts",
+    "./schemas/*": "./src/schemas/*.ts"
   },
   "keywords": [],
   "license": "ISC",

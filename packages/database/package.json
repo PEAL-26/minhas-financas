@@ -6,10 +6,14 @@
   "dependencies": {
     "@electric-sql/pglite": "^0.3.6",
     "@electric-sql/react": "^1.0.7",
+    "@hookform/resolvers": "^3.10.0",
     "@repo/types": "1.0.0",
+    "@tanstack/react-query": "^5.60.6",
     "case-naming-converter": "^1.1.2",
     "drizzle-orm": "^0.44.4",
-    "pg": "^8.16.3"
+    "firebase": "^10.1.0",
+    "pg": "^8.16.3",
+    "react-hook-form": "^7.54.2"
   },
   "devDependencies": {
     "@repo/config-eslint": "1.0.0",
@@ -21,9 +25,10 @@
     "prettier": "^3.6.2"
   },
   "exports": {
-    "./*": "./src/database/*.ts",
     "./contexts/*": "./src/contexts/*.tsx",
+    "./drivers*": "./src/drivers/*.ts",
     "./hooks/*": "./src/hooks/*.ts",
+    "./providers/*": "./src/providers/*.ts",
     "./repositories/*": "./src/repositories/*.ts",
     "./schemas/*": "./src/schemas/*.ts",
     "./types/*": "./src/types/*.ts",

@@ -1,4 +1,5 @@
 import { randomUUID } from '@repo/database/helpers/uuid';
+import { paginateData } from '../helpers/pagination';
 import {
   DatabaseConfig,
   Field,
@@ -28,8 +29,13 @@ export class DatabaseInMemory implements IDatabase {
     return rows as T[];
   }
 
-  listPaginate<T>(tableName: string, configs?: ListPaginateConfigs): Promise<PaginatedResult<T>> {
-    throw new Error('Method not implemented.');
+  async listPaginate<T>(
+    tableName: string,
+    configs?: ListPaginateConfigs,
+  ): Promise<PaginatedResult<T>> {
+    const { page = 1, size = 10 } = configs || {};
+    const data = (this.repositories[tableName] || []) as T[];
+    return paginateData(data, { totalItems: data.length, page, limit: size });
   }
 
   listAllEach<T>(tableName: string, configs?: ListPaginateConfigs): AsyncIterableIterator<T> {
@@ -52,23 +58,71 @@ export class DatabaseInMemory implements IDatabase {
     throw new Error('Method not implemented.');
   }
 
-  update<T>(tableName: string, data: Record<string, any>, id: any): Promise<T> {
-    throw new Error('Method not implemented.');
+  async update<T>(tableName: string, data: Record<string, any>, id: any): Promise<T> {
+    const rows = this.repositories[tableName] ?? [];
+
+    const row = rows.find((r) => r.id === id);
+
+    if (!row) {
+      throw new Error('resource not found.');
+    }
+
+    const dataUpdated = { ...row };
+
+    this.repositories[tableName] = rows.map((row) => {
+      if (row.id === id) {
+        Object.entries(data).forEach(([property, value]) => {
+          if (value !== undefined && value !== dataUpdated[property]) {
+            dataUpdated[property] = value;
+          }
+        });
+
+        dataUpdated.updatedAt = new Date().getTime();
+        return dataUpdated;
+      }
+
+      return row;
+    });
+
+    return dataUpdated as T;
   }
 
   updateBulk<T>(tableName: string, data: UpdateBulkData[]): Promise<T[]> {
     throw new Error('Method not implemented.');
   }
 
-  delete(tableName: string, where: Record<string, any>): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(tableName: string, where: Record<string, any>): Promise<void> {
+    const rows = this.repositories[tableName] ?? [];
+
+    const newRows = rows.filter((r) => !filter(r, where));
+
+    this.repositories[tableName] = newRows;
   }
 
   select<T>(fields: Field<T>, tableName: string): Promise<T[]> {
     throw new Error('Method not implemented.');
   }
 
-  getFirst<T>(tableName: string, configs?: DatabaseConfig): Promise<T | null> {
-    throw new Error('Method not implemented.');
+  async getFirst<T>(tableName: string, configs?: DatabaseConfig): Promise<T | null> {
+    const { where = {} } = configs || {};
+
+    const rows = this.repositories[tableName] || [];
+    const row = rows.find((r) => filter(r, where));
+
+    return (row as T) || null;
   }
 }
+
+const filter = (row: Record<string, any>, where: Record<string, any>) => {
+  let match = false;
+
+  Object.entries(where).forEach(([property, value]) => {
+    match = false;
+
+    if (row[property] === value) {
+      match = true;
+    }
+  });
+
+  return match;
+};

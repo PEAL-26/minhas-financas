@@ -6,7 +6,7 @@ import {
   DatabaseWhere,
   DatabaseWhereField,
   ListPaginateConfigs,
-} from '../types';
+} from '../../types';
 
 export function generateQueryFields(select?: DatabaseConfigSelect) {
   if (!select) return ['*'];
