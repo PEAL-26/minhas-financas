@@ -1,4 +1,5 @@
 import { randomUUID } from '@repo/database/helpers/uuid';
+import { wait } from '@repo/helpers/wait';
 import { paginateData } from '../helpers/pagination';
 import {
   DatabaseConfig,
@@ -25,6 +26,7 @@ export class DatabaseInMemory implements IDatabase {
   }
 
   async listAll<T>(tableName: string, configs?: DatabaseConfig): Promise<T[]> {
+    await wait();
     const rows = this.repositories[tableName] || [];
     return rows as T[];
   }
@@ -33,6 +35,7 @@ export class DatabaseInMemory implements IDatabase {
     tableName: string,
     configs?: ListPaginateConfigs,
   ): Promise<PaginatedResult<T>> {
+    await wait();
     const { page = 1, size = 10 } = configs || {};
     const data = (this.repositories[tableName] || []) as T[];
     return paginateData(data, { totalItems: data.length, page, limit: size });
@@ -43,6 +46,7 @@ export class DatabaseInMemory implements IDatabase {
   }
 
   async insert<T>(tableName: string, data: Record<string, any>): Promise<T> {
+    await wait();
     if (!this.repositories[tableName]) this.repositories[tableName] = [];
     this.repositories[tableName].push({
       ...data,
@@ -59,6 +63,7 @@ export class DatabaseInMemory implements IDatabase {
   }
 
   async update<T>(tableName: string, data: Record<string, any>, id: any): Promise<T> {
+    await wait();
     const rows = this.repositories[tableName] ?? [];
 
     const row = rows.find((r) => r.id === id);
@@ -92,6 +97,7 @@ export class DatabaseInMemory implements IDatabase {
   }
 
   async delete(tableName: string, where: Record<string, any>): Promise<void> {
+    await wait();
     const rows = this.repositories[tableName] ?? [];
 
     const newRows = rows.filter((r) => !filter(r, where));
@@ -104,6 +110,7 @@ export class DatabaseInMemory implements IDatabase {
   }
 
   async getFirst<T>(tableName: string, configs?: DatabaseConfig): Promise<T | null> {
+    await wait();
     const { where = {} } = configs || {};
 
     const rows = this.repositories[tableName] || [];

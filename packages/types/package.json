@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "author": "",
   "dependencies": {
+    "@repo/helpers": "*",
     "zod": "^4.0.14"
   },
   "devDependencies": {

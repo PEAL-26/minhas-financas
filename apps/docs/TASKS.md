@@ -7,14 +7,14 @@ Este documento detalha as tarefas necessárias para implementar todas as funcion
 -   [x] **Configurar Módulo de Tipos Compartilhados (`packages/types`):**
     -   [x] Criar esquemas Zod para todas as tabelas do banco de dados (`category`, `transaction`, `expense`, `income`, `wishlist`, `location`).
     -   [x] Definir e exportar os tipos TypeScript inferidos dos esquemas Zod.
--   [ ] **Configurar Módulo de UI Compartilhada (`packages/ui`):**
-    -   [ ] Criar componentes de UI genéricos (Botão, Input, Card, etc.) para serem usados tanto na web quanto no mobile.
+-   [x] **Configurar Módulo de UI Compartilhada (`packages/ui`):**
+    -   [x] Criar componentes de UI genéricos (Botão, Input, Card, etc.) para serem usados tanto na web quanto no mobile.
 -   [ ] **Configurar Contexto de Autenticação:**
     -   [ ] Criar um React Context para gerenciar o estado do usuário (logado/deslogado, dados do usuário).
--   [ ] **Configurar Firebase:**
-    -   [ ] Criar o projeto no Firebase Console.
-    -   [ ] Configurar o Firebase Auth e o Firestore.
-    -   [ ] Adicionar as credenciais do Firebase nos arquivos de ambiente (`.env`) para web e mobile.
+-   [x] **Configurar Firebase:**
+    -   [x] Criar o projeto no Firebase Console.
+    -   [x] Configurar o Firebase Auth e o Firestore.
+    -   [x] Adicionar as credenciais do Firebase nos arquivos de ambiente (`.env`) para web e mobile.
 
 ## 🔐 Autenticação
 

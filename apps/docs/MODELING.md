@@ -132,6 +132,20 @@
   2.  Quando for feita alguma despesa\renda, marcar como done, mas se for uma recorrente, marcar como done caso seja feita por completa e mostrar já a proxima como pendente
   3.  Quando a transação é do tipo expense, e for definido um income, quer dizer que essa gasto foi feito usando aquela renda especifica
 
+### plans (Planos)
+- **Properties**
+  - id
+  - wishlist ?
+  - title
+  - objective
+  - incomes [id, amount, gastar, quantidade, data_estimada_recebimento]
+  - estimativas [tempo, parcelas, valor, data]
+  - note
+
+- **Rules**
+  1. As estimativas são criadas com base no desejo e nas rendas.
+  2. Gerar nota com AI, e usar markdown
+
 ### General Rules
 
 - Se for uma renda\despesa única, o estado mudará para done, quando forem feitas o valor total referentes a ela

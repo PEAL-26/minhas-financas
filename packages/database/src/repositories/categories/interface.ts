@@ -1,7 +1,7 @@
 import { Category } from '@repo/types';
 import { IRepository } from '../../types';
 
-export type CategoryCreateData = Pick<Category, 'name' | 'icon'>;
+export type CategoryCreateData = Pick<Category, 'name' | 'icon' | 'color'>;
 
 export type CategoryUpdateData = Partial<CategoryCreateData>;
 

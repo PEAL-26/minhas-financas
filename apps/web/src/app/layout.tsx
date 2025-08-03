@@ -2,11 +2,11 @@ import '@repo/ui/globals.css';
 import '../styles/globals.css';
 
 import type { Metadata } from 'next';
-import { Roboto_Flex as Roboto } from 'next/font/google';
 
+import { TopLoader } from '@/components/ui/top-loader';
 import { Providers } from '@/providers';
-
-const roboto = Roboto({ subsets: ['latin'] });
+import { Toaster } from '@repo/ui/sonner';
+import { poppins } from './fonts';
 
 export const metadata: Metadata = {
   title: { default: 'Minhas Finanças', template: '%s | Minhas Finanças' },
@@ -20,8 +20,10 @@ interface RootLayoutProps {
 export default function Layout({ children }: RootLayoutProps) {
   return (
     <html lang="pt">
-      <body className={`${roboto.className} bg-primary antialiased`}>
+      <body className={`${poppins.className} bg-primary antialiased`}>
+        <TopLoader />
         <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );

@@ -10,6 +10,7 @@
 - [nuqs]():
 - [shadcn]():
 - [@hookform/resolvers/zod]()
+- [nextjs-toploader]
 
 ## Schema
 

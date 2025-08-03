@@ -1,5 +1,10 @@
 import { Income } from '@repo/types';
-import { IDatabase, ListPaginateRepositoryOption, PaginatedResult } from '../../types';
+import {
+  DatabaseConfig,
+  IDatabase,
+  ListPaginateRepositoryOption,
+  PaginatedResult,
+} from '../../types';
 import { IIncomeRepository, IncomeCreateData } from './interface';
 import { incomeToEntityMap } from './mappers';
 
@@ -24,8 +29,8 @@ export class IncomeRepository implements IIncomeRepository {
     return incomeToEntityMap(result);
   }
 
-  async listAll(): Promise<Income[]> {
-    const rows = await this.database.listAll('incomes');
+  async listAll(configs?: DatabaseConfig): Promise<Income[]> {
+    const rows = await this.database.listAll('incomes', configs);
     return rows.map((row) => incomeToEntityMap(row));
   }
 

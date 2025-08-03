@@ -4,6 +4,7 @@ export const colors = {
   background: '#eeeeee',
   primary: {
     DEFAULT: '#2AB546',
+    foreground: '#ffffff',
     0: '#F5FFF7',
     100: '#C5FDD0',
     200: '#98F9AB',
@@ -16,4 +17,37 @@ export const colors = {
     900: '#0E8726',
   },
   gray: { DEFAULT: '#D9D9D9' },
+  secondary: {
+    DEFAULT: '#ffffff',
+    foreground: '#1E1E1E',
+  },
+  foreground: '#1E1E1E',
+  card: {
+    DEFAULT: '#ffffff',
+    foreground: '#1E1E1E',
+  },
+  popover: {
+    DEFAULT: '#ffffff',
+    foreground: '#1E1E1E',
+  },
+  muted: {
+    DEFAULT: '#f1f5f9',
+    foreground: '#1E1E1E',
+  },
+  accent: {
+    DEFAULT: '#f1f5f9',
+    foreground: '#1E1E1E',
+  },
+  destructive: {
+    DEFAULT: '#ef4444',
+    foreground: '#ffffff',
+  },
+  border: '#e2e8f0',
+  input: '#e2e8f0',
+  ring: '#2AB546',
+  chart1: '#f97316',
+  chart2: '#199e8e',
+  chart3: '#2b4a5a',
+  chart4: '#facc15',
+  chart5: '#fb923c',
 };

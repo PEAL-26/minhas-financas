@@ -1,7 +1,15 @@
 import * as ReactHookForm from 'react-hook-form';
 
-interface Props extends ReactHookForm.FormProviderProps {}
+interface Props<
+  TFieldValues extends ReactHookForm.FieldValues,
+  TContext = any,
+  TTransformedValues = TFieldValues,
+> extends ReactHookForm.FormProviderProps<TFieldValues, TContext, TTransformedValues> {}
 
-export function FormProvider(props: Props) {
+export function FormProvider<
+  TFieldValues extends ReactHookForm.FieldValues,
+  TContext = any,
+  TTransformedValues = TFieldValues,
+>(props: Props<TFieldValues, TContext, TTransformedValues>) {
   return <ReactHookForm.FormProvider {...props} />;
 }

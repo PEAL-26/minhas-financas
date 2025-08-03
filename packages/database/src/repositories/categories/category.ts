@@ -1,5 +1,10 @@
 import { Category } from '@repo/types';
-import { IDatabase, ListPaginateRepositoryOption, PaginatedResult } from '../../types';
+import {
+  DatabaseConfig,
+  IDatabase,
+  ListPaginateRepositoryOption,
+  PaginatedResult,
+} from '../../types';
 import { CategoryCreateData, CategoryUpdateData, ICategoryRepository } from './interface';
 import { categoryToEntityMap } from './mappers';
 
@@ -24,8 +29,8 @@ export class CategoryRepository implements ICategoryRepository {
     return categoryToEntityMap(result);
   }
 
-  async listAll(): Promise<Category[]> {
-    const rows = await this.database.listAll('categories');
+  async listAll(configs?: DatabaseConfig): Promise<Category[]> {
+    const rows = await this.database.listAll('categories', configs);
     return rows.map((row) => categoryToEntityMap(row));
   }
 

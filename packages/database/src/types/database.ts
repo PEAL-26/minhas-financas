@@ -34,6 +34,6 @@ export abstract class IRepository<T, TCreate, TUpdate> {
   abstract update(data: TUpdate, id: string): Promise<void>;
   abstract delete(id: string): Promise<void>;
   abstract getById(id: string): Promise<T | null>;
-  abstract listAll(): Promise<T[]>;
+  abstract listAll(configs?: DatabaseConfig): Promise<T[]>;
   abstract listPaginate(options?: ListPaginateRepositoryOption): Promise<PaginatedResult<T>>;
 }

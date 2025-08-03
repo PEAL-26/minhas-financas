@@ -1,5 +1,10 @@
 import { Transaction } from '@repo/types';
-import { IDatabase, ListPaginateRepositoryOption, PaginatedResult } from '../../types';
+import {
+  DatabaseConfig,
+  IDatabase,
+  ListPaginateRepositoryOption,
+  PaginatedResult,
+} from '../../types';
 import { ITransactionRepository, TransactionCreateData } from './interface';
 import { transactionToEntityMap } from './mappers';
 
@@ -24,8 +29,8 @@ export class TransactionRepository implements ITransactionRepository {
     return transactionToEntityMap(result);
   }
 
-  async listAll(): Promise<Transaction[]> {
-    const rows = await this.database.listAll('transactions');
+  async listAll(configs?: DatabaseConfig): Promise<Transaction[]> {
+    const rows = await this.database.listAll('transactions', configs);
     return rows.map((row) => transactionToEntityMap(row));
   }
 

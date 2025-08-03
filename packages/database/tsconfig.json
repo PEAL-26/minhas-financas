@@ -8,6 +8,9 @@
       ],
       "@repo/types/schemas/*": [
         "../../packages/types/src/schemas/*"
+      ],
+      "@repo/helpers/*": [
+        "../../packages/helpers/src/*"
       ]
     }
   },

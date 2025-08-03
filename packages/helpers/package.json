@@ -15,7 +15,6 @@
   },
   "keywords": [],
   "license": "ISC",
-  "main": "index.js",
   "scripts": {
     "format": "prettier ./src --write"
   }

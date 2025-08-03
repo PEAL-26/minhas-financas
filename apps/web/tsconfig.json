@@ -8,6 +8,9 @@
       "@repo/database/*": [
         "../../packages/database/src/*"
       ],
+      "@repo/helpers/*": [
+        "../../packages/helpers/src/*"
+      ]
     }
   },
   "include": [

@@ -1,5 +1,10 @@
 import { Location } from '@repo/types';
-import { IDatabase, ListPaginateRepositoryOption, PaginatedResult } from '../../types';
+import {
+  DatabaseConfig,
+  IDatabase,
+  ListPaginateRepositoryOption,
+  PaginatedResult,
+} from '../../types';
 import { ILocationRepository } from './interface';
 import { locationToEntityMap } from './mappers';
 
@@ -35,8 +40,8 @@ export class LocationRepository implements ILocationRepository {
     return locationToEntityMap(result);
   }
 
-  async listAll(): Promise<Location[]> {
-    const rows = await this.database.listAll('locations');
+  async listAll(configs?: DatabaseConfig): Promise<Location[]> {
+    const rows = await this.database.listAll('locations', configs);
     return rows.map((row) => locationToEntityMap(row));
   }
 

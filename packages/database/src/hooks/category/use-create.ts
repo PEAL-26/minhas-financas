@@ -2,7 +2,7 @@ import { categorySchema, CategorySchemaType } from '@repo/types/schemas/category
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-//import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useDatabaseContext } from '../../contexts/database';
 import { CategoryRepository } from '../../repositories/categories';
 
@@ -18,7 +18,7 @@ export function useCreateCategory(props?: Props) {
   const [isSuccess, setSuccess] = useState(false);
 
   const form = useForm<CategorySchemaType>({
-    // resolver: zodResolver(categorySchema),
+    resolver: zodResolver(categorySchema),
   });
 
   const repository = useMemo(() => {

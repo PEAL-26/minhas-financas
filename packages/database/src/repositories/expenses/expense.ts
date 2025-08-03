@@ -1,5 +1,10 @@
 import { Expense } from '@repo/types';
-import { IDatabase, ListPaginateRepositoryOption, PaginatedResult } from '../../types';
+import {
+  DatabaseConfig,
+  IDatabase,
+  ListPaginateRepositoryOption,
+  PaginatedResult,
+} from '../../types';
 import { ExpenseCreateData, IExpenseRepository } from './interface';
 import { expenseToEntityMap } from './mappers';
 
@@ -24,8 +29,8 @@ export class ExpenseRepository implements IExpenseRepository {
     return expenseToEntityMap(result);
   }
 
-  async listAll(): Promise<Expense[]> {
-    const rows = await this.database.listAll('expenses');
+  async listAll(configs?: DatabaseConfig): Promise<Expense[]> {
+    const rows = await this.database.listAll('expenses', configs);
     return rows.map((row) => expenseToEntityMap(row));
   }
 

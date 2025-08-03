@@ -1,5 +1,10 @@
 import { Wallet } from '@repo/types';
-import { IDatabase, ListPaginateRepositoryOption, PaginatedResult } from '../../types';
+import {
+  DatabaseConfig,
+  IDatabase,
+  ListPaginateRepositoryOption,
+  PaginatedResult,
+} from '../../types';
 import { IWalletRepository, WalletCreateData } from './interface';
 import { walletToEntityMap } from './mappers';
 
@@ -24,8 +29,8 @@ export class WalletRepository implements IWalletRepository {
     return walletToEntityMap(result);
   }
 
-  async listAll(): Promise<Wallet[]> {
-    const rows = await this.database.listAll('wallet');
+  async listAll(configs?: DatabaseConfig): Promise<Wallet[]> {
+    const rows = await this.database.listAll('wallet', configs);
     return rows.map((row) => walletToEntityMap(row));
   }
 

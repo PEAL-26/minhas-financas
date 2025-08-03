@@ -3,6 +3,7 @@ import { BellIcon, SettingsIcon } from '@repo/ui/lib/lucide';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import { AvatarUserDropdownMenu } from '../ui/avatar-user-dropdown-menu';
 import { SidebarMenus } from '../ui/sidebar-menus';
 
 export function AppLayout({ children }: { children: ReactNode }) {
@@ -14,7 +15,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           {/* Notifications */}
           <div className="absolute left-0 top-0">
             <Button className="relative">
-              <div className="absolute -top-1 right-0 h-2 w-2 rounded-full bg-red-600" />
+              <div className="absolute -top-1 -right-0.5 h-2 w-2 rounded-full bg-red-600" />
               <BellIcon className="h-4 w-4 stroke-white" />
             </Button>
           </div>
@@ -46,9 +47,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div className="flex flex-col">
             <div className="flex flex-col gap-3">
               {/* Avatar */}
-              <div className="h-14 w-14 rounded-lg bg-white hover:cursor-pointer">
-                {/* Abrir um dropdown com o menu Perfil e Sair */}
-              </div>
+              <AvatarUserDropdownMenu />
             </div>
             <div className="flex w-full flex-col">
               <span className="text-2xl font-bold text-white">Pedro</span>
@@ -59,7 +58,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       <div className="h-full w-full flex-1 overflow-hidden rounded-[25px] bg-white">
-        <div className="h-full w-full flex-1 overflow-y-auto p-4">{children}</div>
+        <div className="h-full w-full flex-1 overflow-y-auto p-8">{children}</div>
       </div>
     </div>
   );

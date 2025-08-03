@@ -45,8 +45,11 @@ export default function Page() {
 
         {/* RIGHT */}
         <div className="w-60">
-          <div className="flex rounded-[16px] border p-3">
+          <div className="flex flex-col rounded-[16px] border p-3">
             <p>Meu Saldo</p>
+            <span>9959999</span>
+            <div className="h-0 w-full border-b" />
+            <span>Minha Carteira</span>
           </div>
         </div>
       </div>

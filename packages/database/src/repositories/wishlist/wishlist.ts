@@ -1,5 +1,10 @@
 import { Wishlist } from '@repo/types';
-import { IDatabase, ListPaginateRepositoryOption, PaginatedResult } from '../../types';
+import {
+  DatabaseConfig,
+  IDatabase,
+  ListPaginateRepositoryOption,
+  PaginatedResult,
+} from '../../types';
 import { IWishlistRepository, WishlistCreateData } from './interface';
 import { wishlistToEntityMap } from './mappers';
 
@@ -24,8 +29,8 @@ export class WishlistRepository implements IWishlistRepository {
     return wishlistToEntityMap(result);
   }
 
-  async listAll(): Promise<Wishlist[]> {
-    const rows = await this.database.listAll('wishlist');
+  async listAll(configs?: DatabaseConfig): Promise<Wishlist[]> {
+    const rows = await this.database.listAll('wishlist', configs);
     return rows.map((row) => wishlistToEntityMap(row));
   }
 

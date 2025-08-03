@@ -1,5 +1,10 @@
 import { Account } from '@repo/types';
-import { IDatabase, ListPaginateRepositoryOption, PaginatedResult } from '../../types';
+import {
+  DatabaseConfig,
+  IDatabase,
+  ListPaginateRepositoryOption,
+  PaginatedResult,
+} from '../../types';
 import { AccountCreateData, AccountUpdateData, IAccountRepository } from './interface';
 import { accountToEntityMap } from './mappers';
 
@@ -24,8 +29,8 @@ export class AccountRepository implements IAccountRepository {
     return accountToEntityMap(result);
   }
 
-  async listAll(): Promise<Account[]> {
-    const rows = await this.database.listAll('accounts');
+  async listAll(configs?: DatabaseConfig): Promise<Account[]> {
+    const rows = await this.database.listAll('accounts', configs);
     return rows.map((row) => accountToEntityMap(row));
   }
 
