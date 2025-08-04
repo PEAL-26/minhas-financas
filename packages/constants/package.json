@@ -1,0 +1,24 @@
+{
+  "name": "@repo/constants",
+  "description": "",
+  "version": "1.0.0",
+  "author": "",
+  "dependencies": {},
+  "devDependencies": {
+    "@repo/config-eslint": "1.0.0",
+    "@repo/config-prettier": "1.0.0",
+    "@repo/config-typescript": "1.0.0",
+    "eslint": "^9.32.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.3.3"
+  },
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "scripts": {
+    "format": "prettier ./src --write"
+  },
+  "type": "module"
+}

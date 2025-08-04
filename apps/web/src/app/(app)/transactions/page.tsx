@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <PageLayout title={String(metadata.title)}>
+    <PageLayout title={String(metadata.title)} description={String(metadata?.description || '')}>
       <></>
     </PageLayout>
   );

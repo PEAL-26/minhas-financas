@@ -1,7 +1,3 @@
-const {config} = require("@repo/config-nextjs/base");
+const { config } = require('@repo/config-nextjs/base');
 
-const nextConfig = {
-  ...config,
-};
-
-module.exports = nextConfig;
+module.exports = config;

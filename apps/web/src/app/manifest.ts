@@ -4,7 +4,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Minhas Finanças',
     short_name: 'MF',
-    description: '',
+    description:
+      'O Minhas Finanças é um sistema para gerenciar suas finanças pessoais de maneira eficaz.',
     start_url: '/',
     display: 'standalone',
     background_color: '#fff',

@@ -1,10 +1,11 @@
+import { RegisterForm } from '@/components/templates/register';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Inscrever-se',
+  title: 'Cadastrar-se',
   description: '',
 };
 
-export default function InscreverSePage() {
-  return <div className="container mx-auto p-4"></div>;
+export default function Page() {
+  return <RegisterForm />;
 }

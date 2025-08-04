@@ -1,14 +1,15 @@
 import { PageLayout } from '@/components/layouts/page';
+import { MAIN_MENUS } from '@repo/constants/menus';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: '',
+  title: MAIN_MENUS.DASHBOARD.title,
+  description: MAIN_MENUS.DASHBOARD.description,
 };
 
 export default function Page() {
   return (
-    <PageLayout title="Dashboard">
+    <PageLayout title={String(metadata.title)} description={String(metadata?.description || '')}>
       <div className="flex gap-3">
         {/* LEFT */}
         <div className="flex flex-1 flex-col gap-3">

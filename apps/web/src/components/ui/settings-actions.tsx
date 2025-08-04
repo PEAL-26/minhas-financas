@@ -1,11 +1,12 @@
 'use client';
 import { Button } from '@repo/ui/button';
-import { PlusIcon, SearchIcon } from '@repo/ui/lib/lucide';
+import { PlusIcon } from '@repo/ui/lib/lucide';
 import { useState } from 'react';
 import { CategoryFormSheet } from '../templates/categories/form';
+import { SearchFormButton } from './search-form-button';
 
 interface Props {
-  type: 'settings' | 'accounts' | 'categories';
+  type: 'settings' | 'accounts' | 'categories' | 'locations';
 }
 
 export function SettingsActions(props: Props) {
@@ -32,9 +33,7 @@ function SettingsActionsCategories() {
   return (
     <>
       <div className="flex items-center gap-2">
-        <Button className="mr-2">
-          <SearchIcon className="size-4 text-gray" />
-        </Button>
+        <SearchFormButton />
         <Button
           variant="default"
           size="default"

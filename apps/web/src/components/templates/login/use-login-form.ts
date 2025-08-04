@@ -1,4 +1,6 @@
 import { useAuthContext } from '@/contexts/auth';
+import { showToastError } from '@repo/ui/helpers/toast';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -8,29 +10,34 @@ type Inputs = {
 };
 
 export function useLoginForm() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLocking, setIsLocking] = useState(false);
+  const router = useRouter();
+
   const { loginWithEmailPassword } = useAuthContext();
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    setValue,
-    setError,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const form = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (input) => {
+    if (isSubmitting || isLocking || isSubmitted) return;
+
     try {
-      setIsLoading(true);
+      setIsSubmitting(true);
+      setIsLocking(true);
+      setIsSubmitted(false);
+
       await loginWithEmailPassword(input);
+
+      setIsSubmitted(true);
+      router.replace('./dashboard');
     } catch (error) {
-      console.log(error);
+      showToastError(error);
     } finally {
-      setIsLoading(false);
+      setIsLocking(false);
+      setIsSubmitting(false);
     }
   };
 
-  return { handleSubmit: handleSubmit(onSubmit), register, errors, isLoading };
+  return { form, isSubmitting, isLocking, handleSubmit: form.handleSubmit(onSubmit), setIsLocking };
 }

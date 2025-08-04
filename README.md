@@ -1,6 +1,6 @@
 # Minhas Finanças
 
-O **Minhas Finanças** é um sistema completo para gerenciar suas finanças pessoais de maneira eficaz. Este projeto visa ajudar você a alcançar controle financeiro, planejamento e tranquilidade em sua vida financeira.
+O **Minhas Finanças** é um sistema para gerenciar suas finanças pessoais de maneira eficaz. Este projeto visa ajudar você a alcançar controle financeiro, planejamento e tranquilidade em sua vida financeira.
 
 ## ✨ Funcionalidades
 

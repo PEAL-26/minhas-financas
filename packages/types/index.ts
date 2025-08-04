@@ -7,6 +7,6 @@ export * from './src/priority';
 export * from './src/recurrence';
 export * from './src/status';
 export * from './src/transaction';
+export * from './src/user';
 export * from './src/wallet';
-export * from './src/wishlist';
 export * from './src/wishlist';

@@ -1,9 +1,9 @@
-import { Button } from '@repo/ui/button';
-import { BellIcon, SettingsIcon } from '@repo/ui/lib/lucide';
+import { SettingsIcon } from '@repo/ui/lib/lucide';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { AvatarUserDropdownMenu } from '../ui/avatar-user-dropdown-menu';
+import { Notifications } from '../ui/notifications';
 import { SidebarMenus } from '../ui/sidebar-menus';
 
 export function AppLayout({ children }: { children: ReactNode }) {
@@ -14,10 +14,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <div className="relative pt-10">
           {/* Notifications */}
           <div className="absolute left-0 top-0">
-            <Button className="relative">
-              <div className="absolute -top-1 -right-0.5 h-2 w-2 rounded-full bg-red-600" />
-              <BellIcon className="h-4 w-4 stroke-white" />
-            </Button>
+            <Notifications />
           </div>
 
           <div className="absolute right-0 top-0">

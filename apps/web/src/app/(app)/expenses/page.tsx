@@ -1,15 +1,16 @@
 import { Metadata } from 'next';
 
 import { PageLayout } from '@/components/layouts/page';
+import { MAIN_MENUS } from '@repo/constants/menus';
 
 export const metadata: Metadata = {
-  title: 'Despesas',
-  description: '',
+  title: MAIN_MENUS.EXPENSES.title,
+  description: MAIN_MENUS.EXPENSES.description,
 };
 
 export default function Page() {
   return (
-    <PageLayout title={String(metadata.title)}>
+    <PageLayout title={String(metadata.title)} description={String(metadata?.description || '')}>
       <></>
     </PageLayout>
   );

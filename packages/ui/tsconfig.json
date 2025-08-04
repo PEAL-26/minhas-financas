@@ -6,6 +6,9 @@
     "paths": {
       "@repo/ui/*": [
         "./src/*"
+      ],
+      "@repo/constants/*": [
+        "../../packages/constants/src/*"
       ]
     }
   },

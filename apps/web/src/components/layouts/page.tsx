@@ -16,9 +16,9 @@ export function PageLayout(props: Props) {
     <>
       <div className={cn('flex items-end justify-between pb-10', classNameHeader)}>
         {(title || description) && (
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-1">
             {title && <h1 className="text-4xl font-bold text-black">{title}</h1>}
-            {description && <span className="text-black">{description}</span>}
+            {description && <span className="text-sx text-gray-600">{description}</span>}
           </div>
         )}
 

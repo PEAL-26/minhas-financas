@@ -1,4 +1,5 @@
 'use client';
+import { showToastError } from '@repo/ui/helpers/toast';
 import { Loader2Icon } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import {
@@ -59,7 +60,7 @@ export function AlertDialogCustom(props: Props) {
       onConfirm?.();
       onClose?.();
     } catch (error) {
-      console.log(error);
+      showToastError(error);
     } finally {
       setIsLoading(false);
     }

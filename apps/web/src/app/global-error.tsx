@@ -25,11 +25,11 @@ export default function GlobalError({
             {/* Error Icon */}
             <div className="mb-8">
               <div className="relative">
-                <div className="bg-destructive/10 mx-auto flex h-24 w-24 items-center justify-center rounded-full">
-                  <AlertCircle className="text-destructive h-12 w-12" />
+                <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-destructive/10">
+                  <AlertCircle className="h-12 w-12 text-destructive" />
                 </div>
                 <div className="absolute -right-2 top-0">
-                  <div className="bg-secondary h-8 w-8 animate-bounce rounded-full" />
+                  <div className="h-8 w-8 animate-bounce rounded-full bg-secondary" />
                 </div>
                 <div className="absolute -left-4 bottom-0">
                   <div className="h-6 w-6 animate-bounce rounded-full bg-primary delay-100" />
@@ -38,11 +38,11 @@ export default function GlobalError({
             </div>
 
             {/* Error Message */}
-            <h1 className="text-secondary mb-4 text-3xl font-bold md:text-4xl">
+            <h1 className="mb-4 text-3xl font-bold text-secondary md:text-4xl">
               Ops! Algo correu mal
             </h1>
 
-            <p className="text-muted-foreground mx-auto mb-8 max-w-md">
+            <p className="mx-auto mb-8 max-w-md text-muted-foreground">
               Pedimos desculpa pelo inconveniente. Ocorreu um erro inesperado. A nossa equipa foi
               notificada e está a trabalhar para corrigir o problema.
             </p>
@@ -52,7 +52,7 @@ export default function GlobalError({
               <Button
                 onClick={reset}
                 //variant="default"
-                className="bg-secondary hover:bg-secondary/90 text-white"
+                className="bg-secondary text-white hover:bg-secondary/90"
               >
                 Tentar novamente
               </Button>
@@ -68,10 +68,10 @@ export default function GlobalError({
 
             {/* Error Details */}
             {process.env.NODE_ENV === 'development' && (
-              <div className="bg-muted mt-8 rounded-lg p-4 text-left">
-                <p className="font-mono text-muted-foreground text-sm">Error: {error.message}</p>
+              <div className="mt-8 rounded-lg bg-muted p-4 text-left">
+                <p className="font-mono text-sm text-muted-foreground">Error: {error.message}</p>
                 {error.digest && (
-                  <p className="font-mono text-muted-foreground mt-2 text-sm">
+                  <p className="font-mono mt-2 text-sm text-muted-foreground">
                     Digest: {error.digest}
                   </p>
                 )}
@@ -82,9 +82,9 @@ export default function GlobalError({
           {/* Decorative Elements */}
           <div className="pointer-events-none fixed inset-0">
             <div className="absolute left-[10%] top-[20%] h-4 w-4 animate-pulse rounded-full bg-primary" />
-            <div className="bg-secondary absolute right-[15%] top-[30%] h-3 w-3 animate-pulse rounded-full delay-75" />
+            <div className="absolute right-[15%] top-[30%] h-3 w-3 animate-pulse rounded-full bg-secondary delay-75" />
             <div className="absolute bottom-[25%] left-[20%] h-5 w-5 animate-pulse rounded-full bg-primary delay-150" />
-            <div className="bg-secondary absolute bottom-[15%] right-[25%] h-4 w-4 animate-pulse rounded-full delay-200" />
+            <div className="absolute bottom-[15%] right-[25%] h-4 w-4 animate-pulse rounded-full bg-secondary delay-200" />
           </div>
         </div>
       </body>

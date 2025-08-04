@@ -1,18 +1,12 @@
 'use client';
-import { activeMenu } from '@/helpers/active-menu';
-import { cn } from '@repo/ui/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const MENUS = [
-  { href: '/dashboard', title: 'Dashboard' },
-  { href: '/transactions', title: 'Transações' },
-  { href: '/incomes', title: 'Rendas' },
-  { href: '/expenses', title: 'Despesas' },
-  { href: '/wallet', title: 'Carteira' },
-  { href: '/wishlist', title: 'Lista de Desejos' },
-  // { href: '/settings', title: 'Configurações' },
-];
+import { activeMenu } from '@/helpers/active-menu';
+import { MAIN_MENUS } from '@repo/constants/menus';
+import { cn } from '@repo/ui/lib/utils';
+
+export const MENUS = Object.values(MAIN_MENUS);
 
 export function SidebarMenus() {
   const pathname = usePathname();

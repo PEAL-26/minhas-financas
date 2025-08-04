@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { categorySchema, CategorySchemaType } from '@repo/types/schemas/category';
 import { useQueryClient } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDatabaseContext } from '../../contexts/database';
 import { CategoryRepository } from '../../repositories/categories';
@@ -11,10 +11,11 @@ interface Props {
   onSuccess?(): void;
   onError?(error: any): void;
   defaultValues?: CategorySchemaType;
+  reset?: boolean;
 }
 
 export function useMutationCategory(props?: Props) {
-  const { id, defaultValues, onSuccess, onError } = props || {};
+  const { id, defaultValues, reset, onSuccess, onError } = props || {};
 
   const { getDatabase } = useDatabaseContext();
 
@@ -52,8 +53,10 @@ export function useMutationCategory(props?: Props) {
         await repository.create(data);
       }
 
-      await queryClient.invalidateQueries({ queryKey: ['category', id] });
-      await queryClient.invalidateQueries({ queryKey: ['categories'] });
+      setTimeout(async () => {
+        await queryClient.invalidateQueries({ queryKey: ['category', id] });
+        await queryClient.invalidateQueries({ queryKey: ['categories'] });
+      }, 300);
 
       setSuccess(true);
       onSuccess?.();
@@ -64,6 +67,24 @@ export function useMutationCategory(props?: Props) {
       setSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (reset) {
+      setError(null);
+      setSubmitting(false);
+      setSuccess(false);
+    }
+  }, [reset]);
+
+  useEffect(() => {
+    console.log(defaultValues);
+
+    if (defaultValues) {
+      Object.entries(defaultValues).forEach(([property, value]) => {
+        form.setValue(property as keyof CategorySchemaType, value);
+      });
+    }
+  }, [defaultValues]);
 
   return {
     handle,

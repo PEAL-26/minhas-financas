@@ -11,6 +11,7 @@
 - [shadcn]():
 - [@hookform/resolvers/zod]()
 - [nextjs-toploader]
+- [Serwist](https://serwist.pages.dev/): Serwist é uma coleção de bibliotecas JavaScript para aplicativos web progressivos (PWAs).
 
 ## Schema
 
@@ -139,3 +140,5 @@ message: 'Invalid input: expected number'
 ] _/
 }
 }
+
+

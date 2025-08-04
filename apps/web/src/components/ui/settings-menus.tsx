@@ -1,24 +1,17 @@
 'use client';
-import { activeMenu } from '@/helpers/active-menu';
-import { cn } from '@repo/ui/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-export const MENUS = [
-  { href: '/settings', title: 'Geral', name: 'settings' as const, description: '' },
-  { href: '/settings/accounts', title: 'Contas', name: 'accounts' as const, description: '' },
-  {
-    href: '/settings/categories',
-    title: 'Categorias',
-    name: 'categories' as const,
-    description: '',
-  },
-];
+import { activeMenu } from '@/helpers/active-menu';
+import { SETTINGS_MENUS } from '@repo/constants/menus';
+import { cn } from '@repo/ui/lib/utils';
+
+export const MENUS = Object.values(SETTINGS_MENUS);
 
 export type Menu = {
   title: string;
   description?: string;
-  name: 'settings' | 'accounts' | 'categories';
+  name: 'settings' | 'accounts' | 'categories' | 'locations';
 };
 
 interface Props {}
@@ -34,7 +27,7 @@ export function SettingsMenus(props: Props) {
           key={index}
           href={menu.href}
           className={cn(
-            'rounded-md p-2 text-base font-medium text-black transition-all duration-300 hover:bg-white hover:text-primary',
+            'p-2 text-base font-medium text-black transition-all duration-300 hover:bg-white hover:text-primary',
             activeMenu(menu.href, pathname, false)
               ? 'border-b border-primary bg-white text-primary'
               : '',

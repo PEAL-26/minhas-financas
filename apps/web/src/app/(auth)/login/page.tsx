@@ -1,3 +1,4 @@
+import { LoginForm } from '@/components/templates/login';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -5,6 +6,6 @@ export const metadata: Metadata = {
   description: '',
 };
 
-export default function LoginPage() {
-  return <div className="container mx-auto p-4"></div>;
+export default function Page() {
+  return <LoginForm />;
 }
