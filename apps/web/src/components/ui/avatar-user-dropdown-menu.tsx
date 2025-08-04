@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,13 +11,24 @@ import {
 } from '@repo/ui/dropdown-menu';
 import Link from 'next/link';
 
-export function AvatarUserDropdownMenu() {
+interface Props {
+  user: { name: string; avatarUrl?: string };
+}
+
+export function AvatarUserDropdownMenu(props: Props) {
+  const { user } = props;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         {/* <Button variant="outline">Open</Button> */}
-        <div className="h-14 w-14 rounded-lg bg-white hover:cursor-pointer">
-          {/* Abrir um dropdown com o menu Perfil e Sair */}
+        <div>
+          <Avatar className="h-14 w-14 rounded-lg bg-white hover:cursor-pointer">
+            <AvatarImage src={user.avatarUrl} />
+            <AvatarFallback className="text-2xl text-gray-400 font-bold">
+              {user?.name?.split(' ')?.[0]?.substring(0, 1)?.toUpperCase() || ''}
+            </AvatarFallback>
+          </Avatar>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">

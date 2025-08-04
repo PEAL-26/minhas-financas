@@ -7,6 +7,7 @@ import { Notifications } from '../ui/notifications';
 import { SidebarMenus } from '../ui/sidebar-menus';
 
 export function AppLayout({ children }: { children: ReactNode }) {
+  const user = { name: 'Pedro', email: 'edilasio@live.com', avatarUrl: '' };
   return (
     <div className="flex h-screen w-screen flex-1 overflow-hidden p-4">
       <div className="flex h-full w-52 flex-col justify-between gap-2 py-4 pr-4">
@@ -44,11 +45,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div className="flex flex-col">
             <div className="flex flex-col gap-3">
               {/* Avatar */}
-              <AvatarUserDropdownMenu />
+              <AvatarUserDropdownMenu user={user} />
             </div>
             <div className="flex w-full flex-col">
-              <span className="text-2xl font-bold text-white">Pedro</span>
-              <span className="text-xs text-background/80">pedro@meuemail.com</span>
+              <span className="text-2xl font-bold text-white">
+                {user?.name?.split(' ')?.[0] || ''}
+              </span>
+              <span className="text-xs text-background/80">{user.email}</span>
             </div>
           </div>
         </div>
