@@ -10,3 +10,4 @@ export * from './src/transaction';
 export * from './src/user';
 export * from './src/wallet';
 export * from './src/wishlist';
+export * from './src/schemas';

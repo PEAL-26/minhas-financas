@@ -1,13 +1,15 @@
-import * as lucide from 'lucide-react';
-import { ElementType } from 'react';
+import { LucideIcon, LucideProps } from 'lucide-react';
+import { DynamicIcon, IconName } from 'lucide-react/dynamic';
+import { forwardRef } from 'react';
 
-interface Props extends lucide.LucideProps {
-  name: keyof typeof lucide;
+interface IconProps extends Omit<LucideProps, 'ref'> {
+  name: IconName;
 }
 
-export function IconComponent(props: Props) {
-  const { name, ...rest } = props;
-  const Icon = lucide[name] as ElementType;
+export const IconComponent = forwardRef<React.ComponentRef<LucideIcon>, IconProps>(
+  ({ name, ...props }, ref) => {
+    return <DynamicIcon name={name} {...props} ref={ref} />;
+  },
+);
 
-  return <Icon {...rest} />;
-}
+IconComponent.displayName = 'IconComponent';

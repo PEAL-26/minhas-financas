@@ -7,5 +7,13 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <RegisterForm />;
+  return (
+    <div>
+      <div>
+        <h1 className="mb-1 text-center text-2xl font-bold text-black">Cadastra-se</h1>
+        <p className="mb-4 text-center text-xs text-gray-400">Crie uma nova conta</p>
+      </div>
+      <RegisterForm />
+    </div>
+  );
 }

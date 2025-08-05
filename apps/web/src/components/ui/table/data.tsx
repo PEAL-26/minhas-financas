@@ -3,7 +3,8 @@ import { ReactNode } from 'react';
 import { IQueryPaginationResponse } from '@repo/database/hooks/use-query-pagination';
 import { stringEmpty } from '@repo/helpers/strings';
 import { Button } from '@repo/ui/button';
-import { EditIcon, InboxIcon, TrashIcon, TriangleAlertIcon } from '@repo/ui/lib/lucide';
+import { ErrorComponent } from '@repo/ui/error-component';
+import { EditIcon, InboxIcon, TrashIcon } from '@repo/ui/lib/lucide';
 import { cn } from '@repo/ui/lib/utils';
 
 type Field<T> = {
@@ -56,18 +57,7 @@ export function DataTable<T extends { id: any }>(props: Props<T>) {
         {!response.isLoadingAll && response.isError && (
           <tr>
             <td colSpan={fields.length + 1}>
-              <div className="flex min-h-52 flex-col items-center justify-center">
-                <TriangleAlertIcon className="size-24 text-red-500" />
-                <span className="text-xs text-gray-400">Oops, algo deu errado!</span>
-                <Button
-                  variant="outline"
-                  size="default"
-                  className="mt-3"
-                  onClick={response.refetch}
-                >
-                  Tentar novamente
-                </Button>
-              </div>
+              <ErrorComponent onRefetch={response.refetch} containerClassName="min-h-52" />
             </td>
           </tr>
         )}
@@ -84,8 +74,8 @@ export function DataTable<T extends { id: any }>(props: Props<T>) {
         {!response.isLoadingAll &&
           !response.isEmpty &&
           !response.isError &&
-          response.data.map((item) => (
-            <tr className="hover:cursor-pointer hover:bg-gray-100">
+          response.data.map((item, index) => (
+            <tr key={index} className="hover:cursor-pointer hover:bg-gray-100">
               {fields.map((field, index) => {
                 let data: ReactNode = stringEmpty(item[field.name]);
 

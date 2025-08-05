@@ -1,6 +1,4 @@
 import { LoadingDataForm } from '@/components/ui/loading-data-form';
-import { useCRUD } from '@repo/database/hooks/use-crud';
-import { categorySchema } from '@repo/types/schemas/category';
 import { Button } from '@repo/ui/button';
 import { Form } from '@repo/ui/form';
 import { Loader2Icon } from '@repo/ui/lib/lucide';
@@ -13,9 +11,14 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@repo/ui/sheet';
-import { ReactNode } from 'react';
+import { FormEvent, ReactNode } from 'react';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 
-interface Props {
+interface Props<
+  TFieldValues extends FieldValues = FieldValues,
+  TContext = any,
+  TTransformValues = TFieldValues,
+> {
   id?: string;
   open?: boolean;
   entity?: string;
@@ -24,24 +27,34 @@ interface Props {
   children?: ReactNode;
   isSubmitting?: boolean;
   isLoadingData?: boolean;
-  form: any;
-  onConfirm?(): void;
+  isErrorLoadingData?: boolean;
+  form: UseFormReturn<TFieldValues, TContext, TTransformValues>;
+  onSubmit?(e: FormEvent<HTMLFormElement>): void;
+  onConfirm?(data: FieldValues): void;
   onClose?(): void;
+  onReload?(): void;
 }
 
-export function SheetForm(props: Props) {
+export function SheetForm<
+  TFieldValues extends FieldValues = FieldValues,
+  TContext = any,
+  TTransformValues = TFieldValues,
+>(props: Props<TFieldValues, TContext, TTransformValues>) {
   const {
     open,
     id,
+    form,
     entity = '',
     title,
     description,
     children,
     isSubmitting,
     isLoadingData,
-    form,
+    isErrorLoadingData,
     onConfirm,
+    onSubmit,
     onClose,
+    onReload,
   } = props;
 
   const titleDisplay = {
@@ -58,14 +71,23 @@ export function SheetForm(props: Props) {
     }
   };
 
-  const crud = useCRUD({ repositoryName: 'category', op: 'create', schema: categorySchema });
+  const handleConfirm = () => {
+    if (!form) return;
+
+    const data = form?.getValues();
+    onConfirm?.(data);
+  };
 
   return (
     <Form {...form}>
-      <form>
+      <form onSubmit={onSubmit}>
         <Sheet open={open} onOpenChange={handleChangeOpen}>
           <SheetContent>
-            <LoadingDataForm isLoading={!!id && isLoadingData}>
+            <LoadingDataForm
+              isLoading={isLoadingData}
+              isError={isErrorLoadingData}
+              onReload={onReload}
+            >
               <SheetHeader>
                 <SheetTitle>{titleDisplay}</SheetTitle>
                 {description && <SheetDescription>{description}</SheetDescription>}
@@ -78,9 +100,7 @@ export function SheetForm(props: Props) {
                   size="default"
                   className="text-white"
                   disabled={isSubmitting || isLoadingData}
-                  onClick={() => {
-                    crud?.create?.handle?.();
-                  }}
+                  onClick={handleConfirm}
                 >
                   {isSubmitting ? <Loader2Icon className="size-4 animate-spin" /> : 'Guardar'}
                 </Button>

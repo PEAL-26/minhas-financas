@@ -29,7 +29,7 @@ export abstract class IDatabase {
   abstract getFirst<T>(tableName: string, configs?: DatabaseConfig): Promise<T | null>;
 }
 
-export abstract class IRepository<T, TCreate, TUpdate> {
+export abstract class IRepository<T, TCreate = any, TUpdate = any> {
   abstract create(data: TCreate): Promise<void>;
   abstract update(data: TUpdate, id: string): Promise<void>;
   abstract delete(id: string): Promise<void>;

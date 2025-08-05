@@ -7,5 +7,13 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <LoginForm />;
+  return (
+    <div>
+      <div>
+        <h1 className="mb-1 text-center text-2xl font-bold text-black">Login</h1>
+        <p className="mb-4 text-center text-xs text-gray-400">Entre na sua conta</p>
+      </div>
+      <LoginForm />
+    </div>
+  );
 }

@@ -3,13 +3,13 @@
 import { cn } from '@repo/ui/lib/utils';
 import { VirtualItem, useVirtualizer } from '@tanstack/react-virtual';
 import Fuse from 'fuse.js';
-import { LucideIcon, LucideProps } from 'lucide-react';
-import { DynamicIcon, IconName } from 'lucide-react/dynamic';
+import { IconName } from 'lucide-react/dynamic';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 import { iconsData } from '../data/icons-data';
 import { Button } from './button';
+import { IconComponent } from './icon-component';
 import { Input } from './input';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { Skeleton } from './skeleton';
@@ -31,10 +31,12 @@ interface IconPickerProps
   iconsList?: IconData[];
   categorized?: boolean;
   modal?: boolean;
+  side?: 'top' | 'right' | 'bottom' | 'left';
+  align?: 'center' | 'end' | 'start';
 }
 
 const IconRenderer = React.memo(({ name }: { name: IconName }) => {
-  return <Icon name={name} />;
+  return <IconComponent name={name} />;
 });
 IconRenderer.displayName = 'IconRenderer';
 
@@ -94,6 +96,8 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
       iconsList,
       categorized = true,
       modal = false,
+      side,
+      align,
       ...rest
     } = props;
 
@@ -389,7 +393,7 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
             <Button variant="outline">
               {value || selectedIcon ? (
                 <>
-                  <Icon name={(value || selectedIcon)!} /> {value || selectedIcon}
+                  <IconComponent name={(value || selectedIcon)!} /> {value || selectedIcon}
                 </>
               ) : (
                 triggerPlaceholder
@@ -397,7 +401,7 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
             </Button>
           )}
         </PopoverTrigger>
-        <PopoverContent className="w-64 p-2">
+        <PopoverContent className="w-64 p-2" side={side} align={align}>
           {searchable && (
             <Input placeholder={searchPlaceholder} onChange={handleSearchChange} className="mb-2" />
           )}
@@ -418,15 +422,4 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
 );
 IconPicker.displayName = 'IconPicker';
 
-interface IconProps extends Omit<LucideProps, 'ref'> {
-  name: IconName;
-}
-
-const Icon = React.forwardRef<React.ComponentRef<LucideIcon>, IconProps>(
-  ({ name, ...props }, ref) => {
-    return <DynamicIcon name={name} {...props} ref={ref} />;
-  },
-);
-Icon.displayName = 'Icon';
-
-export { Icon, IconPicker, type IconName };
+export { IconPicker, type IconName };

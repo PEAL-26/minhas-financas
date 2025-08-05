@@ -2,8 +2,9 @@
 
 import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
-import { useDeleteCategory, useListPaginationCategory } from '@repo/database/hooks/category';
+import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
 import { colorGenerate } from '@repo/helpers/color-generate';
+import { Category } from '@repo/types/category';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
 import { IconComponent } from '@repo/ui/icon-component';
 import { useState } from 'react';
@@ -17,14 +18,23 @@ export function ListCategoriesTemplate() {
   const [form, setForm] = useState<{ id?: string; open: boolean }>({ open: false });
   const [alertDelete, setAlertDelete] = useState<{ id?: string; open: boolean }>({ open: false });
 
-  const response = useListPaginationCategory({ size: size ?? 10, page, setPage, setSize, query });
-  const categoryDelete = useDeleteCategory();
+  const remove = useDelete({ repositoryName: 'category', queryKey: ['categories'] });
+
+  const listPaginate = useListPaginate<Category>({
+    repositoryName: 'category',
+    queryKey: ['categories'],
+    query,
+    size,
+    page,
+    setPage,
+    setSize,
+  });
 
   return (
     <>
       <div className="flex flex-col p-4">
         <DataTable
-          response={response}
+          response={listPaginate}
           fields={[
             {
               name: 'name',
@@ -37,8 +47,8 @@ export function ListCategoriesTemplate() {
                       className="flex h-8 w-8 items-center justify-center rounded-full"
                     >
                       <IconComponent
-                        name={item?.icon || 'AArrowDown'}
-                        className="size-5 text-white"
+                        name={(item?.icon as any) || 'tag'}
+                        className="size-4 text-white"
                       />
                     </div>
                     <span>{item.name}</span>
@@ -56,7 +66,7 @@ export function ListCategoriesTemplate() {
       <AlertDialogCustom
         description="Esta ação não pode ser desfeita. Isso excluirá permanentemente a categoria."
         id={alertDelete?.id}
-        fn={categoryDelete.handle}
+        fn={remove.handle}
         onClose={() => setAlertDelete({ open: false })}
         open={alertDelete.open}
       />

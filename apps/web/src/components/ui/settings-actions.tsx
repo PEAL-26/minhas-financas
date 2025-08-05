@@ -1,7 +1,7 @@
 'use client';
+import { useOpenModal } from '@/hooks/use-open-modal';
 import { Button } from '@repo/ui/button';
 import { PlusIcon } from '@repo/ui/lib/lucide';
-import { useState } from 'react';
 import { CategoryFormSheet } from '../templates/categories/form';
 import { SearchFormButton } from './search-form-button';
 
@@ -28,23 +28,18 @@ function SettingsActionsAccount() {
 }
 
 function SettingsActionsCategories() {
-  const [formSheetOpen, setFormSheetOpen] = useState(false);
+  const { openComponent, mountComponent, handleOpen, handleClose } = useOpenModal();
 
   return (
     <>
       <div className="flex items-center gap-2">
         <SearchFormButton />
-        <Button
-          variant="default"
-          size="default"
-          className="gap-1"
-          onClick={() => setFormSheetOpen(true)}
-        >
+        <Button variant="default" size="default" className="gap-1" onClick={handleOpen}>
           <PlusIcon className="size-4 text-white" /> Adicionar
         </Button>
       </div>
 
-      <CategoryFormSheet open={formSheetOpen} onClose={() => setFormSheetOpen(false)} />
+      {mountComponent && <CategoryFormSheet open={openComponent} onClose={handleClose} />}
     </>
   );
 }

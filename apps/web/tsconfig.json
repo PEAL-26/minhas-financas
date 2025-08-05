@@ -11,6 +11,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@repo/types/*": [
+        "../../packages/types/src/*"
+      ],
       "@repo/database/*": [
         "../../packages/database/src/*"
       ],

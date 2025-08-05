@@ -1,0 +1,31 @@
+import { useMemo } from 'react';
+import { useDatabaseContext } from '../../contexts/database';
+import { IRepository } from '../../types';
+import { useQueryPagination } from '../use-query-pagination';
+import { UseListPaginateProps } from './types';
+import { getRepository } from './utils';
+
+export function useListPaginate<T>(props: UseListPaginateProps) {
+  const { query, page = 1, size = 10, queryKey, repositoryName, setPage, setSize } = props;
+
+  const { getDatabase } = useDatabaseContext();
+
+  const repository = useMemo(() => {
+    const database = getDatabase();
+    const repository = getRepository(repositoryName, database) as unknown as IRepository<T>;
+
+    return repository;
+  }, []);
+
+  const result = useQueryPagination({
+    fn: async () => {
+      const response = await repository.listPaginate({ query, page, size });
+      return response;
+    },
+    queryKey: [...(queryKey || [`${repositoryName}-list-paginate`]), query, page, size],
+    setPage,
+    setSize,
+  });
+
+  return result;
+}
