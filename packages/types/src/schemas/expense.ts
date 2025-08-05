@@ -1,4 +1,7 @@
 import z from 'zod';
+
+import { checkNullUndefinedValue } from '@repo/helpers/checkers';
+
 import { PRIORITY_ENUM } from '../priority';
 import { RECURRENCE_TYPE_ENUM } from '../recurrence';
 import { EXPENSE_STATUS_ENUM } from '../status';
@@ -8,7 +11,7 @@ export const expenseSchema = z
     wishlistId: z.string().nullish(),
     incomeId: z.string().nullish(),
     categoryId: z.string().nullish(),
-    title: z.string({error: "Campo obrigatório."}),
+    title: z.string({ error: 'Campo obrigatório.' }),
     description: z.string().nullish(),
     estimatedDate: z.date().nullish(),
     priority: z.enum(PRIORITY_ENUM).default(PRIORITY_ENUM.NORMAL).optional(),
@@ -30,7 +33,18 @@ export const expenseSchema = z
     status: z.enum(EXPENSE_STATUS_ENUM).default(EXPENSE_STATUS_ENUM.PENDING).optional(),
   })
   .transform(async (schema) => {
-    return { ...schema, name: schema?.title?.trim() };
+    return {
+      ...schema,
+      name: schema?.title?.trim(),
+      description: checkNullUndefinedValue(schema.description, {
+        convert: 'emptyToNull',
+        fn: (value) => String(value).trim(),
+      }),
+      estimatedDate: checkNullUndefinedValue(schema.estimatedDate, {
+        convert: 'emptyToNull',
+        fn: (value) => String(value).trim(),
+      }),
+    };
   });
 
 export type ExpenseSchemaType = z.infer<typeof expenseSchema>;

@@ -6,6 +6,7 @@ export const location = sqliteTable('locations', {
   id: text('id').primaryKey().unique(),
   name: text('name').notNull(),
   type: text('type').$type<LOCATION_TYPE_ENUM>().notNull(),
+  country: text('country'),
   province: text('province'),
   city: text('city'),
   address: text('address'),

@@ -1,3 +1,4 @@
+import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 import { z } from 'zod';
 import { ACCOUNT_TYPE_ENUM } from '../account';
 
@@ -16,7 +17,18 @@ export const accountSchema = z
     swiftCode: z.string({ error: 'Valor inválido.' }).nullish(),
   })
   .transform(async (schema) => {
-    return { ...schema, name: schema?.name?.trim() };
+    return {
+      ...schema,
+      name: schema?.name?.trim(),
+      siteUrl: checkNullUndefinedValue(schema.siteUrl, {
+        convert: 'emptyToNull',
+        fn: (value) => String(value).trim(),
+      }),
+      swiftCode: checkNullUndefinedValue(schema.swiftCode, {
+        convert: 'emptyToNull',
+        fn: (value) => String(value).trim(),
+      }),
+    };
   });
 
 export type AccountSchemaType = z.infer<typeof accountSchema>;

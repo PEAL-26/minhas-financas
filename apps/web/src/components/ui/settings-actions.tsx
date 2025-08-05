@@ -4,6 +4,7 @@ import { Button } from '@repo/ui/button';
 import { PlusIcon } from '@repo/ui/lib/lucide';
 import { AccountFormSheet } from '../templates/accounts/form';
 import { CategoryFormSheet } from '../templates/categories/form';
+import { LocationFormSheet } from '../templates/locations/form';
 import { SearchFormButton } from './search-form-button';
 
 interface Props {
@@ -19,6 +20,10 @@ export function SettingsActions(props: Props) {
 
   if (type === 'categories') {
     return <SettingsActionsCategories />;
+  }
+
+  if (type === 'locations') {
+    return <SettingsActionsLocations />;
   }
 
   return null;
@@ -54,6 +59,23 @@ function SettingsActionsCategories() {
       </div>
 
       {mountComponent && <CategoryFormSheet open={openComponent} onClose={handleClose} />}
+    </>
+  );
+}
+
+function SettingsActionsLocations() {
+  const { openComponent, mountComponent, handleOpen, handleClose } = useOpenModal();
+
+  return (
+    <>
+      <div className="flex items-center gap-2">
+        <SearchFormButton />
+        <Button variant="default" size="default" className="gap-1" onClick={handleOpen}>
+          <PlusIcon className="size-4 text-white" /> Adicionar
+        </Button>
+      </div>
+
+      {mountComponent && <LocationFormSheet open={openComponent} onClose={handleClose} />}
     </>
   );
 }

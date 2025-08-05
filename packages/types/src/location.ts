@@ -2,6 +2,7 @@ export type Location = {
   id: string;
   name: string;
   type: LOCATION_TYPE_ENUM;
+  country?: string;
   province?: string;
   city?: string;
   address?: string | null;
@@ -27,6 +28,6 @@ export enum LOCATION_TYPE_ENUM {
 }
 
 export const LOCATION_TYPE_MAP = {
-  [LOCATION_TYPE_ENUM.PHYSICAL]: { display: 'Física' },
+  [LOCATION_TYPE_ENUM.PHYSICAL]: { display: 'Físico' },
   [LOCATION_TYPE_ENUM.DIGITAL]: { display: 'Digital' },
 };
