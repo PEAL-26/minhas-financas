@@ -11,13 +11,13 @@ export enum RECURRENCE_TYPE_ENUM {
 }
 
 export const RECURRENCE_MAP = {
-  [RECURRENCE_ENUM.DAILY]: 'Diária',
-  [RECURRENCE_ENUM.WEEKLY]: 'Semanal',
-  [RECURRENCE_ENUM.MONTHLY]: 'Mensal',
-  [RECURRENCE_ENUM.YEARLY]: 'Anual',
+  [RECURRENCE_ENUM.DAILY]: { display: 'Diária' },
+  [RECURRENCE_ENUM.WEEKLY]: { display: 'Semanal' },
+  [RECURRENCE_ENUM.MONTHLY]: { display: 'Mensal' },
+  [RECURRENCE_ENUM.YEARLY]: { display: 'Anual' },
 };
 
 export const RECURRENCE_TYPE_MAP = {
-  [RECURRENCE_TYPE_ENUM.UNIQUE]: 'Única',
-  [RECURRENCE_TYPE_ENUM.RECURRENCE]: 'Recorrente',
+  [RECURRENCE_TYPE_ENUM.UNIQUE]: { display: 'Única' },
+  [RECURRENCE_TYPE_ENUM.RECURRENCE]: { display: 'Recorrente' },
 };

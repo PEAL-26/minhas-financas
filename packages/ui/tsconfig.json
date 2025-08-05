@@ -9,6 +9,9 @@
       ],
       "@repo/constants/*": [
         "../../packages/constants/src/*"
+      ],
+      "@repo/types/*": [
+        "../../packages/types/src/*"
       ]
     }
   },

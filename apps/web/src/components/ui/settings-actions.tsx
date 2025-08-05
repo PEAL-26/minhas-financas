@@ -2,6 +2,7 @@
 import { useOpenModal } from '@/hooks/use-open-modal';
 import { Button } from '@repo/ui/button';
 import { PlusIcon } from '@repo/ui/lib/lucide';
+import { AccountFormSheet } from '../templates/accounts/form';
 import { CategoryFormSheet } from '../templates/categories/form';
 import { SearchFormButton } from './search-form-button';
 
@@ -24,7 +25,20 @@ export function SettingsActions(props: Props) {
 }
 
 function SettingsActionsAccount() {
-  return <></>;
+  const { openComponent, mountComponent, handleOpen, handleClose } = useOpenModal();
+
+  return (
+    <>
+      <div className="flex items-center gap-2">
+        <SearchFormButton />
+        <Button variant="default" size="default" className="gap-1" onClick={handleOpen}>
+          <PlusIcon className="size-4 text-white" /> Adicionar
+        </Button>
+      </div>
+
+      {mountComponent && <AccountFormSheet open={openComponent} onClose={handleClose} />}
+    </>
+  );
 }
 
 function SettingsActionsCategories() {

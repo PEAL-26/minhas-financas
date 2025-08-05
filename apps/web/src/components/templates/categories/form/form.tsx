@@ -3,7 +3,6 @@ import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud';
 import { colorGenerate } from '@repo/helpers/color-generate';
 import { CategorySchemaType } from '@repo/types/schemas';
-import { Button } from '@repo/ui/button';
 import { ColorPicker } from '@repo/ui/color-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
@@ -51,15 +50,19 @@ export function CategoryFormSheet(props: CategoryFormProps) {
     >
       <div className="grid flex-1 auto-rows-min gap-6 px-4">
         <div className="grid gap-3">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <div
               style={{ backgroundColor: category.color }}
               className="flex h-10 w-10 items-center justify-center rounded-full"
             >
               <IconComponent name={(category.icon as any) ?? 'tag'} className="size-4 text-white" />
             </div>
-            <div className="flex flex-col gap-2">
-              <FormControlCustom control={mutation.form.control} name="color">
+            <div className="flex h-full flex-col justify-between">
+              <FormControlCustom
+                control={mutation.form.control}
+                name="color"
+                containerClassName="space-y-0"
+              >
                 {({ field }) => (
                   <ColorPicker
                     modal
@@ -68,16 +71,18 @@ export function CategoryFormSheet(props: CategoryFormProps) {
                     color={field.value}
                     onChangeColor={field.onChange}
                   >
-                    <div>
-                      <Button>
-                        <PaletteIcon size={16} />
-                      </Button>
+                    <div className="hover:cursor-pointer">
+                      <PaletteIcon size={16} />
                     </div>
                   </ColorPicker>
                 )}
               </FormControlCustom>
 
-              <FormControlCustom control={mutation.form.control} name="icon">
+              <FormControlCustom
+                control={mutation.form.control}
+                name="icon"
+                containerClassName="space-y-0"
+              >
                 {({ field }) => (
                   <IconPicker
                     modal
@@ -86,10 +91,8 @@ export function CategoryFormSheet(props: CategoryFormProps) {
                     value={(field.value as any) || 'tag'}
                     onValueChange={field.onChange}
                   >
-                    <div>
-                      <Button>
-                        <LaughIcon size={16} />
-                      </Button>
+                    <div className="hover:cursor-pointer">
+                      <LaughIcon size={16} />
                     </div>
                   </IconPicker>
                 )}

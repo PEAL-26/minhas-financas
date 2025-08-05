@@ -27,6 +27,6 @@ export enum LOCATION_TYPE_ENUM {
 }
 
 export const LOCATION_TYPE_MAP = {
-  [LOCATION_TYPE_ENUM.PHYSICAL]: 'Física',
-  [LOCATION_TYPE_ENUM.DIGITAL]: 'Digital',
+  [LOCATION_TYPE_ENUM.PHYSICAL]: { display: 'Física' },
+  [LOCATION_TYPE_ENUM.DIGITAL]: { display: 'Digital' },
 };

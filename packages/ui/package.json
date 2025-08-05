@@ -11,6 +11,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@repo/constants": "1.0.0",
+    "@repo/types": "1.0.0",
     "@tanstack/react-virtual": "^3.13.12",
     "@uiw/react-color-chrome": "^2.7.3",
     "fuse.js": "^7.1.0",

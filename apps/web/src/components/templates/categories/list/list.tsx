@@ -38,7 +38,7 @@ export function ListCategoriesTemplate() {
           fields={[
             {
               name: 'name',
-              title: 'Categorias',
+              title: 'Categoria',
               render: (item) => {
                 return (
                   <div className="flex items-center gap-2">

@@ -16,7 +16,7 @@ export enum ACCOUNT_TYPE_ENUM {
 }
 
 export const ACCOUNT_TYPE_ENUM_MAP = {
-  [ACCOUNT_TYPE_ENUM.BANK]: 'Conta Bancária',
-  [ACCOUNT_TYPE_ENUM.E_WALLET]: 'Carteira Digital',
-  [ACCOUNT_TYPE_ENUM.CRYPTO]: 'Cripto-moeda',
+  [ACCOUNT_TYPE_ENUM.BANK]: { display: 'Conta Bancária', icon: 'credit-card', color: '' },
+  [ACCOUNT_TYPE_ENUM.E_WALLET]: { display: 'Carteira Digital', icon: 'wallet', color: '' },
+  [ACCOUNT_TYPE_ENUM.CRYPTO]: { display: 'Cripto Moeda', icon: 'bitcoin', color: '' },
 };

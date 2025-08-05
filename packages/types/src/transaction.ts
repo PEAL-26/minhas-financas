@@ -34,6 +34,6 @@ export enum TRANSACTION_TYPE_ENUM {
 }
 
 export const TRANSACTION_TYPE_MAP = {
-  [TRANSACTION_TYPE_ENUM.INCOME]: 'Renda',
-  [TRANSACTION_TYPE_ENUM.EXPENSE]: 'Despesa',
+  [TRANSACTION_TYPE_ENUM.INCOME]: { display: 'Renda' },
+  [TRANSACTION_TYPE_ENUM.EXPENSE]: { display: 'Despesa' },
 };

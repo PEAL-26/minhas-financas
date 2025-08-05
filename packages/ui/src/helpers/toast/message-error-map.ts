@@ -1,7 +1,10 @@
 //import { AxiosError } from 'axios';
 import { FirebaseError } from 'firebase/app';
+import { ZodError } from 'zod';
+
 //import { axiosErrorToMessage } from './axios-error';
 import { INTERNAL_SERVER_ERROR_MESSAGE } from '@repo/constants/messages';
+import { propertiesMap } from '@repo/types/schemas';
 import { firebaseAuthErrorMap } from './firebase';
 
 const checkTypeErrors = (err: any) => {
@@ -10,6 +13,20 @@ const checkTypeErrors = (err: any) => {
   // if (err instanceof AxiosError) {
   //   return axiosErrorToMessage(err);
   // }
+
+  if (err instanceof ZodError) {
+    const errors = err._zod.def
+      .map((e) => {
+        const names = e.path
+          .map((name) => propertiesMap?.[name as keyof typeof propertiesMap] || 'unknown')
+          .join(', ');
+
+        return `${names}, ${e.message.toLowerCase()}`;
+      })
+      .join(' ');
+
+    return errors;
+  }
 
   if (err instanceof FirebaseError) {
     return firebaseAuthErrorMap[err.code];
