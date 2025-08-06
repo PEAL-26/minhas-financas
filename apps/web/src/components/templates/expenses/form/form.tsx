@@ -2,7 +2,7 @@ import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud';
 import { colorGenerate } from '@repo/helpers/color-generate';
-import { CategorySchemaType } from '@repo/types/schemas';
+import { ExpenseSchemaType } from '@repo/types/schemas';
 import { ColorPicker } from '@repo/ui/color-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
@@ -10,20 +10,20 @@ import { showToastError } from '@repo/ui/helpers/toast';
 import { IconComponent } from '@repo/ui/icon-component';
 import { IconPicker } from '@repo/ui/icon-picker';
 import { LaughIcon, PaletteIcon } from '@repo/ui/lib/lucide';
-import { CategoryFormProps } from './types';
+import { ExpenseFormProps } from './types';
 
-export function CategoryFormSheet(props: CategoryFormProps) {
+export function ExpenseFormSheet(props: ExpenseFormProps) {
   const { id, open, onClose } = props;
 
-  const mutation = useMutation<CategorySchemaType>({
+  const mutation = useMutation<ExpenseSchemaType>({
     id,
     loadingData: open,
     defaultValues: {
       icon: 'tag',
       color: colorGenerate().rgb,
     },
-    repositoryName: 'category',
-    queryKey: ['categories'],
+    repositoryName: 'expense',
+    queryKey: ['expenses'],
     onSuccess: () => {
       onClose?.();
     },
@@ -32,14 +32,14 @@ export function CategoryFormSheet(props: CategoryFormProps) {
     },
   });
 
-  const category = mutation.form.watch();
+  const expense = mutation.form.watch();
 
   return (
     <SheetForm
       id={id}
       open={open}
-      entity="categoria"
-      description={FORM_DESCRIPTION.CATEGORY}
+      entity="despesa"
+      description={FORM_DESCRIPTION.EXPENSE}
       form={mutation?.form}
       isLoadingData={mutation?.isLoadingData}
       isErrorLoadingData={!!mutation?.loadingDataError}
@@ -53,10 +53,10 @@ export function CategoryFormSheet(props: CategoryFormProps) {
         <div className="grid gap-3">
           <div className="flex items-center gap-2">
             <div
-              style={{ backgroundColor: category.color }}
+              style={{ backgroundColor: expense.color }}
               className="flex h-10 w-10 items-center justify-center rounded-full"
             >
-              <IconComponent name={(category.icon as any) ?? 'tag'} className="size-4 text-white" />
+              <IconComponent name={(expense.icon as any) ?? 'tag'} className="size-4 text-white" />
             </div>
             <div className="flex h-full flex-col justify-between">
               <FormControlCustom

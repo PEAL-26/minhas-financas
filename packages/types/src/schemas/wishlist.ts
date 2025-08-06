@@ -1,28 +1,65 @@
+import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 import z from 'zod';
-import { PRIORITY_ENUM } from '../priority';
-import { RECURRENCE_TYPE_ENUM } from '../recurrence';
-import { WISHLIST_STATUS_ENUM } from '../status';
 
-export const wishlistSchema = z.object({
-  name: z.string(),
-  type: z.enum(RECURRENCE_TYPE_ENUM),
-  recurrence: z.int().nullish(),
-  categoryId: z.string().nullish(),
-  targetDate: z.date().nullish(),
-  priority: z.enum(PRIORITY_ENUM).default(PRIORITY_ENUM.NORMAL).optional(),
-  expectedLocationId: z.string().nullish(),
-  estimatedCost: z.number().nullish(),
-  quantity: z.number().nullish(),
-  total: z.number().nullish(),
-  status: z.enum(WISHLIST_STATUS_ENUM).default(WISHLIST_STATUS_ENUM.PENDING).optional(),
-  prices: z
-    .array(
-      z.object({
-        locationId: z.string(),
-        amount: z.number(),
+import { PRIORITY_ENUM, PRIORITY_MAP } from '../priority';
+import { RECURRENCE_TYPE_ENUM, RECURRENCE_TYPE_MAP } from '../recurrence';
+import { WISHLIST_STATUS_ENUM, WISHLIST_STATUS_MAP } from '../status';
+
+export const wishlistSchema = z
+  .object({
+    name: z.string({ error: 'Campo obrigatório.' }),
+    type: z.enum(RECURRENCE_TYPE_ENUM, {
+      error: `Valor inválido (deve ser ${Object.values(RECURRENCE_TYPE_MAP)
+        .map((v) => v.display)
+        .join(', ')})`,
+    }),
+    recurrence: z
+      .int({ error: 'Valor inválido.' })
+      .gt(0, { error: 'Deve ser maior que zero (0)' })
+      .nullish(),
+    category: z.object({}).nullish(),
+    targetDate: z.date({ error: 'Data inválida' }).nullish(),
+    priority: z
+      .enum(PRIORITY_ENUM, {
+        error: `Valor inválido (deve ser ${Object.values(PRIORITY_MAP)
+          .map((v) => v.display)
+          .join(', ')})`,
+      })
+      .default(PRIORITY_ENUM.NORMAL)
+      .optional(),
+    expectedLocation: z.object().nullish(),
+    estimatedCost: z.number().nullish(),
+    quantity: z.number().nullish(),
+    total: z.number().nullish(),
+    status: z
+      .enum(WISHLIST_STATUS_ENUM, {
+        error: `Valor inválido (deve ser ${Object.values(WISHLIST_STATUS_MAP)
+          .map((v) => v.display)
+          .join(', ')})`,
+      })
+      .default(WISHLIST_STATUS_ENUM.PENDING)
+      .optional(),
+    prices: z
+      .array(
+        z.object({
+          location: z.object(),
+          amount: z.number(),
+        }),
+      )
+      .optional(),
+  })
+  .transform(async (schema) => {
+    return {
+      ...schema,
+      name: schema?.name?.trim(),
+      recurrence: checkNullUndefinedValue(schema?.recurrence, {
+        fn: (value) => Number(value),
       }),
-    )
-    .optional(),
-});
+      // swiftCode: checkNullUndefinedValue(schema.swiftCode, {
+      //   convert: 'emptyToNull',
+      //   fn: (value) => String(value).trim(),
+      // }),
+    };
+  });
 
 export type WishlistSchemaType = z.infer<typeof wishlistSchema>;

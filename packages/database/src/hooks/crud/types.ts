@@ -40,4 +40,5 @@ export interface UseListPaginateProps {
   size?: number;
   setPage?(page?: number | null): void;
   setSize?(size?: number | null): void;
+  onError?(error: any): void;
 }

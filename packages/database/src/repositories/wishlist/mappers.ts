@@ -1,3 +1,4 @@
+import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 import { Wishlist } from '@repo/types';
 import { categoryToEntityMap } from '../categories';
 import { locationToEntityMap } from '../locations';
@@ -9,10 +10,14 @@ export function wishlistToEntityMap(raw: any): Wishlist {
     name: raw.name,
     type: raw.type,
     recurrence: raw.recurrence,
-    category: categoryToEntityMap(raw.category),
+    category: checkNullUndefinedValue(raw.category, {
+      fn: (data) => categoryToEntityMap(data),
+    }),
     targetDate: raw.targetDate,
     priority: raw.priority,
-    expectedLocation: locationToEntityMap(raw.expectedLocation),
+    expectedLocation: checkNullUndefinedValue(raw.expectedLocation, {
+      fn: (data) => locationToEntityMap(data),
+    }),
     estimatedCost: raw.estimatedCost,
     quantity: raw.quantity,
     total: raw.total,

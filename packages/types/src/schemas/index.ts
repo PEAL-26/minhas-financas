@@ -3,6 +3,7 @@ export * from './category';
 export * from './expense';
 export * from './income';
 export * from './location';
+export * from './price';
 export * from './properties-map';
 export * from './schemas';
 export * from './transaction';

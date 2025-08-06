@@ -44,7 +44,6 @@ export function DataTable<T extends { id: any }>(props: Props<T>) {
       </thead>
       <tbody>
         {response.isLoadingAll &&
-          !response.isError &&
           Array.from({ length: 6 }).map((_, index) => (
             <tr key={index}>
               {Array.from({ length: fields.length + 1 }).map((_, indexTd) => (
@@ -77,7 +76,7 @@ export function DataTable<T extends { id: any }>(props: Props<T>) {
           response.data.map((item, index) => (
             <tr key={index} className="hover:cursor-pointer hover:bg-gray-100">
               {fields.map((field, index) => {
-                let data: ReactNode = stringEmpty(item[field.name]);
+                let data: ReactNode = stringEmpty(item[field.name]) || 'S/N';
 
                 if (field?.render) {
                   data = field.render(item);

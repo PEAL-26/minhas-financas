@@ -29,6 +29,7 @@ interface Props<
   isLoadingData?: boolean;
   isErrorLoadingData?: boolean;
   form: UseFormReturn<TFieldValues, TContext, TTransformValues>;
+  contentClassName?: string;
   onSubmit?(e: FormEvent<HTMLFormElement>): void;
   onConfirm?(data: FieldValues): void;
   onClose?(): void;
@@ -51,6 +52,7 @@ export function SheetForm<
     isSubmitting,
     isLoadingData,
     isErrorLoadingData,
+    contentClassName,
     onConfirm,
     onSubmit,
     onClose,
@@ -82,7 +84,7 @@ export function SheetForm<
     <Form {...form}>
       <form onSubmit={onSubmit}>
         <Sheet open={open} onOpenChange={handleChangeOpen}>
-          <SheetContent>
+          <SheetContent className={contentClassName}>
             <LoadingDataForm
               isLoading={isLoadingData}
               isError={isErrorLoadingData}

@@ -1,15 +1,16 @@
 'use client';
 
-import { CategoryComponent } from '@/components/ui/category-component';
 import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
 import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
-import { Category } from '@repo/types/category';
+import { colorGenerate } from '@repo/helpers/color-generate';
+import { Expense } from '@repo/types/expense';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
+import { IconComponent } from '@repo/ui/icon-component';
 import { useState } from 'react';
-import { CategoryFormSheet } from '../form';
+import { ExpenseFormSheet } from '../form';
 
-export function ListCategoriesTemplate() {
+export function ListExpensesTemplate() {
   const [page, setPage] = useQueryStateParams<number>('page', 'int');
   const [size, setSize] = useQueryStateParams<number>('size', 'int');
   const [query] = useQueryStateParams('q');
@@ -17,11 +18,11 @@ export function ListCategoriesTemplate() {
   const [form, setForm] = useState<{ id?: string; open: boolean }>({ open: false });
   const [alertDelete, setAlertDelete] = useState<{ id?: string; open: boolean }>({ open: false });
 
-  const remove = useDelete({ repositoryName: 'category', queryKey: ['categories'] });
+  const remove = useDelete({ repositoryName: 'expense', queryKey: ['expenses'] });
 
-  const listPaginate = useListPaginate<Category>({
-    repositoryName: 'category',
-    queryKey: ['categories'],
+  const listPaginate = useListPaginate<Expense>({
+    repositoryName: 'expense',
+    queryKey: ['expenses'],
     query,
     size,
     page,
@@ -37,10 +38,21 @@ export function ListCategoriesTemplate() {
           fields={[
             {
               name: 'name',
-              title: 'Categoria',
+              title: 'Despesa',
               render: (item) => {
                 return (
-                  <CategoryComponent color={item?.color} icon={item?.icon} title={item.name} />
+                  <div className="flex items-center gap-2">
+                    <div
+                      style={{ backgroundColor: item?.color || colorGenerate().rgb }}
+                      className="flex h-8 w-8 items-center justify-center rounded-full"
+                    >
+                      <IconComponent
+                        name={(item?.icon as any) || 'tag'}
+                        className="size-4 text-white"
+                      />
+                    </div>
+                    <span>{item.name}</span>
+                  </div>
                 );
               },
             },
@@ -50,9 +62,9 @@ export function ListCategoriesTemplate() {
         />
       </div>
 
-      <CategoryFormSheet onClose={() => setForm({ open: false })} open={form.open} id={form.id} />
+      <ExpenseFormSheet onClose={() => setForm({ open: false })} open={form.open} id={form.id} />
       <AlertDialogCustom
-        description="Esta ação não pode ser desfeita. Isso excluirá permanentemente a categoria."
+        description="Esta ação não pode ser desfeita. Isso excluirá permanentemente a despesa."
         id={alertDelete?.id}
         fn={remove.handle}
         onClose={() => setAlertDelete({ open: false })}

@@ -42,11 +42,12 @@ export function LocationFormSheet(props: LocationFormProps) {
       onClose={onClose}
       onConfirm={mutation?.handle}
       onReload={mutation?.reload}
+      contentClassName="gap-0"
     >
-      <div className="grid flex-1 auto-rows-min gap-6 px-4">
+      <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
         <FormControlCustom control={mutation.form.control} name="type" label="Local">
           {({ field }) => (
-            <div className="grid w-full grid-cols-3 gap-3">
+            <div className="grid w-full grid-cols-2 gap-3">
               {Object.entries(LOCATION_TYPE_MAP).map(([key, value]) => (
                 <div
                   onClick={() => field.onChange(key)}

@@ -16,10 +16,10 @@ export enum WISHLIST_STATUS_ENUM {
 }
 
 export const WISHLIST_STATUS_MAP = {
-  [WISHLIST_STATUS_ENUM.PENDING]: { display: 'Pendente' },
-  [WISHLIST_STATUS_ENUM.DONE]: { display: 'Feito' },
-  [WISHLIST_STATUS_ENUM.STARTED]: { display: 'Iniciada' },
-  [WISHLIST_STATUS_ENUM.CONVERTED_EXPENSE]: { display: 'Convertida em Despesa' },
+  [WISHLIST_STATUS_ENUM.PENDING]: { display: 'Pendente', color: '' },
+  [WISHLIST_STATUS_ENUM.DONE]: { display: 'Feito', color: '' },
+  [WISHLIST_STATUS_ENUM.STARTED]: { display: 'Iniciada', color: '' },
+  [WISHLIST_STATUS_ENUM.CONVERTED_EXPENSE]: { display: 'Convertida em Despesa', color: '' },
 };
 
 export enum EXPENSE_STATUS_ENUM {
