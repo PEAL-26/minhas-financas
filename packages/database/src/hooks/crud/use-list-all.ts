@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useDatabaseContext } from '../../contexts/database';
 import { IRepository } from '../../types';
 import { UseListAllProps } from './types';
-import { getRepository } from './utils';
+import { getRepository } from '../../helpers/repository';
 
 export function useListAll<T>(props: UseListAllProps) {
   const { queryKey, repositoryName, search } = props;

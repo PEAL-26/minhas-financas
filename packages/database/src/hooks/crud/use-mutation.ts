@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
 import { useDatabaseContext } from '../../contexts/database';
+import { getRepository, getSchema } from '../../helpers/repository';
 import { UseMutationProps } from './types';
-import { getRepository, getSchema } from './utils';
 
 export function useMutation<SchemaType extends FieldValues = any>(
   props: UseMutationProps<SchemaType>,

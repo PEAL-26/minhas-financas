@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import { useDatabaseContext } from '../../contexts/database';
+import { getRepository } from '../../helpers/repository';
 import { IRepository } from '../../types';
 import { UseReadProps } from './types';
-import { getRepository } from './utils';
 
 export function useRead<T>(props: UseReadProps) {
   const { id, repositoryName } = props;

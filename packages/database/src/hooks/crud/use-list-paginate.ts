@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { useDatabaseContext } from '../../contexts/database';
+import { getRepository } from '../../helpers/repository';
 import { IRepository } from '../../types';
 import { useQueryPagination } from '../use-query-pagination';
 import { UseListPaginateProps } from './types';
-import { getRepository } from './utils';
 
 export function useListPaginate<T>(props: UseListPaginateProps) {
   const { query, page = 1, size = 10, queryKey, repositoryName, setPage, setSize, onError } = props;

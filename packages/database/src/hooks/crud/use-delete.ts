@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 
 import { useDatabaseContext } from '../../contexts/database';
 import { UseDeleteProps } from './types';
-import { getRepository } from './utils';
+import { getRepository } from '../../helpers/repository';
 
 export function useDelete(props: UseDeleteProps) {
   const { queryKey, repositoryName } = props;

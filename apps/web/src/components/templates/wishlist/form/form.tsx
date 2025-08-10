@@ -5,7 +5,7 @@ import { LocationPrices } from '@/components/ui/location-prices';
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud';
-import { categoriesMockData } from '@repo/database/mocks';
+import { useQuerySelect } from '@repo/database/hooks/use-query-select';
 import { includesEnum } from '@repo/helpers/enum';
 import { PRIORITY_ENUM, PRIORITY_MAP } from '@repo/types/priority';
 import {
@@ -15,6 +15,7 @@ import {
   RECURRENCE_TYPE_MAP,
 } from '@repo/types/recurrence';
 import { WishlistSchemaType } from '@repo/types/schemas';
+import { WISHLIST_STATUS_MAP } from '@repo/types/status';
 import { colors } from '@repo/ui/colors';
 import { DatePicker } from '@repo/ui/date-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
@@ -25,7 +26,6 @@ import { Input } from '@repo/ui/input';
 import { InputMoney } from '@repo/ui/input-money';
 import { cn } from '@repo/ui/lib/utils';
 
-import { WISHLIST_STATUS_MAP } from '@repo/types/status';
 import { WishlistFormProps } from './types';
 
 export function WishlistFormSheet(props: WishlistFormProps) {
@@ -54,6 +54,12 @@ export function WishlistFormSheet(props: WishlistFormProps) {
     return '';
   });
 
+  const selectCategories = useQuerySelect({
+    repositoryName: 'category',
+    queryKey: ['categories'],
+    defaultSize: 100,
+  });
+
   return (
     <SheetForm
       id={id}
@@ -74,14 +80,16 @@ export function WishlistFormSheet(props: WishlistFormProps) {
           {({ field }) => {
             return (
               <CustomCardDropdown
+                modal
                 title={field.value?.name}
                 color={field.value?.color || colors.primary.DEFAULT}
                 icon={field.value?.icon || 'tag'}
                 labelField="name"
                 placeholder="Selecione uma categoria"
-                items={categoriesMockData}
-                modal
                 onChange={field.onChange}
+                items={selectCategories.data}
+                onSearch={selectCategories.search}
+                loading={selectCategories.isLoadingAll}
               />
             );
           }}

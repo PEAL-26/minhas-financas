@@ -1,10 +1,5 @@
 import { DefaultValues, FieldValues } from 'react-hook-form';
-
-import { schemaTypes } from '@repo/types';
-import { repositories } from '../../repositories';
-
-export type RepositoryName = keyof typeof repositories;
-export type SchemaTypes = keyof typeof schemaTypes;
+import { RepositoryName } from '../../types';
 
 export interface UseMutationProps<TFieldValues extends FieldValues = any> {
   id?: any;

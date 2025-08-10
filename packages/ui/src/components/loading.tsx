@@ -1,3 +1,5 @@
+import { cn } from '../lib/utils';
+
 interface Props {
   size?: number;
 }
@@ -8,14 +10,12 @@ export function Loading(props: Props) {
   return (
     <div
       style={{ width: size, height: size }}
-      className="flex items-center justify-center rounded-full bg-primary"
+      className="flex items-center justify-center rounded-full"
     >
       <div
-        style={{ width: size - size * 0.3, height: size - size * 0.3 }}
-        className="flex animate-bounce items-center justify-center"
-      >
-        MF
-      </div>
+        style={{ height: size, width: size }}
+        className={cn('h-8 w-8 animate-spin rounded-full border-b-2 border-primary')}
+      ></div>
     </div>
   );
 }

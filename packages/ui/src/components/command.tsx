@@ -142,6 +142,14 @@ function CommandShortcut({ className, ...props }: React.ComponentProps<'span'>) 
   );
 }
 
+export const CommandLoading = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive.Loading>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Loading> & {
+    className?: string;
+  }
+>(({ ...props }, ref) => <CommandPrimitive.Loading ref={ref} {...props} />);
+CommandLoading.displayName = CommandPrimitive.Loading.displayName;
+
 export {
   Command,
   CommandDialog,

@@ -14,7 +14,7 @@ import {
   CommandItem,
   CommandList,
   CommandLoading,
-} from './command';
+} from '../command';
 import { SelectSearchProps } from './types';
 
 export function SelectSearch<T>(props: SelectSearchProps<T>) {
