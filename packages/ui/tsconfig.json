@@ -7,6 +7,9 @@
       "@repo/ui/*": [
         "./src/*"
       ],
+      "@repo/helpers/*": [
+        "../../packages/helpers/src/*"
+      ],
       "@repo/constants/*": [
         "../../packages/constants/src/*"
       ],

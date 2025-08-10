@@ -1,15 +1,7 @@
-import { RefreshControl, View } from 'react-native';
+import { View } from 'react-native';
 
 import { ExpenseRegisterModal } from '@/components/modals';
-import { ExpenseListingCard } from '@/components/ui/cards';
-import { FlashList, setFlashListLoader } from '@/components/ui/flash-list';
 import { Header } from '@/components/ui/header';
-import { SwipeableActions } from '@/components/ui/swipeable';
-import { useQueryPagination } from '@/hooks/use-query-pagination';
-import { useRemove } from '@/hooks/use-remove';
-import { listExpenses } from '@/services/expenses';
-import { colors } from '@/styles/colors';
-import { router } from 'expo-router';
 import { useState } from 'react';
 
 export default function ExpensesScreen() {
@@ -19,22 +11,12 @@ export default function ExpensesScreen() {
   }>({});
 
   const queryKey = ['expenses'];
-  const { data, isLoading, isFetching, isError, refetch } = useQueryPagination({
-    fn: () => listExpenses(),
-    queryKey,
-  });
-
-  const { handleRemove } = useRemove({
-    tableName: 'expenses',
-    queryKey,
-    refetch,
-  });
 
   return (
     <>
       <Header title="Despesas" />
       <View className="flex h-full w-full flex-1 flex-col px-4 pb-[72px] pt-4">
-        <FlashList
+        {/* <FlashList
           data={data}
           renderItem={({ item }) => (
             <SwipeableActions
@@ -76,7 +58,7 @@ export default function ExpensesScreen() {
           onEndReachedThreshold={0.3}
           showsVerticalScrollIndicator={false}
           // onEndReached={loadNextPageData}
-        />
+        /> */}
       </View>
 
       {expenseModal.show && (

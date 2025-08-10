@@ -1,15 +1,7 @@
-import { RefreshControl, View } from 'react-native';
+import { View } from 'react-native';
 
 import { IncomeRegisterModal } from '@/components/modals';
-import { IncomeListingCard } from '@/components/ui/cards';
-import { FlashList, setFlashListLoader } from '@/components/ui/flash-list';
 import { Header } from '@/components/ui/header';
-import { SwipeableActions } from '@/components/ui/swipeable';
-import { useQueryPagination } from '@/hooks/use-query-pagination';
-import { useRemove } from '@/hooks/use-remove';
-import { listIncomes } from '@/services/incomes';
-import { colors } from '@/styles/colors';
-import { router } from 'expo-router';
 import { useState } from 'react';
 
 export default function IncomesScreen() {
@@ -20,22 +12,11 @@ export default function IncomesScreen() {
 
   const queryKey = ['incomes'];
 
-  const { data, isLoading, isFetching, isError, refetch } = useQueryPagination({
-    fn: () => listIncomes(),
-    queryKey,
-  });
-
-  const { handleRemove } = useRemove({
-    tableName: 'incomes',
-    queryKey,
-    refetch,
-  });
-
   return (
     <>
       <Header title="Rendas" />
       <View className="flex h-full w-full flex-1 flex-col px-4 pb-[72px] pt-4">
-        <FlashList
+        {/* <FlashList
           data={data}
           renderItem={({ item }) => (
             <SwipeableActions
@@ -77,7 +58,7 @@ export default function IncomesScreen() {
           onEndReachedThreshold={0.3}
           showsVerticalScrollIndicator={false}
           // onEndReached={loadNextPageData}
-        />
+        /> */}
       </View>
 
       {incomeModal.show && (

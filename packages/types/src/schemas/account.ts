@@ -16,7 +16,7 @@ export const accountSchema = z
     siteUrl: z.string({ error: 'Valor inválido.' }).url({ error: 'Url inválida.' }).nullish(),
     swiftCode: z.string({ error: 'Valor inválido.' }).nullish(),
   })
-  .transform(async (schema) => {
+  .transform((schema) => {
     return {
       ...schema,
       name: schema?.name?.trim(),

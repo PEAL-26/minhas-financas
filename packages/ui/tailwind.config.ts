@@ -14,6 +14,9 @@ const config = {
   content: ['./src/**/*.{ts,tsx}', '../../packages/ui/src/components/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      screens: {
+        'input-small': '150px',
+      },
       colors: {
         ...colors,
       },

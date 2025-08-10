@@ -19,6 +19,7 @@
     "@rn-primitives/types": "^1.1.0",
     "@shopify/flash-list": "1.7.1",
     "@uidotdev/usehooks": "^2.4.1",
+    "ajv": "^8.17.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "expo": "~52.0.7",
@@ -94,7 +95,7 @@
     "format": "prettier ./src --write",
     "ios": "expo start --ios",
     "lint": "expo lint",
-    "start": "expo start",
+    "dev": "expo start",
     "test": "jest --watchAll",
     "web": "expo start --web"
   }

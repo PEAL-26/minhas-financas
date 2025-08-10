@@ -1,12 +1,12 @@
+import { useState } from 'react';
+
+import { CustomCardDropdown } from '@/components/ui/custom-card-dropdown';
 import { LocationPrices } from '@/components/ui/location-prices';
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud';
+import { categoriesMockData } from '@repo/database/mocks';
 import { includesEnum } from '@repo/helpers/enum';
-import { WishlistSchemaType } from '@repo/types/schemas';
-import { InputFormControl } from '@repo/ui/form/control/input';
-import { showToastError } from '@repo/ui/helpers/toast';
-
 import { PRIORITY_ENUM, PRIORITY_MAP } from '@repo/types/priority';
 import {
   RECURRENCE_ENUM,
@@ -14,10 +14,18 @@ import {
   RECURRENCE_TYPE_ENUM,
   RECURRENCE_TYPE_MAP,
 } from '@repo/types/recurrence';
+import { WishlistSchemaType } from '@repo/types/schemas';
+import { colors } from '@repo/ui/colors';
+import { DatePicker } from '@repo/ui/date-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
+import { InputFormControl } from '@repo/ui/form/control/input';
+import { SelectFormControl } from '@repo/ui/form/control/select';
+import { showToastError } from '@repo/ui/helpers/toast';
 import { Input } from '@repo/ui/input';
+import { InputMoney } from '@repo/ui/input-money';
 import { cn } from '@repo/ui/lib/utils';
-import { useState } from 'react';
+
+import { WISHLIST_STATUS_MAP } from '@repo/types/status';
 import { WishlistFormProps } from './types';
 
 export function WishlistFormSheet(props: WishlistFormProps) {
@@ -62,12 +70,30 @@ export function WishlistFormSheet(props: WishlistFormProps) {
       contentClassName="gap-0"
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
+        <FormControlCustom label="Categoria" name="category" control={mutation?.form?.control}>
+          {({ field }) => {
+            return (
+              <CustomCardDropdown
+                title={field.value?.name}
+                color={field.value?.color || colors.primary.DEFAULT}
+                icon={field.value?.icon || 'tag'}
+                labelField="name"
+                placeholder="Selecione uma categoria"
+                items={categoriesMockData}
+                modal
+                onChange={field.onChange}
+              />
+            );
+          }}
+        </FormControlCustom>
+
         <InputFormControl
           name="name"
           label="Nome"
           control={mutation?.form?.control}
-          placeholder="Ex.: "
+          placeholder="Ex.: Comprar um presente, Fazer uma viagem, etc."
         />
+
         <FormControlCustom control={mutation.form.control} name="type" label="Necessidade">
           {({ field }) => (
             <div className="grid w-full grid-cols-2 gap-3">
@@ -91,6 +117,7 @@ export function WishlistFormSheet(props: WishlistFormProps) {
             </div>
           )}
         </FormControlCustom>
+
         {mutation.form.watch('type') === RECURRENCE_TYPE_ENUM.RECURRENCE && (
           <FormControlCustom control={mutation.form.control} name="recurrence" label="Recorrência">
             {({ field }) => (
@@ -126,12 +153,6 @@ export function WishlistFormSheet(props: WishlistFormProps) {
           </FormControlCustom>
         )}
 
-        <InputFormControl name="category" label="Categoria" control={mutation?.form?.control} />
-        <InputFormControl
-          name="targetDate"
-          label="Data Pretende Efetuar"
-          control={mutation?.form?.control}
-        />
         <FormControlCustom control={mutation.form.control} name="priority" label="Prioridade">
           {({ field }) => (
             <div className="grid w-full grid-cols-3 gap-3">
@@ -149,19 +170,60 @@ export function WishlistFormSheet(props: WishlistFormProps) {
             </div>
           )}
         </FormControlCustom>
-        <InputFormControl
+
+        <FormControlCustom name="targetDate" label="Data Prevista" control={mutation.form.control}>
+          {({ field }) => (
+            <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
+          )}
+        </FormControlCustom>
+
+        <SelectFormControl
+          modal
+          label="Local Previsto"
           name="expectedLocation"
-          label="Local "
           control={mutation?.form?.control}
+          className="w-full bg-white"
         />
-        <InputFormControl
-          name="estimatedCost"
+
+        <FormControlCustom
           label="Custo Estimado"
+          name="estimatedCost"
           control={mutation?.form?.control}
+        >
+          {({ field }) => (
+            <InputMoney value={field.value} onChangeValue={field.onChange} placeholder="0,00" />
+          )}
+        </FormControlCustom>
+
+        <InputFormControl
+          name="quantity"
+          label="Quantidade"
+          control={mutation?.form?.control}
+          placeholder="0"
         />
-        <InputFormControl name="quantity" label="Quantidade" control={mutation?.form?.control} />
-        <InputFormControl name="total" label="Total" control={mutation?.form?.control} />
-        {id && <InputFormControl name="status" label="Estado" control={mutation?.form?.control} />}
+
+        <FormControlCustom label="Total" name="total" control={mutation?.form?.control}>
+          {({ field }) => (
+            <InputMoney value={field.value} onChangeValue={field.onChange} placeholder="0,00" />
+          )}
+        </FormControlCustom>
+
+        {id && (
+          <SelectFormControl
+            modal
+            control={mutation.form.control}
+            name="status"
+            label="Estado"
+            className="w-full bg-white"
+            items={Object.entries(WISHLIST_STATUS_MAP).map(([key, value]) => ({
+              id: key,
+              key,
+              name: value.display,
+              color: value.color,
+            }))}
+          />
+        )}
+
         <LocationPrices control={mutation.form.control} name="prices" />
       </div>
     </SheetForm>

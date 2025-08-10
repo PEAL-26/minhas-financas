@@ -54,14 +54,12 @@ export function ListWishlistsTemplate() {
               title: 'Necessidade',
               render: (item) => {
                 return (
-                  <>
-                    <CategoryComponent
-                      title={item.name}
-                      description={item?.category?.name}
-                      color={item?.category?.color}
-                      icon={item?.category?.icon}
-                    />
-                  </>
+                  <CategoryComponent
+                    title={item.name}
+                    description={item?.category?.name}
+                    color={item?.category?.color}
+                    icon={item?.category?.icon}
+                  />
                 );
               },
             },

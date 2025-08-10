@@ -16,12 +16,8 @@ import {
   TextareaController,
 } from '@/components/ui/form-controller';
 import { Loading } from '@/components/ui/loading';
-import { getTransactionById, mutationTransaction } from '@/services/transactions';
-
 import { useQueryFilter } from '@/hooks/use-query-filter';
-import { listExpenses } from '@/services/expenses';
-import { listIncomes } from '@/services/incomes';
-import { listLocals } from '@/services/locals';
+
 import { BottomSheetBaseModal } from '../bottom-sheet-base-modal';
 import { transactionSchema, TransactionSchemaType } from './schema';
 import { TransactionRegisterModalProps } from './types';
@@ -29,49 +25,50 @@ import { TransactionRegisterModalProps } from './types';
 export function TransactionRegisterModal(props: TransactionRegisterModalProps) {
   const { transactionId, show, onClose } = props;
 
-  const { form, handleSubmit, isLoading } = useRegister<TransactionSchemaType>({
-    schema: transactionSchema,
-    defaultValues: { id: transactionId, type: 'expense' },
-    mutationFn: mutationTransaction,
-    queryKey: ['transactions'],
-    onSuccess: () => {
-      onClose?.();
-    },
-  });
+  // const { form, handleSubmit, isLoading } = useRegister<TransactionSchemaType>({
+  //   schema: transactionSchema,
+  //   defaultValues: { id: transactionId, type: 'expense' },
+  //   mutationFn: mutationTransaction,
+  //   queryKey: ['transactions'],
+  //   onSuccess: () => {
+  //     onClose?.();
+  //   },
+  // });
 
-  const transaction = useQuery({
-    queryFn: () => (transactionId ? getTransactionById(transactionId) : null),
-    queryKey: ['transaction', transactionId],
-  });
+  // const transaction = useQuery({
+  //   queryFn: () => (transactionId ? getTransactionById(transactionId) : null),
+  //   queryKey: ['transaction', transactionId],
+  // });
 
-  const income = useQueryFilter({
-    fn: listIncomes,
-    queryKey: ['incomes'],
-  });
+  // const income = useQueryFilter({
+  //   fn: listIncomes,
+  //   queryKey: ['incomes'],
+  // });
 
-  const expense = useQueryFilter({
-    fn: listExpenses,
-    queryKey: ['expenses'],
-  });
+  // const expense = useQueryFilter({
+  //   fn: listExpenses,
+  //   queryKey: ['expenses'],
+  // });
 
-  const incomeExpense = useQueryFilter({
-    fn: listIncomes,
-    queryKey: ['incomes_expenses'],
-  });
+  // const incomeExpense = useQueryFilter({
+  //   fn: listIncomes,
+  //   queryKey: ['incomes_expenses'],
+  // });
 
-  const local = useQueryFilter({
-    fn: listLocals,
-    queryKey: ['locals'],
-  });
+  // const local = useQueryFilter({
+  //   fn: listLocals,
+  //   queryKey: ['locals'],
+  // });
 
   return (
     <BottomSheetBaseModal
       title={transactionId ? 'Editar Transação' : 'Nova Transação'}
       show={show}
       onClose={onClose}
-      isLoading={isLoading}
+     // isLoading={isLoading}
     >
-      {transaction.isLoading && !transaction.isError && <Loading />}
+      <></>
+      {/* {transaction.isLoading && !transaction.isError && <Loading />}
       {!transaction.isLoading && transaction.isError && (
         <ErrorComponent refetch={transaction.refetch} />
       )}
@@ -186,7 +183,7 @@ export function TransactionRegisterModal(props: TransactionRegisterModalProps) {
             </Button>
           </View>
         </FormProvider>
-      )}
+      )} */}
     </BottomSheetBaseModal>
   );
 }

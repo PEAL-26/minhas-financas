@@ -1,29 +1,28 @@
+import '@repo/ui/styles/globals.css';
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import '../styles/global.css';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
-import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
+//import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
+//import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import { connectionDrizzle, openDatabase } from '@/db/connection';
-import { colors } from '@/styles/colors';
-import migrations from '../../drizzle/migrations';
+//import { connectionDrizzle, openDatabase } from '@/db/connection';
+//import migrations from '../../drizzle/migrations';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  useDrizzleStudio(openDatabase);
-  const migration = useMigrations(connectionDrizzle, migrations);
+  //useDrizzleStudio(openDatabase);
+  //const migration = useMigrations(connectionDrizzle, migrations);
 
   const [fontLoaded] = useFonts({
     SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
@@ -35,22 +34,22 @@ export default function RootLayout() {
     }
   }, [fontLoaded]);
 
-  if (migration?.error) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <Text>Oops! Migration error: {migration?.error?.message}</Text>
-      </View>
-    );
-  }
+  // if (migration?.error) {
+  //   return (
+  //     <View className="flex-1 items-center justify-center">
+  //       <Text>Oops! Migration error: {migration?.error?.message}</Text>
+  //     </View>
+  //   );
+  // }
 
-  if (!fontLoaded || !migration.success) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator color={colors.primary.DEFAULT} size="small" />
-        <StatusBar style="dark" translucent animated backgroundColor="transparent" />
-      </View>
-    );
-  }
+  // if (!fontLoaded || !migration.success) {
+  //   return (
+  //     <View className="flex-1 items-center justify-center">
+  //       <ActivityIndicator color={colors.primary.DEFAULT} size="small" />
+  //       <StatusBar style="dark" translucent animated backgroundColor="transparent" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -59,15 +58,10 @@ export default function RootLayout() {
           <SafeAreaView style={{ flex: 1 }}>
             <AutocompleteDropdownContextProvider>
               <Stack>
-                <Stack.Screen
-                  name="(tabs)"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="+not-found" />
               </Stack>
-              <StatusBar style="dark" translucent animated backgroundColor="transparent" />
+              <StatusBar style="light" translucent animated backgroundColor="#000" />
             </AutocompleteDropdownContextProvider>
           </SafeAreaView>
         </SafeAreaProvider>

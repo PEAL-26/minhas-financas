@@ -48,7 +48,7 @@ export const wishlistSchema = z
       )
       .optional(),
   })
-  .transform(async (schema) => {
+  .transform((schema) => {
     return {
       ...schema,
       name: schema?.name?.trim(),

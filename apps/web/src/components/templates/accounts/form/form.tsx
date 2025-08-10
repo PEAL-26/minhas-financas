@@ -1,7 +1,7 @@
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud';
-import { ACCOUNT_TYPE_ENUM_MAP } from '@repo/types/account';
+import { ACCOUNT_TYPE_MAP } from '@repo/types/account';
 import { AccountSchemaType } from '@repo/types/schemas';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
@@ -50,7 +50,7 @@ export function AccountFormSheet(props: AccountFormProps) {
         >
           {({ field }) => (
             <div className="grid w-full grid-cols-3 gap-3">
-              {Object.entries(ACCOUNT_TYPE_ENUM_MAP).map(([key, value]) => (
+              {Object.entries(ACCOUNT_TYPE_MAP).map(([key, value]) => (
                 <div
                   onClick={() => field.onChange(key)}
                   className={cn(

@@ -7,7 +7,7 @@ export const userSchema = z
     passwordHash: z.string().nullish(),
     providerId: z.string().nullish(),
   })
-  .transform(async (schema) => {
+  .transform((schema) => {
     return { ...schema, name: schema?.name?.trim(), email: schema?.email?.trim() };
   });
 

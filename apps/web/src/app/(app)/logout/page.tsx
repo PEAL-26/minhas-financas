@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <PageLayout classNameContent="">
+    <PageLayout contentClassName="">
       <LogoutComponent />
     </PageLayout>
   );

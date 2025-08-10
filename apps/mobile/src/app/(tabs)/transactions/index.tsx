@@ -1,15 +1,7 @@
 import { TransactionRegisterModal } from '@/components/modals';
-import { TransactionListingCard } from '@/components/ui/cards';
-import { FlashList, setFlashListLoader } from '@/components/ui/flash-list';
 import { Header } from '@/components/ui/header';
-import { SwipeableActions } from '@/components/ui/swipeable';
-import { useQueryPagination } from '@/hooks/use-query-pagination';
-import { useRemove } from '@/hooks/use-remove';
-import { listTransactions } from '@/services/transactions';
-import { colors } from '@/styles/colors';
-import { router } from 'expo-router';
 import { useState } from 'react';
-import { RefreshControl, View } from 'react-native';
+import { View } from 'react-native';
 
 export default function AllTransactionsScreen() {
   const [transactionModal, setTransactionModal] = useState<{
@@ -19,21 +11,11 @@ export default function AllTransactionsScreen() {
 
   const queryKey = ['transactions'];
 
-  const { data, isLoading, isFetching, isError, refetch } = useQueryPagination({
-    fn: () => listTransactions(),
-    queryKey,
-  });
-
-  const { handleRemove } = useRemove({
-    tableName: 'transactions',
-    queryKey,
-    refetch,
-  });
   return (
     <>
       <Header title="Transações" />
       <View className="flex h-full w-full flex-1 flex-col px-4 pb-[72px] pt-4">
-        <FlashList
+        {/* <FlashList
           data={data}
           renderItem={({ item }) => (
             <SwipeableActions
@@ -75,7 +57,7 @@ export default function AllTransactionsScreen() {
           onEndReachedThreshold={0.3}
           showsVerticalScrollIndicator={false}
           // onEndReached={loadNextPageData}
-        />
+        /> */}
       </View>
 
       {transactionModal.show && (

@@ -22,7 +22,7 @@ export const locationSchema = z
       .nullish(),
     contacts: z.array(z.string()).optional(),
   })
-  .transform(async (schema) => {
+  .transform((schema) => {
     return {
       ...schema,
       name: schema?.name?.trim(),

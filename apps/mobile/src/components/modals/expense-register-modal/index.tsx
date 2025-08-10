@@ -1,73 +1,50 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { FormProvider } from 'react-hook-form';
-import { View } from 'react-native';
-
-import { PriorityComponent } from '@/components/shared/priority';
-import { TypeRecurrenceComponent } from '@/components/shared/type-recurrence';
-import { Button } from '@/components/ui/button';
-import { ErrorComponent } from '@/components/ui/error';
-import {
-  InputAutocompleteController,
-  InputController,
-  InputDatetimeController,
-  SelectController,
-  SwitchToggleTextController,
-  TextareaController,
-} from '@/components/ui/form-controller';
-import { Loading } from '@/components/ui/loading';
-import { useQueryFilter } from '@/hooks/use-query-filter';
-import { useRegister } from '@/hooks/use-register';
-import { listCategories } from '@/services/categories';
-import { getExpenseById, mutationExpense } from '@/services/expenses';
-import { listIncomes } from '@/services/incomes';
-import { listNeeds } from '@/services/needs';
 
 import { BottomSheetBaseModal } from '../bottom-sheet-base-modal';
-import { expenseSchema, ExpenseSchemaType } from './schema';
 import { ExpenseRegisterModalProps } from './types';
 
 export function ExpenseRegisterModal(props: ExpenseRegisterModalProps) {
   const { expenseId, show, onClose } = props;
 
-  const { form, handleSubmit, isLoading } = useRegister<ExpenseSchemaType>({
-    schema: expenseSchema,
-    defaultValues: { id: expenseId },
-    mutationFn: mutationExpense,
-    queryKey: ['expenses'],
-    onSuccess: () => {
-      onClose?.();
-    },
-  });
+  // const { form, handleSubmit, isLoading } = useRegister<ExpenseSchemaType>({
+  //   schema: expenseSchema,
+  //   defaultValues: { id: expenseId },
+  //   mutationFn: mutationExpense,
+  //   queryKey: ['expenses'],
+  //   onSuccess: () => {
+  //     onClose?.();
+  //   },
+  // });
 
-  const expense = useQuery({
-    queryFn: () => (expenseId ? getExpenseById(expenseId) : null),
-    queryKey: ['expense', expenseId],
-  });
+  // const expense = useQuery({
+  //   queryFn: () => (expenseId ? getExpenseById(expenseId) : null),
+  //   queryKey: ['expense', expenseId],
+  // });
 
-  const category = useQueryFilter({
-    fn: listCategories,
-    queryKey: ['categories'],
-  });
+  // const category = useQueryFilter({
+  //   fn: listCategories,
+  //   queryKey: ['categories'],
+  // });
 
-  const need = useQueryFilter({
-    fn: listNeeds,
-    queryKey: ['needs'],
-  });
+  // const need = useQueryFilter({
+  //   fn: listNeeds,
+  //   queryKey: ['needs'],
+  // });
 
-  const income = useQueryFilter({
-    fn: listIncomes,
-    queryKey: ['incomes'],
-  });
+  // const income = useQueryFilter({
+  //   fn: listIncomes,
+  //   queryKey: ['incomes'],
+  // });
 
   return (
     <BottomSheetBaseModal
       title={expenseId ? 'Editar Despesa' : 'Nova Despesa'}
       show={show}
       onClose={onClose}
-      isLoading={isLoading}
+      //isLoading={isLoading}
     >
-      {expense.isLoading && !expense.isError && <Loading />}
+      <></>
+      {/* {expense.isLoading && !expense.isError && <Loading />}
       {!expense.isLoading && expense.isError && <ErrorComponent refetch={expense.refetch} />}
       {!expense.isLoading && !expense.isError && (
         <FormProvider {...form}>
@@ -169,7 +146,7 @@ export function ExpenseRegisterModal(props: ExpenseRegisterModalProps) {
             </Button>
           </View>
         </FormProvider>
-      )}
+      )} */}
     </BottomSheetBaseModal>
   );
 }

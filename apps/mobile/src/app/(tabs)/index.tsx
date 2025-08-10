@@ -1,21 +1,10 @@
-import { CircularFinancialSummary } from '@/components/templates/dashboard';
-import { TransactionListingCard } from '@/components/ui/cards';
-import { FlashList, setFlashListLoader } from '@/components/ui/flash-list';
-import { useQueryPagination } from '@/hooks/use-query-pagination';
-import { listTransactions } from '@/services/transactions';
-import { colors } from '@/styles/colors';
-import { router } from 'expo-router';
-import { Image, RefreshControl, Text, View } from 'react-native';
+//import { listTransactions } from '@/services/transactions';
+import { Image, Text, View } from 'react-native';
 
 export default function DashboardScreen() {
-  const { data, isLoading, isFetching, isError, refetch } = useQueryPagination({
-    fn: () => listTransactions(),
-    queryKey: ['transactions'],
-  });
-
   return (
     <>
-      <View className="flex h-14 flex-row items-center gap-2 bg-white p-4">
+      {/* <View className="flex h-14 flex-row items-center gap-2 bg-white p-4">
         <Image
           style={{ width: 40, height: 40 }}
           source={require('../../../assets/images/icon.png')}
@@ -23,12 +12,12 @@ export default function DashboardScreen() {
         <Text style={{ color: '#3D3D3D' }} className="text-lg font-bold">
           Minhas Finanças
         </Text>
-      </View>
+      </View> */}
 
-      <CircularFinancialSummary />
+      {/* <CircularFinancialSummary /> */}
 
       <View className="flex h-full w-full flex-1 flex-col px-4 pb-[72px] pt-4">
-        <FlashList
+        {/* <FlashList
           data={data}
           renderItem={({ item }) => (
             <TransactionListingCard
@@ -61,7 +50,7 @@ export default function DashboardScreen() {
           onEndReachedThreshold={0.3}
           showsVerticalScrollIndicator={false}
           // onEndReached={loadNextPageData}
-        />
+        /> */}
       </View>
     </>
   );

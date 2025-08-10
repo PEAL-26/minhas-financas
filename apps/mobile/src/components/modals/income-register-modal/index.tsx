@@ -1,53 +1,35 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { FormProvider } from 'react-hook-form';
-import { View } from 'react-native';
 
-import { Button } from '@/components/ui/button';
-import { useRegister } from '@/hooks/use-register';
-
-import { ErrorComponent } from '@/components/ui/error';
-import {
-  InputController,
-  InputDatetimeController,
-  SwitchToggleTextController,
-  TextareaController,
-} from '@/components/ui/form-controller';
-import { Loading } from '@/components/ui/loading';
-import { getIncomeById, mutationIncome } from '@/services/incomes';
-
-import { PriorityComponent } from '@/components/shared/priority';
-import { TypeRecurrenceComponent } from '@/components/shared/type-recurrence';
 import { BottomSheetBaseModal } from '../bottom-sheet-base-modal';
-import { incomeSchema, IncomeSchemaType } from './schema';
 import { IncomeRegisterModalProps } from './types';
 
 export function IncomeRegisterModal(props: IncomeRegisterModalProps) {
   const { incomeId, show, onClose } = props;
 
-  const { form, handleSubmit, isLoading } = useRegister<IncomeSchemaType>({
-    schema: incomeSchema,
-    defaultValues: { id: incomeId },
-    mutationFn: mutationIncome,
-    queryKey: ['incomes'],
-    onSuccess: () => {
-      onClose?.();
-    },
-  });
+  // const { form, handleSubmit, isLoading } = useRegister<IncomeSchemaType>({
+  //   schema: incomeSchema,
+  //   defaultValues: { id: incomeId },
+  //   mutationFn: mutationIncome,
+  //   queryKey: ['incomes'],
+  //   onSuccess: () => {
+  //     onClose?.();
+  //   },
+  // });
 
-  const income = useQuery({
-    queryFn: () => (incomeId ? getIncomeById(incomeId) : null),
-    queryKey: ['income', incomeId],
-  });
+  // const income = useQuery({
+  //   queryFn: () => (incomeId ? getIncomeById(incomeId) : null),
+  //   queryKey: ['income', incomeId],
+  // });
 
   return (
     <BottomSheetBaseModal
       title={incomeId ? 'Editar Renda' : 'Nova Renda'}
       show={show}
       onClose={onClose}
-      isLoading={isLoading}
+      //isLoading={isLoading}
     >
-      {income.isLoading && !income.isError && <Loading />}
+      <></>
+      {/* {income.isLoading && !income.isError && <Loading />}
       {!income.isLoading && income.isError && <ErrorComponent refetch={income.refetch} />}
       {!income.isLoading && !income.isError && (
         <FormProvider {...form}>
@@ -123,7 +105,7 @@ export function IncomeRegisterModal(props: IncomeRegisterModalProps) {
             </Button>
           </View>
         </FormProvider>
-      )}
+      )} */}
     </BottomSheetBaseModal>
   );
 }

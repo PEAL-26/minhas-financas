@@ -56,8 +56,8 @@ export const propertiesMap = {
   iban: 'IBAN',
   details: 'Detalhes',
   active: 'Ativo',
-  targetDate: '', // TODO Ver a tradução
-  expectedLocationId: '', // TODO ver tradução,
-  expectedLocation: '', // TODO ver tradução,
-  estimatedCost: 'Costo Estimado',
+  targetDate: 'Data Prevista', 
+  expectedLocationId: 'ID Local Previsto', 
+  expectedLocation: 'Local Previsto', 
+  estimatedCost: 'Custo Estimado',
 };

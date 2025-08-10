@@ -2,7 +2,7 @@ import z from 'zod';
 
 import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 
-import { PRIORITY_ENUM } from '../priority';
+import { PRIORITY_ENUM, PRIORITY_MAP } from '../priority';
 import { RECURRENCE_TYPE_ENUM } from '../recurrence';
 import { EXPENSE_STATUS_ENUM } from '../status';
 
@@ -14,7 +14,14 @@ export const expenseSchema = z
     title: z.string({ error: 'Campo obrigatório.' }),
     description: z.string().nullish(),
     estimatedDate: z.date().nullish(),
-    priority: z.enum(PRIORITY_ENUM).default(PRIORITY_ENUM.NORMAL).optional(),
+    priority: z
+      .enum(PRIORITY_ENUM, {
+        error: `Valor inválido (deve ser ${Object.values(PRIORITY_MAP)
+          .map((v) => v.display)
+          .join(', ')})`,
+      })
+      .default(PRIORITY_ENUM.NORMAL)
+      .optional(),
     type: z.enum(RECURRENCE_TYPE_ENUM),
     recurrence: z.int().nullish(),
     startDate: z.date().nullish(),
@@ -32,7 +39,7 @@ export const expenseSchema = z
       .optional(),
     status: z.enum(EXPENSE_STATUS_ENUM).default(EXPENSE_STATUS_ENUM.PENDING).optional(),
   })
-  .transform(async (schema) => {
+  .transform((schema) => {
     return {
       ...schema,
       name: schema?.title?.trim(),

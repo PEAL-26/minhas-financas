@@ -18,5 +18,8 @@
   "license": "ISC",
   "scripts": {
     "format": "prettier ./src --write"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.13"
   }
 }

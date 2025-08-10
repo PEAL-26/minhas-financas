@@ -1,5 +1,5 @@
 import { alert } from '@/helpers/alert-message';
-import { db } from '@repo/database/connection';
+//import { db } from '@repo/database/connection';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -27,7 +27,7 @@ export function useRemove(props: Props) {
       if (!confirm) return;
 
       setIsLoading(true);
-      await db.delete(tableName, where);
+      //await db.delete(tableName, where);
       queryClient.invalidateQueries({
         queryKey,
       });

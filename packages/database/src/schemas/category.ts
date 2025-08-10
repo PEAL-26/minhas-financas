@@ -5,6 +5,7 @@ export const category = sqliteTable('categories', {
   id: text('id').primaryKey().unique(),
   name: text('name').notNull(),
   icon: text('icon'),
+  color: text('color'),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`current_timestamp`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`current_timestamp`),
 });

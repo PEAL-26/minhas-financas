@@ -9,7 +9,7 @@ export const categorySchema = z
     icon: z.string({ error: 'Valor inválido.' }).nullish().default('tag'),
     color: z.string({ error: 'Valor inválido.' }).nullish(),
   })
-  .transform(async (schema) => {
+  .transform((schema) => {
     const color = schema.color ? schema.color : colorGenerate().rgb;
     const icon = schema.icon ? schema.icon : 'tag';
     return { name: schema?.name?.trim(),  color, icon };

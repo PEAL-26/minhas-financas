@@ -50,65 +50,61 @@ export function CategoryFormSheet(props: CategoryFormProps) {
       contentClassName="gap-0"
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
-        <div className="grid gap-3">
-          <div className="flex items-center gap-2">
-            <div
-              style={{ backgroundColor: category.color }}
-              className="flex h-10 w-10 items-center justify-center rounded-full"
+        <div className="flex items-center gap-2">
+          <div
+            style={{ backgroundColor: category.color }}
+            className="flex h-10 w-10 items-center justify-center rounded-full"
+          >
+            <IconComponent name={(category.icon as any) ?? 'tag'} className="size-4 text-white" />
+          </div>
+          <div className="flex h-full flex-col justify-between">
+            <FormControlCustom
+              control={mutation.form.control}
+              name="color"
+              containerClassName="space-y-0"
             >
-              <IconComponent name={(category.icon as any) ?? 'tag'} className="size-4 text-white" />
-            </div>
-            <div className="flex h-full flex-col justify-between">
-              <FormControlCustom
-                control={mutation.form.control}
-                name="color"
-                containerClassName="space-y-0"
-              >
-                {({ field }) => (
-                  <ColorPicker
-                    modal
-                    side="right"
-                    align="start"
-                    color={field.value}
-                    onChangeColor={field.onChange}
-                  >
-                    <div className="hover:cursor-pointer">
-                      <PaletteIcon size={16} />
-                    </div>
-                  </ColorPicker>
-                )}
-              </FormControlCustom>
+              {({ field }) => (
+                <ColorPicker
+                  modal
+                  side="right"
+                  align="start"
+                  color={field.value}
+                  onChangeColor={field.onChange}
+                >
+                  <div className="hover:cursor-pointer">
+                    <PaletteIcon size={16} />
+                  </div>
+                </ColorPicker>
+              )}
+            </FormControlCustom>
 
-              <FormControlCustom
-                control={mutation.form.control}
-                name="icon"
-                containerClassName="space-y-0"
-              >
-                {({ field }) => (
-                  <IconPicker
-                    modal
-                    side="right"
-                    align="start"
-                    value={(field.value as any) || 'tag'}
-                    onValueChange={field.onChange}
-                  >
-                    <div className="hover:cursor-pointer">
-                      <LaughIcon size={16} />
-                    </div>
-                  </IconPicker>
-                )}
-              </FormControlCustom>
-            </div>
+            <FormControlCustom
+              control={mutation.form.control}
+              name="icon"
+              containerClassName="space-y-0"
+            >
+              {({ field }) => (
+                <IconPicker
+                  modal
+                  side="right"
+                  align="start"
+                  value={(field.value as any) || 'tag'}
+                  onValueChange={field.onChange}
+                >
+                  <div className="hover:cursor-pointer">
+                    <LaughIcon size={16} />
+                  </div>
+                </IconPicker>
+              )}
+            </FormControlCustom>
           </div>
         </div>
-        <div className="grid gap-3">
-          <InputFormControl
-            label="Nome"
-            control={mutation?.form?.control}
-            name="name"
-            placeholder="Ex.: Transporte, Alimentação, Lazer"
-          />
-        </div>
+        <InputFormControl
+          label="Nome"
+          control={mutation?.form?.control}
+          name="name"
+          placeholder="Ex.: Transporte, Alimentação, Lazer"
+        />
       </div>
     </SheetForm>
   );

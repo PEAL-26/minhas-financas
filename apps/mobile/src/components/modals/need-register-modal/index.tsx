@@ -1,29 +1,6 @@
-import { PriorityComponent } from '@/components/shared/priority';
-import { TypeRecurrenceComponent } from '@/components/shared/type-recurrence';
-import { Button } from '@/components/ui/button';
-import { ErrorComponent } from '@/components/ui/error';
-import {
-  InputAutocompleteController,
-  InputController,
-  SwitchToggleTextController,
-  TextareaController,
-} from '@/components/ui/form-controller';
-import { Input } from '@/components/ui/input';
-import { InputAutocomplete } from '@/components/ui/input-autocomplete';
-import { Label } from '@/components/ui/label';
-import { Loading } from '@/components/ui/loading';
 import { getPercentScreenSize } from '@/helpers/get-percent-screen-size';
-import { useQueryFilter } from '@/hooks/use-query-filter';
-import { useRegister } from '@/hooks/use-register';
-import { listCategories } from '@/services/categories';
-import { getNeedById, mutationNeed } from '@/services/needs';
-import { useQuery } from '@tanstack/react-query';
-import { PlusIcon, TrashIcon } from 'lucide-react-native';
 import React, { ElementRef, forwardRef } from 'react';
-import { FormProvider, useFieldArray } from 'react-hook-form';
-import { Text, View } from 'react-native';
 import { BottomSheetBaseModal } from '../bottom-sheet-base-modal';
-import { NeedSchemaType, needSchema } from './schema';
 import { NeedRegisterModalProps } from './types';
 
 export const NeedRegisterModal = forwardRef<
@@ -32,30 +9,30 @@ export const NeedRegisterModal = forwardRef<
 >((props, ref) => {
   const { needId, show, onClose } = props;
 
-  const { form, handleSubmit, isLoading } = useRegister<NeedSchemaType>({
-    schema: needSchema,
-    defaultValues: { id: needId, needPrices: [], priority: 1 },
-    mutationFn: mutationNeed,
-    queryKey: ['needs'],
-    onSuccess: () => {
-      onClose?.();
-    },
-  });
+  // const { form, handleSubmit, isLoading } = useRegister<NeedSchemaType>({
+  //   schema: needSchema,
+  //   defaultValues: { id: needId, needPrices: [], priority: 1 },
+  //   mutationFn: mutationNeed,
+  //   queryKey: ['needs'],
+  //   onSuccess: () => {
+  //     onClose?.();
+  //   },
+  // });
 
-  const needPrices = useFieldArray({
-    control: form.control,
-    name: 'needPrices',
-  });
+  // const needPrices = useFieldArray({
+  //   control: form.control,
+  //   name: 'needPrices',
+  // });
 
-  const need = useQuery({
-    queryFn: () => (needId ? getNeedById(needId) : null),
-    queryKey: ['need', needId],
-  });
+  // const need = useQuery({
+  //   queryFn: () => (needId ? getNeedById(needId) : null),
+  //   queryKey: ['need', needId],
+  // });
 
-  const category = useQueryFilter({
-    fn: listCategories,
-    queryKey: ['categories'],
-  });
+  // const category = useQueryFilter({
+  //   fn: listCategories,
+  //   queryKey: ['categories'],
+  // });
 
   const sizes = getPercentScreenSize(90);
   return (
@@ -63,9 +40,10 @@ export const NeedRegisterModal = forwardRef<
       title={needId ? 'Editar Necessidade' : 'Nova Necessidade'}
       show={show}
       onClose={onClose}
-      isLoading={isLoading}
+      //isLoading={isLoading}
     >
-      {need.isLoading && !need.isError && <Loading height={sizes.height} />}
+      <></>
+      {/* {need.isLoading && !need.isError && <Loading height={sizes.height} />}
       {!need.isLoading && need.isError && (
         <ErrorComponent refetch={need.refetch} height={sizes.height} />
       )}
@@ -183,7 +161,7 @@ export const NeedRegisterModal = forwardRef<
             </Button>
           </View>
         </FormProvider>
-      )}
+      )} */}
     </BottomSheetBaseModal>
   );
 });

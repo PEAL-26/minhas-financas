@@ -3,7 +3,7 @@
 import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
 import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
-import { ACCOUNT_TYPE_ENUM_MAP, Account } from '@repo/types/account';
+import { ACCOUNT_TYPE_MAP, Account } from '@repo/types/account';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
 import { IconComponent } from '@repo/ui/icon-component';
 import Link from 'next/link';
@@ -40,7 +40,7 @@ export function ListAccountsTemplate() {
               name: 'name',
               title: 'Conta',
               render: (item) => {
-                const type = ACCOUNT_TYPE_ENUM_MAP[item.type];
+                const type = ACCOUNT_TYPE_MAP[item.type];
                 return (
                   <div style={{ backgroundColor: type.color }} className="flex items-center gap-2">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full border">
