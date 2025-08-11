@@ -45,9 +45,9 @@ export const base = z.object({
   recurrence: z.int({ error: 'Valor inválido' }).nullish(),
   startDate: z.date({ error: 'Data inválida' }).nullish(),
   endDate: z.date({ error: 'Data inválida' }).nullish(),
-  estimatedAmount: z.number({ error: 'Valor inválido' }).nullish(),
-  quantity: z.number({ error: 'Valor inválido' }).nullish(),
-  total: z.number({ error: 'Valor inválido' }).nullish(),
+  estimatedAmount: z.number({ error: 'Valor inválido' }),
+  quantity: z.number().default(1).nullish(),
+  total: z.number().nullish(),
   prices: z
     .array(
       z.object({
@@ -65,6 +65,14 @@ export const base = z.object({
 export const expenseSchema = base.transform((schema) => {
   return {
     ...schema,
+    quantity: checkNullUndefinedValue(schema.quantity, {
+      convert: 'emptyToNull',
+      fn: (value) => Number(value),
+    }),
+    total: checkNullUndefinedValue(schema.total, {
+      convert: 'emptyToNull',
+      fn: (value) => Number(value),
+    }),
     description: checkNullUndefinedValue(schema.description, {
       convert: 'emptyToNull',
       fn: (value) => String(value).trim(),

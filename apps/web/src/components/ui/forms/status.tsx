@@ -16,7 +16,7 @@ export function StatusFormComponent(props: Props) {
           <SelectSearch
             modal
             className="w-full bg-white"
-            itemValue={field.value?.key}
+            itemValue={field.value}
             items={Object.entries(statusMap).map(([key, value]) => ({
               id: key,
               key,

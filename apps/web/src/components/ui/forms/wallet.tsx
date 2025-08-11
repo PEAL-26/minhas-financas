@@ -1,5 +1,4 @@
 import { CustomCardDropdown } from '@/components/ui/custom-card-dropdown';
-import { walletsMockData } from '@repo/database/mocks';
 import { ACCOUNT_TYPE_MAP } from '@repo/types/account';
 import { FormControlCustom } from '@repo/ui/form/control';
 
@@ -31,7 +30,7 @@ export function WalletFormComponent(props: Props) {
                 showIcon: false,
                 className: 'text-center text-gray-300',
               },
-              ...walletsMockData.map((wallet) => {
+              ...response.data.map((wallet: any) => {
                 const type =
                   ACCOUNT_TYPE_MAP?.[wallet.account?.type as keyof typeof ACCOUNT_TYPE_MAP];
                 return {

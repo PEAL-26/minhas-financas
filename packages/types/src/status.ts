@@ -41,7 +41,7 @@ export enum INCOME_STATUS_ENUM {
 }
 
 export const INCOME_STATUS_MAP = {
-  [INCOME_STATUS_ENUM.PENDING]: { display: 'Pendente' },
-  [INCOME_STATUS_ENUM.PARTIAL]: { display: 'Partial' },
-  [INCOME_STATUS_ENUM.DONE]: { display: 'Feito' },
+  [INCOME_STATUS_ENUM.PENDING]: { display: 'Pendente', color: '#facc15' },
+  [INCOME_STATUS_ENUM.PARTIAL]: { display: 'Partial', color: '#1E90FF' },
+  [INCOME_STATUS_ENUM.DONE]: { display: 'Feito', color: '#2AB546' },
 };

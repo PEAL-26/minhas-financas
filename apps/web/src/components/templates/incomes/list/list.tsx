@@ -4,7 +4,7 @@ import { CategoryComponent } from '@/components/ui/category-component';
 import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
 import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
-import { formatDate } from '@repo/helpers/date';
+import { ACCOUNT_TYPE_MAP } from '@repo/types/account';
 import { Income } from '@repo/types/income';
 import { INCOME_STATUS_MAP } from '@repo/types/status';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
@@ -30,6 +30,9 @@ export function ListIncomesTemplate() {
     page,
     setPage,
     setSize,
+    onError: (error) => {
+      console.log(error);
+    },
   });
 
   return (
@@ -40,31 +43,25 @@ export function ListIncomesTemplate() {
           fields={[
             {
               name: 'description',
-              title: 'Despesa',
+              title: 'Renda',
               render: (item) => {
-                const income = item?.wishlist || {
-                  name: item?.description || 'Desconhecido',
-                  category: item?.category,
-                };
+                const account = item?.wallet?.account;
+                const accountType =
+                  ACCOUNT_TYPE_MAP?.[account?.type as keyof typeof ACCOUNT_TYPE_MAP];
+                const icon = accountType?.icon || 'wallet';
+                const color = accountType?.color || 'black';
 
                 return (
                   <CategoryComponent
-                    title={income.name}
-                    description={income?.category?.name}
-                    backgroundColor={income?.category?.color}
-                    icon={income?.category?.icon}
+                    title={item.description || ''}
+                    description={`${accountType?.display ? `${accountType.display} |` : ''} ${item.wallet?.title || ''}`}
+                    backgroundColor="transparent"
+                    borderColor={color}
+                    color={color}
+                    icon={icon}
                   />
                 );
               },
-            },
-            {
-              name: 'estimatedDate',
-              title: 'Data',
-              render: (item) => (item.estimatedDate ? formatDate(item.estimatedDate) : 'S/N'),
-            },
-            {
-              name: 'estimatedAmount',
-              title: 'Montante',
             },
             {
               name: 'status',

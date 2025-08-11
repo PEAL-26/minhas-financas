@@ -41,10 +41,10 @@ export const base = z.object({
       .map((v) => v.display)
       .join(', ')})`,
   }),
-  date: z.date(),
+  date: z.date({ error: 'Data inválida' }),
   incomes: z.array(transactionIncomeSchema).default([]).optional(),
   expenses: z.array(transactionExpenseSchema).default([]).optional(),
-  totalAmount: z.number(),
+  totalAmount: z.number().default(0),
   note: z.string().nullish(),
 });
 

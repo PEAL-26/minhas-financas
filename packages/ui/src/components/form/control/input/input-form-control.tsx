@@ -31,6 +31,7 @@ export function InputFormControl<
     disabled,
     description,
     showError = true,
+    onChange,
     ...rest
   } = props;
 
@@ -53,6 +54,10 @@ export function InputFormControl<
                     {...rest}
                     {...field}
                     disabled={disabled}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      onChange?.(e);
+                    }}
                   />
                   <button
                     type="button"
@@ -68,7 +73,17 @@ export function InputFormControl<
                   </button>
                 </div>
               )}
-              {type !== 'password' && <Input type={type} {...field} {...rest} />}
+              {type !== 'password' && (
+                <Input
+                  type={type}
+                  {...field}
+                  {...rest}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    onChange?.(e);
+                  }}
+                />
+              )}
             </>
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}

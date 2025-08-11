@@ -3,12 +3,13 @@
 import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
 import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
-import { LOCATION_TYPE_MAP, Location } from '@repo/types/location';
+import { formatDate } from '@repo/helpers/date';
+import { Transaction } from '@repo/types/transaction';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
 import { useState } from 'react';
-import { LocationFormSheet } from '../form';
+import { TransactionFormSheet } from '../form';
 
-export function ListLocationsTemplate() {
+export function ListTransactionsTemplate() {
   const [page, setPage] = useQueryStateParams<number>('page', 'int');
   const [size, setSize] = useQueryStateParams<number>('size', 'int');
   const [query] = useQueryStateParams('q');
@@ -16,11 +17,11 @@ export function ListLocationsTemplate() {
   const [form, setForm] = useState<{ id?: string; open: boolean }>({ open: false });
   const [alertDelete, setAlertDelete] = useState<{ id?: string; open: boolean }>({ open: false });
 
-  const remove = useDelete({ repositoryName: 'location', queryKey: ['locations'] });
+  const remove = useDelete({ repositoryName: 'transaction', queryKey: ['transactions'] });
 
-  const listPaginate = useListPaginate<Location>({
-    repositoryName: 'location',
-    queryKey: ['locations'],
+  const listPaginate = useListPaginate<Transaction>({
+    repositoryName: 'transaction',
+    queryKey: ['transactions'],
     query,
     size,
     page,
@@ -35,17 +36,13 @@ export function ListLocationsTemplate() {
           response={listPaginate}
           fields={[
             {
-              name: 'name',
-              title: 'Local',
-            },
-            {
               name: 'type',
               title: 'Tipo',
-              render: (item) => LOCATION_TYPE_MAP[item.type].display,
             },
             {
-              name: 'address',
-              title: 'Endereço', // render: province, city, address
+              name: 'date',
+              title: 'Data',
+              render: (item) => (item.date ? formatDate(item.date) : 'S/N'),
             },
           ]}
           onEdit={(item) => setForm({ id: item.id, open: true })}
@@ -53,9 +50,13 @@ export function ListLocationsTemplate() {
         />
       </div>
 
-      <LocationFormSheet onClose={() => setForm({ open: false })} open={form.open} id={form.id} />
+      <TransactionFormSheet
+        onClose={() => setForm({ open: false })}
+        open={form.open}
+        id={form.id}
+      />
       <AlertDialogCustom
-        description="Esta ação não pode ser desfeita. Isso excluirá permanentemente a local."
+        description="Esta ação não pode ser desfeita. Isso excluirá permanentemente a despesa."
         id={alertDelete?.id}
         fn={remove.handle}
         onClose={() => setAlertDelete({ open: false })}

@@ -1,5 +1,5 @@
 export const FORM_DESCRIPTION = {
-  TRANSACTION: 'Adicione tudo que entrou ou saiu do seu dinheiro, com data e categoria.',
+  TRANSACTION: 'Adicione tudo que entrou ou saiu do seu dinheiro.',
   INCOME: 'Registre suas entradas de dinheiro, como salário ou serviços.',
   EXPENSE: 'Anote seus gastos do dia a dia e veja para onde seu dinheiro vai.',
   WALLET: 'Crie carteiras para separar seu dinheiro por uso ou moeda.',

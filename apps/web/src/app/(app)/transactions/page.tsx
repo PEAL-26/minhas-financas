@@ -1,4 +1,6 @@
 import { PageLayout } from '@/components/layouts/page';
+import { ListTransactionsActions } from '@/components/templates/transactions/actions';
+import { ListTransactionsTemplate } from '@/components/templates/transactions/list';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -8,8 +10,12 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <PageLayout title={String(metadata.title)} description={String(metadata?.description || '')}>
-      <></>
+    <PageLayout
+      title={String(metadata.title)}
+      description={String(metadata?.description || '')}
+      actions={<ListTransactionsActions />}
+    >
+      <ListTransactionsTemplate />
     </PageLayout>
   );
 }

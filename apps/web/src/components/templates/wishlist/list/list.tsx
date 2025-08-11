@@ -67,7 +67,7 @@ export function ListWishlistsTemplate() {
               name: 'type',
               title: 'Recorrência',
               render: (item) => {
-                const typeDisplay = RECURRENCE_TYPE_MAP[item.type].display;
+                const typeDisplay = RECURRENCE_TYPE_MAP[item.type]?.display;
 
                 if (item.type === RECURRENCE_TYPE_ENUM.UNIQUE) {
                   return typeDisplay;

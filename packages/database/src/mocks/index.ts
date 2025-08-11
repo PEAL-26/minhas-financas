@@ -60,7 +60,7 @@ export const categoriesMockData = [
   },
 ];
 
-export const walletsMockData = [
+export const walletMockData = [
   {
     id: 'wallet_1',
     title: 'Primary Wallet',
@@ -83,8 +83,8 @@ export const walletsMockData = [
 export const incomesMockData = [
   {
     id: 'inc_1',
-    walletId: 'wallet_1',
-    title: 'Monthly Salary',
+    wallet: walletMockData[0],
+    description: 'Monthly Salary',
     amount: 5000,
     type: RECURRENCE_TYPE_ENUM.RECURRENCE,
     recurrence: 30,
@@ -94,8 +94,8 @@ export const incomesMockData = [
   },
   {
     id: 'inc_2',
-    walletId: 'wallet_2',
-    title: 'Freelance Project',
+    wallet: walletMockData[1],
+    description: 'Freelance Project',
     amount: 1500,
     type: RECURRENCE_TYPE_ENUM.UNIQUE,
     recurrence: null,
@@ -108,8 +108,8 @@ export const incomesMockData = [
 export const expensesMockData = [
   {
     id: 'exp_1',
-    categoryId: 'cat_1',
-    title: 'Weekly Groceries',
+    category: categoriesMockData[0],
+    description: 'Weekly Groceries',
     estimatedAmount: 100,
     type: RECURRENCE_TYPE_ENUM.RECURRENCE,
     recurrence: 7,
@@ -118,8 +118,8 @@ export const expensesMockData = [
   },
   {
     id: 'exp_2',
-    categoryId: 'cat_2',
-    title: 'Electricity Bill',
+    category: categoriesMockData[1],
+    description: 'Electricity Bill',
     estimatedAmount: 75,
     type: RECURRENCE_TYPE_ENUM.RECURRENCE,
     recurrence: 30,
@@ -176,12 +176,13 @@ export const transactionExpensesMockData = [
   },
 ];
 
-export const wishlistsMockData = [
+export const wishlistMockData = [
   {
     id: 'wish_1',
     name: 'New Laptop',
     category: categoriesMockData[0],
     estimatedCost: 1200,
+    type: 'unique',
     priority: PRIORITY_ENUM.HIGH,
     status: WISHLIST_STATUS_ENUM.PENDING,
   },

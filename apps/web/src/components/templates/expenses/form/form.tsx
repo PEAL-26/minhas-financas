@@ -4,20 +4,21 @@ import { LocationPricesFormComponent } from '@/components/ui/forms/location-pric
 import { PriorityFormComponent } from '@/components/ui/forms/priority';
 import { RecurrenceFormComponent } from '@/components/ui/forms/recurrence';
 import { StatusFormComponent } from '@/components/ui/forms/status';
+import { WishlistFormComponent } from '@/components/ui/forms/wishlist';
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud';
 import { useQuerySelect } from '@repo/database/hooks/use-query-select';
+import { formatCurrency } from '@repo/helpers/currency';
 import { RECURRENCE_TYPE_ENUM } from '@repo/types/recurrence';
 import { ExpenseSchemaType } from '@repo/types/schemas';
-import { EXPENSE_STATUS_MAP } from '@repo/types/status';
+import { EXPENSE_STATUS_ENUM, EXPENSE_STATUS_MAP } from '@repo/types/status';
 import { DatePicker } from '@repo/ui/date-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
 import { showToastError } from '@repo/ui/helpers/toast';
+import { Input } from '@repo/ui/input';
 import { InputMoney } from '@repo/ui/input-money';
-
-import { WishlistFormComponent } from '@/components/ui/forms/wishlist';
 import { ExpenseFormProps } from './types';
 
 export function ExpenseFormSheet(props: ExpenseFormProps) {
@@ -28,6 +29,8 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
     loadingData: open,
     defaultValues: {
       type: RECURRENCE_TYPE_ENUM.UNIQUE,
+      quantity: 1,
+      status: EXPENSE_STATUS_ENUM.PENDING,
     },
     repositoryName: 'expense',
     queryKey: ['expenses'],
@@ -58,6 +61,15 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
     queryKey: ['incomes'],
     defaultSize: 100,
   });
+
+  const total = () => {
+    const amount = mutation.form.getValues('estimatedAmount');
+    const quantity = mutation.form.getValues('quantity');
+
+    const total = Number(amount || 0) * Number(quantity || 1);
+
+    mutation.form.setValue('total', total);
+  };
 
   return (
     <SheetForm
@@ -92,9 +104,28 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
           control={mutation?.form?.control}
         />
 
-        <RecurrenceFormComponent label="Despesa" form={mutation.form} />
+        <FormControlCustom
+          require
+          label="Montante"
+          name="estimatedAmount"
+          control={mutation?.form?.control}
+        >
+          {({ field }) => (
+            <InputMoney
+              value={field.value}
+              onChangeValue={(value) => {
+                const amount = Number(value || 0);
+                field.onChange(amount);
+                total();
+              }}
+              placeholder="0,00"
+            />
+          )}
+        </FormControlCustom>
 
-        <PriorityFormComponent form={mutation.form} />
+        <RecurrenceFormComponent require label="Despesa" form={mutation.form} />
+
+        <PriorityFormComponent require form={mutation.form} />
 
         <FormControlCustom
           name="estimatedDate"
@@ -119,28 +150,31 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
           </FormControlCustom>
         </div>
 
-        <FormControlCustom
-          label="Montante Estimado"
-          name="estimatedAmount"
-          control={mutation?.form?.control}
-        >
-          {({ field }) => (
-            <InputMoney value={field.value} onChangeValue={field.onChange} placeholder="0,00" />
-          )}
-        </FormControlCustom>
+        <div className="flex items-center gap-3">
+          <InputFormControl
+            name="quantity"
+            label="Quantidade"
+            control={mutation?.form?.control}
+            placeholder="1"
+            onChange={() => {
+              total();
+            }}
+            className="text-center"
+            containerClassName="flex-1 w-fit"
+          />
 
-        <InputFormControl
-          name="quantity"
-          label="Quantidade"
-          control={mutation?.form?.control}
-          placeholder="0"
-        />
-
-        <FormControlCustom label="Total" name="total" control={mutation?.form?.control}>
-          {({ field }) => (
-            <InputMoney value={field.value} onChangeValue={field.onChange} placeholder="0,00" />
-          )}
-        </FormControlCustom>
+          <FormControlCustom label="Total" name="total" control={mutation.form.control}>
+            {({ field }) => (
+              <Input
+                value={formatCurrency(field.value)}
+                disabled
+                readOnly
+                placeholder="0,00"
+                className="w-full bg-gray-200 text-right"
+              />
+            )}
+          </FormControlCustom>
+        </div>
 
         <StatusFormComponent form={mutation.form} statusMap={EXPENSE_STATUS_MAP} />
 

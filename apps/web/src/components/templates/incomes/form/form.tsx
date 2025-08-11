@@ -8,7 +8,7 @@ import { useMutation } from '@repo/database/hooks/crud';
 import { useQuerySelect } from '@repo/database/hooks/use-query-select';
 import { RECURRENCE_TYPE_ENUM } from '@repo/types/recurrence';
 import { IncomeSchemaType } from '@repo/types/schemas';
-import { INCOME_STATUS_MAP } from '@repo/types/status';
+import { INCOME_STATUS_ENUM, INCOME_STATUS_MAP } from '@repo/types/status';
 import { DatePicker } from '@repo/ui/date-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
@@ -24,6 +24,7 @@ export function IncomeFormSheet(props: IncomeFormProps) {
     loadingData: open,
     defaultValues: {
       type: RECURRENCE_TYPE_ENUM.UNIQUE,
+      status: INCOME_STATUS_ENUM.PENDING,
     },
     repositoryName: 'income',
     queryKey: ['incomes'],

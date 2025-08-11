@@ -1,6 +1,7 @@
 import { randomUUID } from '@repo/database/helpers/uuid';
 import { wait } from '@repo/helpers/wait';
 import { paginateData } from '../helpers/pagination';
+import * as mocks from '../mocks';
 import {
   DatabaseConfig,
   Field,
@@ -12,6 +13,20 @@ import {
 
 export class DatabaseInMemory implements IDatabase {
   private repositories: Record<string, Record<string, any>[]> = {};
+
+  constructor() {
+    this.repositories = {
+      accounts: mocks.accountsMockData,
+      categories: mocks.categoriesMockData,
+      expenses: mocks.expensesMockData,
+      incomes: mocks.incomesMockData,
+      locations: mocks.locationsMockData,
+      transactions: mocks.transactionsMockData,
+      users: mocks.usersMockData,
+      wallet: mocks.walletMockData,
+      wishlist: mocks.wishlistMockData,
+    };
+  }
 
   transaction(callback: () => Promise<void>): Promise<void> {
     throw new Error('Method not implemented.');
