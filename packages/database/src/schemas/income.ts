@@ -5,7 +5,6 @@ import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 export const income = sqliteTable('incomes', {
   id: text('id').primaryKey().unique(),
   walletId: text('wallet_id'),
-  title: text('title').notNull(),
   description: text('description'),
   amount: real('amount').notNull().default(0.0),
   type: text().$type<RECURRENCE_TYPE_ENUM>().default(RECURRENCE_TYPE_ENUM.UNIQUE),

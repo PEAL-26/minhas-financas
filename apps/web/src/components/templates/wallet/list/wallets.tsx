@@ -39,6 +39,15 @@ export function ListWalletsTemplate() {
               name: 'title',
               title: 'Carteira',
             },
+            {
+              name: 'account',
+              title: 'Conta',
+              render: (item) => <>{item.account.name}</>,
+            },
+            {
+              name: 'reference',
+              title: 'Referência',
+            },
           ]}
           onEdit={(item) => setForm({ id: item.id, open: true })}
           onDelete={(id) => setAlertDelete({ open: true, id })}

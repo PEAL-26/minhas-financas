@@ -1,15 +1,23 @@
+import { CategoryFormComponent } from '@/components/ui/forms/category';
+import { IncomeFormComponent } from '@/components/ui/forms/income';
+import { LocationPricesFormComponent } from '@/components/ui/forms/location-prices';
+import { PriorityFormComponent } from '@/components/ui/forms/priority';
+import { RecurrenceFormComponent } from '@/components/ui/forms/recurrence';
+import { StatusFormComponent } from '@/components/ui/forms/status';
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud';
-import { colorGenerate } from '@repo/helpers/color-generate';
+import { useQuerySelect } from '@repo/database/hooks/use-query-select';
+import { RECURRENCE_TYPE_ENUM } from '@repo/types/recurrence';
 import { ExpenseSchemaType } from '@repo/types/schemas';
-import { ColorPicker } from '@repo/ui/color-picker';
+import { EXPENSE_STATUS_MAP } from '@repo/types/status';
+import { DatePicker } from '@repo/ui/date-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
 import { showToastError } from '@repo/ui/helpers/toast';
-import { IconComponent } from '@repo/ui/icon-component';
-import { IconPicker } from '@repo/ui/icon-picker';
-import { LaughIcon, PaletteIcon } from '@repo/ui/lib/lucide';
+import { InputMoney } from '@repo/ui/input-money';
+
+import { WishlistFormComponent } from '@/components/ui/forms/wishlist';
 import { ExpenseFormProps } from './types';
 
 export function ExpenseFormSheet(props: ExpenseFormProps) {
@@ -19,8 +27,7 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
     id,
     loadingData: open,
     defaultValues: {
-      icon: 'tag',
-      color: colorGenerate().rgb,
+      type: RECURRENCE_TYPE_ENUM.UNIQUE,
     },
     repositoryName: 'expense',
     queryKey: ['expenses'],
@@ -32,7 +39,25 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
     },
   });
 
-  const expense = mutation.form.watch();
+  const wishlist = mutation.form.watch('wishlist');
+
+  const selectCategories = useQuerySelect({
+    repositoryName: 'category',
+    queryKey: ['categories'],
+    defaultSize: 100,
+  });
+
+  const selectWishlist = useQuerySelect({
+    repositoryName: 'wishlist',
+    queryKey: ['wishlists'],
+    defaultSize: 100,
+  });
+
+  const selectIncome = useQuerySelect({
+    repositoryName: 'income',
+    queryKey: ['incomes'],
+    defaultSize: 100,
+  });
 
   return (
     <SheetForm
@@ -50,65 +75,76 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
       contentClassName="gap-0"
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
-        <div className="grid gap-3">
-          <div className="flex items-center gap-2">
-            <div
-              style={{ backgroundColor: expense.color }}
-              className="flex h-10 w-10 items-center justify-center rounded-full"
-            >
-              <IconComponent name={(expense.icon as any) ?? 'tag'} className="size-4 text-white" />
-            </div>
-            <div className="flex h-full flex-col justify-between">
-              <FormControlCustom
-                control={mutation.form.control}
-                name="color"
-                containerClassName="space-y-0"
-              >
-                {({ field }) => (
-                  <ColorPicker
-                    modal
-                    side="right"
-                    align="start"
-                    color={field.value}
-                    onChangeColor={field.onChange}
-                  >
-                    <div className="hover:cursor-pointer">
-                      <PaletteIcon size={16} />
-                    </div>
-                  </ColorPicker>
-                )}
-              </FormControlCustom>
+        <WishlistFormComponent form={mutation.form} response={selectWishlist} />
 
-              <FormControlCustom
-                control={mutation.form.control}
-                name="icon"
-                containerClassName="space-y-0"
-              >
-                {({ field }) => (
-                  <IconPicker
-                    modal
-                    side="right"
-                    align="start"
-                    value={(field.value as any) || 'tag'}
-                    onValueChange={field.onChange}
-                  >
-                    <div className="hover:cursor-pointer">
-                      <LaughIcon size={16} />
-                    </div>
-                  </IconPicker>
-                )}
-              </FormControlCustom>
-            </div>
-          </div>
+        <IncomeFormComponent form={mutation.form} response={selectIncome} />
+
+        {(!wishlist || Object.values(wishlist || {}).length === 0) && (
+          <>
+            <CategoryFormComponent form={mutation.form} response={selectCategories} />
+          </>
+        )}
+
+        <InputFormControl
+          name="description"
+          label="Descrição"
+          placeholder="Ex.: Comprar um presente, Fazer uma viagem, etc."
+          control={mutation?.form?.control}
+        />
+
+        <RecurrenceFormComponent label="Despesa" form={mutation.form} />
+
+        <PriorityFormComponent form={mutation.form} />
+
+        <FormControlCustom
+          name="estimatedDate"
+          label="Data Estimada"
+          control={mutation.form.control}
+        >
+          {({ field }) => (
+            <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
+          )}
+        </FormControlCustom>
+
+        <div className="grid grid-cols-2 gap-3">
+          <FormControlCustom name="startDate" label="Data Inicial" control={mutation.form.control}>
+            {({ field }) => (
+              <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
+            )}
+          </FormControlCustom>
+          <FormControlCustom name="endDate" label="Data Final" control={mutation.form.control}>
+            {({ field }) => (
+              <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
+            )}
+          </FormControlCustom>
         </div>
-        <div className="grid gap-3">
-          <InputFormControl
-            label="Nome"
-            control={mutation?.form?.control}
-            name="name"
-            placeholder="Ex.: Transporte, Alimentação, Lazer"
-          />
-        </div>
+
+        <FormControlCustom
+          label="Montante Estimado"
+          name="estimatedAmount"
+          control={mutation?.form?.control}
+        >
+          {({ field }) => (
+            <InputMoney value={field.value} onChangeValue={field.onChange} placeholder="0,00" />
+          )}
+        </FormControlCustom>
+
+        <InputFormControl
+          name="quantity"
+          label="Quantidade"
+          control={mutation?.form?.control}
+          placeholder="0"
+        />
+
+        <FormControlCustom label="Total" name="total" control={mutation?.form?.control}>
+          {({ field }) => (
+            <InputMoney value={field.value} onChangeValue={field.onChange} placeholder="0,00" />
+          )}
+        </FormControlCustom>
+
+        <StatusFormComponent form={mutation.form} statusMap={EXPENSE_STATUS_MAP} />
+
+        <LocationPricesFormComponent control={mutation.form.control} name="prices" />
       </div>
     </SheetForm>
   );

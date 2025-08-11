@@ -18,6 +18,7 @@ export interface FormControlProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
 > {
+  require?: boolean;
   defaultValue?: any;
   name: TName;
   control?: Control<TFieldValues>;

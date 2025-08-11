@@ -14,7 +14,7 @@ interface LocationPricesProps<
   control?: Control<TFieldValues>;
 }
 
-export function LocationPrices<
+export function LocationPricesFormComponent<
   TFieldValues extends FieldValues,
   TName extends FieldArrayPath<TFieldValues>,
 >(props: LocationPricesProps<TFieldValues, TName>) {

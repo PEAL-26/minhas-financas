@@ -7,7 +7,6 @@ export const expense = sqliteTable('expenses', {
   wishlistId: text('wishlist_id'),
   incomeId: text('income_id'),
   categoryId: text('category_id'),
-  title: text('title').notNull(),
   description: text('description'),
   estimatedDate: integer('estimated_date', { mode: 'timestamp' }),
   priority: integer().$type<PRIORITY_ENUM>().default(PRIORITY_ENUM.NORMAL),

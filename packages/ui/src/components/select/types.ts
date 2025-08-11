@@ -1,4 +1,4 @@
-import { ChangeEvent, ElementType } from 'react';
+import { ChangeEvent } from 'react';
 
 export interface SetValueOption {
   shouldValidate: boolean;
@@ -8,13 +8,13 @@ export interface SetValueOption {
 
 export interface SelectSearchProps<T> {
   name?: string;
-  onChange?: (event: ChangeEvent<HTMLElement>) => void;
   items?: T[];
+  item?: T;
   defaultItem?: T;
+  itemValue?: any;
   placeholder?: string;
   fieldValue?: keyof T;
   fieldLabel?: keyof T;
-  setValue?: (name: any, value?: T, options?: Partial<SetValueOption>) => void;
   disabled?: boolean;
   loading?: boolean;
   clean?: boolean;
@@ -23,10 +23,11 @@ export interface SelectSearchProps<T> {
   contentGroupClassName?: string;
   contentItemClassName?: string;
   listClassName?: string;
-  onClean?: (state: false) => void;
-  onSearch?: (value: string) => void;
-  offlineSearch?: boolean;
-  onSelect?: (item: T) => void;
-  item?: T;
   modal?: boolean;
+  offlineSearch?: boolean;
+  onClean?: (state: false) => void;
+  onChange?: (event: ChangeEvent<HTMLElement>) => void;
+  onSearch?: (value: string) => void;
+  onSelect?: (item: T) => void;
+  setValue?: (name: any, value?: T, options?: Partial<SetValueOption>) => void;
 }

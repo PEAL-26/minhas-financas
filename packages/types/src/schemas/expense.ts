@@ -3,9 +3,10 @@ import z from 'zod';
 import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 
 import { PRIORITY_ENUM, PRIORITY_MAP } from '../priority';
-import { RECURRENCE_TYPE_ENUM } from '../recurrence';
-import { EXPENSE_STATUS_ENUM } from '../status';
+import { RECURRENCE_TYPE_ENUM, RECURRENCE_TYPE_MAP } from '../recurrence';
+import { EXPENSE_STATUS_ENUM, EXPENSE_STATUS_MAP } from '../status';
 
+import { enumValidate } from '../helpers/zod';
 import * as category from './category';
 import * as income from './income';
 import * as price from './price';
@@ -32,24 +33,21 @@ export const base = z.object({
       id: idSchema,
     })
     .nullish(),
-  title: z.string({ error: 'Campo obrigatório.' }),
   description: z.string().nullish(),
   estimatedDate: z.date().nullish(),
   priority: z
-    .enum(PRIORITY_ENUM, {
-      error: `Valor inválido (deve ser ${Object.values(PRIORITY_MAP)
-        .map((v) => v.display)
-        .join(', ')})`,
-    })
+    .enum(PRIORITY_ENUM, enumValidate(PRIORITY_MAP))
     .default(PRIORITY_ENUM.NORMAL)
     .optional(),
-  type: z.enum(RECURRENCE_TYPE_ENUM),
-  recurrence: z.int().nullish(),
-  startDate: z.date().nullish(),
-  endDate: z.date().nullish(),
-  estimatedAmount: z.number().nullish(),
-  quantity: z.number().nullish(),
-  total: z.number().nullish(),
+  type: z
+    .enum(RECURRENCE_TYPE_ENUM, enumValidate(RECURRENCE_TYPE_MAP))
+    .default(RECURRENCE_TYPE_ENUM.UNIQUE),
+  recurrence: z.int({ error: 'Valor inválido' }).nullish(),
+  startDate: z.date({ error: 'Data inválida' }).nullish(),
+  endDate: z.date({ error: 'Data inválida' }).nullish(),
+  estimatedAmount: z.number({ error: 'Valor inválido' }).nullish(),
+  quantity: z.number({ error: 'Valor inválido' }).nullish(),
+  total: z.number({ error: 'Valor inválido' }).nullish(),
   prices: z
     .array(
       z.object({
@@ -58,13 +56,15 @@ export const base = z.object({
       }),
     )
     .optional(),
-  status: z.enum(EXPENSE_STATUS_ENUM).default(EXPENSE_STATUS_ENUM.PENDING).optional(),
+  status: z
+    .enum(EXPENSE_STATUS_ENUM, enumValidate(EXPENSE_STATUS_MAP))
+    .default(EXPENSE_STATUS_ENUM.PENDING)
+    .optional(),
 });
 
 export const expenseSchema = base.transform((schema) => {
   return {
     ...schema,
-    name: schema?.title?.trim(),
     description: checkNullUndefinedValue(schema.description, {
       convert: 'emptyToNull',
       fn: (value) => String(value).trim(),

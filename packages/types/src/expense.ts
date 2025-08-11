@@ -11,7 +11,6 @@ export type Expense = {
   wishlist?: Wishlist | null;
   income?: Income | null;
   category?: Category | null;
-  title: string;
   description?: string | null;
   estimatedDate?: Date | null;
   priority: PRIORITY_ENUM;

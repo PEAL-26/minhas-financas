@@ -4,8 +4,6 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { LuCheck } from 'react-icons/lu';
 
 import { cn } from '../../lib/utils';
-import { Popover, PopoverContent, PopoverTrigger } from '../popover';
-import { SelectSearchButton } from './button';
 import {
   Command,
   CommandEmpty,
@@ -15,6 +13,8 @@ import {
   CommandList,
   CommandLoading,
 } from '../command';
+import { Popover, PopoverContent, PopoverTrigger } from '../popover';
+import { SelectSearchButton } from './button';
 import { SelectSearchProps } from './types';
 
 export function SelectSearch<T>(props: SelectSearchProps<T>) {
@@ -23,7 +23,6 @@ export function SelectSearch<T>(props: SelectSearchProps<T>) {
     items = [],
     item,
     placeholder = 'Selecione um item...',
-    setValue,
     fieldValue = 'id' as keyof T,
     fieldLabel = 'name' as keyof T,
     disabled = false,
@@ -34,12 +33,14 @@ export function SelectSearch<T>(props: SelectSearchProps<T>) {
     contentGroupClassName,
     contentItemClassName,
     listClassName,
+    offlineSearch = false,
+    modal,
+    itemValue,
     onChange,
     onClean,
     onSearch,
-    offlineSearch = false,
     onSelect,
-    modal,
+    setValue,
   } = props;
 
   const popoverRef = useRef(null);
@@ -101,6 +102,14 @@ export function SelectSearch<T>(props: SelectSearchProps<T>) {
     handleSelect(item, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
+
+  useEffect(() => {
+    const item = items.find((i) => String(i[fieldValue]) === String(itemValue));
+    if (item) {
+      handleSelect(item, false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemValue]);
 
   return (
     <Popover

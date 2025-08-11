@@ -5,14 +5,14 @@ import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
 import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
 import { formatDate } from '@repo/helpers/date';
-import { Expense } from '@repo/types/expense';
-import { EXPENSE_STATUS_MAP } from '@repo/types/status';
+import { Income } from '@repo/types/income';
+import { INCOME_STATUS_MAP } from '@repo/types/status';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
 import { Badge } from '@repo/ui/badge';
 import { useState } from 'react';
-import { ExpenseFormSheet } from '../form';
+import { IncomeFormSheet } from '../form';
 
-export function ListExpensesTemplate() {
+export function ListIncomesTemplate() {
   const [page, setPage] = useQueryStateParams<number>('page', 'int');
   const [size, setSize] = useQueryStateParams<number>('size', 'int');
   const [query] = useQueryStateParams('q');
@@ -20,11 +20,11 @@ export function ListExpensesTemplate() {
   const [form, setForm] = useState<{ id?: string; open: boolean }>({ open: false });
   const [alertDelete, setAlertDelete] = useState<{ id?: string; open: boolean }>({ open: false });
 
-  const remove = useDelete({ repositoryName: 'expense', queryKey: ['expenses'] });
+  const remove = useDelete({ repositoryName: 'income', queryKey: ['incomes'] });
 
-  const listPaginate = useListPaginate<Expense>({
-    repositoryName: 'expense',
-    queryKey: ['expenses'],
+  const listPaginate = useListPaginate<Income>({
+    repositoryName: 'income',
+    queryKey: ['incomes'],
     query,
     size,
     page,
@@ -42,17 +42,17 @@ export function ListExpensesTemplate() {
               name: 'description',
               title: 'Despesa',
               render: (item) => {
-                const expense = item?.wishlist || {
+                const income = item?.wishlist || {
                   name: item?.description || 'Desconhecido',
                   category: item?.category,
                 };
 
                 return (
                   <CategoryComponent
-                    title={expense.name}
-                    description={expense?.category?.name}
-                    backgroundColor={expense?.category?.color}
-                    icon={expense?.category?.icon}
+                    title={income.name}
+                    description={income?.category?.name}
+                    backgroundColor={income?.category?.color}
+                    icon={income?.category?.icon}
                   />
                 );
               },
@@ -70,7 +70,7 @@ export function ListExpensesTemplate() {
               name: 'status',
               title: 'Estado',
               render: (item) => {
-                const status = EXPENSE_STATUS_MAP[item.status];
+                const status = INCOME_STATUS_MAP[item.status];
                 return <Badge style={{ backgroundColor: status.color }}>{status.display}</Badge>;
               },
             },
@@ -80,7 +80,7 @@ export function ListExpensesTemplate() {
         />
       </div>
 
-      <ExpenseFormSheet onClose={() => setForm({ open: false })} open={form.open} id={form.id} />
+      <IncomeFormSheet onClose={() => setForm({ open: false })} open={form.open} id={form.id} />
       <AlertDialogCustom
         description="Esta ação não pode ser desfeita. Isso excluirá permanentemente a despesa."
         id={alertDelete?.id}

@@ -136,7 +136,9 @@ export function CustomCardDropdown<T>(props: Props<T>) {
                       backgroundColor={(item as any)?.backgroundColor}
                       borderColor={(item as any)?.borderColor}
                       icon={(item as any)?.icon}
+                      showIcon={(item as any)?.showIcon}
                       onClick={() => handleChangeItem(item)}
+                      titleClassName={(item as any)?.className}
                     />
                   </CommandItem>
                 ))}

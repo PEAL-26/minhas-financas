@@ -64,7 +64,7 @@ export const walletsMockData = [
   {
     id: 'wallet_1',
     title: 'Primary Wallet',
-    accountId: 'acc_1',
+    account: accountsMockData[0],
     reference: 'WALLET_REF_1',
     iban: 'US123456789',
     currencies: ['USD'],
@@ -73,7 +73,7 @@ export const walletsMockData = [
   {
     id: 'wallet_2',
     title: 'Secondary Wallet',
-    accountId: 'acc_1',
+    account: accountsMockData[1],
     reference: 'WALLET_REF_2',
     currencies: ['EUR'],
     active: true,
@@ -180,7 +180,7 @@ export const wishlistsMockData = [
   {
     id: 'wish_1',
     name: 'New Laptop',
-    categoryId: 'cat_2',
+    category: categoriesMockData[0],
     estimatedCost: 1200,
     priority: PRIORITY_ENUM.HIGH,
     status: WISHLIST_STATUS_ENUM.PENDING,

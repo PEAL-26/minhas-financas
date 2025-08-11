@@ -1,3 +1,4 @@
+import { CurrenciesFormComponent } from '@/components/ui/forms/currencies';
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud';
@@ -8,6 +9,7 @@ import { InputFormControl } from '@repo/ui/form/control/input';
 import { showToastError } from '@repo/ui/helpers/toast';
 import { IconComponent } from '@repo/ui/icon-component';
 import { cn } from '@repo/ui/lib/utils';
+
 import { AccountFormProps } from './types';
 
 export function AccountFormSheet(props: AccountFormProps) {
@@ -65,24 +67,23 @@ export function AccountFormSheet(props: AccountFormProps) {
             </div>
           )}
         </FormControlCustom>
+
         <InputFormControl
           control={mutation?.form?.control}
           label="Nome"
           name="name"
           placeholder="Ex.: Banco BAI, PayPal, Metamask"
         />
-        <InputFormControl
-          control={mutation?.form?.control}
-          label="Moedas"
-          name="currencies"
-          placeholder="Ex.: AOA, USD, BTC"
-        />
+
+        <CurrenciesFormComponent form={mutation.form} />
+
         <InputFormControl
           control={mutation?.form?.control}
           label="Site"
           name="siteUrl"
           placeholder="Ex.: www.site.com"
         />
+        
         <InputFormControl
           control={mutation?.form?.control}
           label="Código Swift"

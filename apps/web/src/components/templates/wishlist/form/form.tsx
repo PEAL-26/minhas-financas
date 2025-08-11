@@ -1,31 +1,21 @@
-import { useState } from 'react';
-
-import { CustomCardDropdown } from '@/components/ui/custom-card-dropdown';
-import { LocationPrices } from '@/components/ui/location-prices';
+import { LocationPricesFormComponent } from '@/components/ui/forms/location-prices';
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud';
 import { useQuerySelect } from '@repo/database/hooks/use-query-select';
-import { includesEnum } from '@repo/helpers/enum';
-import { PRIORITY_ENUM, PRIORITY_MAP } from '@repo/types/priority';
-import {
-  RECURRENCE_ENUM,
-  RECURRENCE_MAP,
-  RECURRENCE_TYPE_ENUM,
-  RECURRENCE_TYPE_MAP,
-} from '@repo/types/recurrence';
 import { WishlistSchemaType } from '@repo/types/schemas';
 import { WISHLIST_STATUS_MAP } from '@repo/types/status';
-import { colors } from '@repo/ui/colors';
 import { DatePicker } from '@repo/ui/date-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
 import { SelectFormControl } from '@repo/ui/form/control/select';
 import { showToastError } from '@repo/ui/helpers/toast';
-import { Input } from '@repo/ui/input';
 import { InputMoney } from '@repo/ui/input-money';
-import { cn } from '@repo/ui/lib/utils';
 
+import { CategoryFormComponent } from '@/components/ui/forms/category';
+import { PriorityFormComponent } from '@/components/ui/forms/priority';
+import { RecurrenceFormComponent } from '@/components/ui/forms/recurrence';
+import { StatusFormComponent } from '@/components/ui/forms/status';
 import { WishlistFormProps } from './types';
 
 export function WishlistFormSheet(props: WishlistFormProps) {
@@ -43,15 +33,6 @@ export function WishlistFormSheet(props: WishlistFormProps) {
     onError: (error) => {
       showToastError(error);
     },
-  });
-
-  const [recurrenceCustomValue, setRecurrenceCustomValue] = useState(() => {
-    const recurrence = mutation.form.getValues('recurrence');
-    if (!includesEnum(RECURRENCE_ENUM, recurrence)) {
-      return String(recurrence || '');
-    }
-
-    return '';
   });
 
   const selectCategories = useQuerySelect({
@@ -76,29 +57,7 @@ export function WishlistFormSheet(props: WishlistFormProps) {
       contentClassName="gap-0"
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
-        <FormControlCustom label="Categoria" name="category" control={mutation?.form?.control}>
-          {({ field }) => {
-            return (
-              <CustomCardDropdown
-                modal
-                title={field.value?.name}
-                backgroundColor={field.value?.color || colors.primary.DEFAULT}
-                icon={field.value?.icon || 'tag'}
-                labelField="name"
-                placeholder="Selecione uma categoria"
-                onChange={({ backgroundColor, ...rest }) =>
-                  field.onChange({ ...rest, color: backgroundColor })
-                }
-                items={selectCategories.data.map(({ color, ...rest }) => ({
-                  ...rest,
-                  backgroundColor: color,
-                }))}
-                onSearch={selectCategories.search}
-                loading={selectCategories.isLoadingAll}
-              />
-            );
-          }}
-        </FormControlCustom>
+        <CategoryFormComponent form={mutation.form} response={selectCategories} />
 
         <InputFormControl
           name="name"
@@ -107,82 +66,9 @@ export function WishlistFormSheet(props: WishlistFormProps) {
           placeholder="Ex.: Comprar um presente, Fazer uma viagem, etc."
         />
 
-        <FormControlCustom control={mutation.form.control} name="type" label="Necessidade">
-          {({ field }) => (
-            <div className="grid w-full grid-cols-2 gap-3">
-              {Object.entries(RECURRENCE_TYPE_MAP).map(([key, value]) => (
-                <div
-                  onClick={() => {
-                    if (key === RECURRENCE_TYPE_ENUM.UNIQUE) {
-                      mutation.form.setValue('recurrence', null);
-                    }
+        <RecurrenceFormComponent label="Necessidade" form={mutation.form} />
 
-                    field.onChange(key);
-                  }}
-                  className={cn(
-                    'flex w-full flex-col items-center justify-center gap-1 rounded-lg border p-3 transition-all hover:cursor-pointer hover:bg-gray-100',
-                    field.value === key && 'bg-gray-100',
-                  )}
-                >
-                  <span className="text-center text-xs">{value.display}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </FormControlCustom>
-
-        {mutation.form.watch('type') === RECURRENCE_TYPE_ENUM.RECURRENCE && (
-          <FormControlCustom control={mutation.form.control} name="recurrence" label="Recorrência">
-            {({ field }) => (
-              <div className="flex items-center gap-2">
-                {Object.entries(RECURRENCE_MAP).map(([key, value]) => (
-                  <div
-                    onClick={() => {
-                      setRecurrenceCustomValue('');
-                      field.onChange(Number(key));
-                    }}
-                    className={cn(
-                      'flex h-[36px] w-full flex-col items-center justify-center gap-1 rounded-lg border p-2 transition-all hover:cursor-pointer hover:bg-gray-100',
-                      (field.value as any) === (key ? Number(key) : null) &&
-                        !recurrenceCustomValue?.trim() &&
-                        'bg-gray-100',
-                    )}
-                  >
-                    <span className="text-center text-[10px]">{value.display}</span>
-                  </div>
-                ))}
-                <Input
-                  value={recurrenceCustomValue}
-                  onChange={(e) => {
-                    const value = (e.currentTarget as any)?.value || '';
-                    setRecurrenceCustomValue(value);
-                    field.onChange(Number(value || 0) || null);
-                  }}
-                  placeholder="Personalizado"
-                  className="text-[10px] placeholder:text-[10px] placeholder:text-gray-400"
-                />
-              </div>
-            )}
-          </FormControlCustom>
-        )}
-
-        <FormControlCustom control={mutation.form.control} name="priority" label="Prioridade">
-          {({ field }) => (
-            <div className="grid w-full grid-cols-3 gap-3">
-              {Object.entries(PRIORITY_MAP).map(([key, value]) => (
-                <div
-                  onClick={() => field.onChange(Number(key))}
-                  className={cn(
-                    'flex w-full flex-col items-center justify-center gap-1 rounded-lg border p-3 transition-all hover:cursor-pointer hover:bg-gray-100',
-                    String(field.value || PRIORITY_ENUM.NORMAL) === key && 'bg-gray-100',
-                  )}
-                >
-                  <span className="text-center text-xs">{value.display}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </FormControlCustom>
+        <PriorityFormComponent form={mutation.form} />
 
         <FormControlCustom name="targetDate" label="Data Prevista" control={mutation.form.control}>
           {({ field }) => (
@@ -221,23 +107,9 @@ export function WishlistFormSheet(props: WishlistFormProps) {
           )}
         </FormControlCustom>
 
-        {id && (
-          <SelectFormControl
-            modal
-            control={mutation.form.control}
-            name="status"
-            label="Estado"
-            className="w-full bg-white"
-            items={Object.entries(WISHLIST_STATUS_MAP).map(([key, value]) => ({
-              id: key,
-              key,
-              name: value.display,
-              color: value.color,
-            }))}
-          />
-        )}
+        {id && <StatusFormComponent form={mutation.form} statusMap={WISHLIST_STATUS_MAP} />}
 
-        <LocationPrices control={mutation.form.control} name="prices" />
+        <LocationPricesFormComponent control={mutation.form.control} name="prices" />
       </div>
     </SheetForm>
   );

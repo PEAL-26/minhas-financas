@@ -9,7 +9,16 @@ export function FormControlCustom<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
 >(props: FormControlProps<TFieldValues, TName>) {
-  const { name, control, label, containerClassName, showError = true, defaultValue, children } = props;
+  const {
+    name,
+    control,
+    label,
+    containerClassName,
+    showError = true,
+    require = false,
+    defaultValue,
+    children,
+  } = props;
 
   return (
     <FormField
@@ -18,7 +27,11 @@ export function FormControlCustom<
       defaultValue={defaultValue}
       render={(props) => (
         <FormItem className={containerClassName}>
-          {label && <FormLabel className="font-bold text-black">{label}</FormLabel>}
+          {label && (
+            <FormLabel require={require} className="font-bold text-black">
+              {label}
+            </FormLabel>
+          )}
           <FormControl>
             <>{children(props)}</>
           </FormControl>

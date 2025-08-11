@@ -16,10 +16,10 @@ export enum WISHLIST_STATUS_ENUM {
 }
 
 export const WISHLIST_STATUS_MAP = {
-  [WISHLIST_STATUS_ENUM.PENDING]: { display: 'Pendente', color: '' },
-  [WISHLIST_STATUS_ENUM.DONE]: { display: 'Feito', color: '' },
-  [WISHLIST_STATUS_ENUM.STARTED]: { display: 'Iniciada', color: '' },
-  [WISHLIST_STATUS_ENUM.CONVERTED_EXPENSE]: { display: 'Convertida em Despesa', color: '' },
+  [WISHLIST_STATUS_ENUM.PENDING]: { display: 'Pendente', color: '#facc15' },
+  [WISHLIST_STATUS_ENUM.DONE]: { display: 'Feito', color: '#2AB546' },
+  [WISHLIST_STATUS_ENUM.STARTED]: { display: 'Iniciada', color: '#1E90FF' },
+  [WISHLIST_STATUS_ENUM.CONVERTED_EXPENSE]: { display: 'Convertida em Despesa', color: '#FF4500' },
 };
 
 export enum EXPENSE_STATUS_ENUM {
@@ -29,9 +29,9 @@ export enum EXPENSE_STATUS_ENUM {
 }
 
 export const EXPENSE_STATUS_MAP = {
-  [EXPENSE_STATUS_ENUM.PENDING]: { display: 'Pendente' },
-  [EXPENSE_STATUS_ENUM.DONE]: { display: 'Feito' },
-  [EXPENSE_STATUS_ENUM.DELAYED]: { display: 'Atrasada' },
+  [EXPENSE_STATUS_ENUM.PENDING]: { display: 'Pendente', color: '#facc15' },
+  [EXPENSE_STATUS_ENUM.DONE]: { display: 'Feito', color: '#2AB546' },
+  [EXPENSE_STATUS_ENUM.DELAYED]: { display: 'Atrasada', color: '#ef4444' },
 };
 
 export enum INCOME_STATUS_ENUM {

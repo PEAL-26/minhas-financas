@@ -1,17 +1,17 @@
-import { CustomCardDropdown } from '@/components/ui/custom-card-dropdown';
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud';
 import { useQuerySelect } from '@repo/database/hooks/use-query-select';
-import { ACCOUNT_TYPE_ENUM, ACCOUNT_TYPE_MAP } from '@repo/types/account';
+import { ACCOUNT_TYPE_ENUM } from '@repo/types/account';
 import { WalletSchemaType } from '@repo/types/schemas';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
 import { TextareaFormControl } from '@repo/ui/form/control/textarea';
 import { showToastError } from '@repo/ui/helpers/toast';
-import { MultiSelect } from '@repo/ui/multi-select';
 import { Switch } from '@repo/ui/switch';
 
+import { AccountFormComponent } from '@/components/ui/forms/account';
+import { CurrenciesFormComponent } from '@/components/ui/forms/currencies';
 import { Label } from '@repo/ui/label';
 import { WalletFormProps } from './types';
 
@@ -54,42 +54,7 @@ export function WalletFormSheet(props: WalletFormProps) {
       contentClassName="gap-0"
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
-        <FormControlCustom name="account" control={mutation.form.control}>
-          {({ field }) => {
-            const type = ACCOUNT_TYPE_MAP?.[field?.value?.type];
-            return (
-              <CustomCardDropdown
-                title={field.value?.name}
-                description={type?.display}
-                backgroundColor={'transparent'}
-                borderColor={type?.color || 'transparent'}
-                color={type?.color || 'black'}
-                icon={type?.icon || 'wallet'}
-                labelField="name"
-                placeholder="Selecione uma conta"
-                items={selectAccounts.data.map((account: any) => {
-                  const type = ACCOUNT_TYPE_MAP?.[account.type as keyof typeof ACCOUNT_TYPE_MAP];
-                  return {
-                    ...account,
-                    ...type,
-                    description: type?.display,
-                    backgroundColor: 'transparent',
-                    borderColor: type?.color || 'transparent',
-                  };
-                })}
-                onChange={(account) => {
-                  if (account?.type !== ACCOUNT_TYPE_ENUM.BANK) {
-                    mutation?.form?.setValue('iban', null);
-                  }
-
-                  field.onChange(account);
-                }}
-                onSearch={selectAccounts.search}
-                loading={selectAccounts.isLoadingAll}
-              />
-            );
-          }}
-        </FormControlCustom>
+        <AccountFormComponent form={mutation.form} response={selectAccounts} />
 
         <InputFormControl
           name="title"
@@ -121,25 +86,7 @@ export function WalletFormSheet(props: WalletFormProps) {
           control={mutation?.form?.control}
         />
 
-        <FormControlCustom label="Moedas" name="currencies" control={mutation.form.control}>
-          {({ field }) => {
-            return (
-              <MultiSelect
-                modal
-                fieldLabel="currency"
-                fieldValue="code"
-                itemsValuesSelected={field.value}
-                items={[
-                  { code: 'AOA', currency: 'Kwanza' },
-                  { code: 'USD', currency: 'Dólar' },
-                  { code: 'BTC', currency: 'Bitcoin' },
-                ]}
-                placeholder="Selecione a(s) moeda(s)"
-                onChangeItems={(items) => field.onChange(items.map((i) => i.code))}
-              />
-            );
-          }}
-        </FormControlCustom>
+        <CurrenciesFormComponent form={mutation.form} />
 
         {id && (
           <FormControlCustom name="active" control={mutation.form.control}>

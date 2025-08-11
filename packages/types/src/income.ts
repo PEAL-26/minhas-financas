@@ -4,7 +4,6 @@ import { Wallet } from './wallet';
 
 export type Income = {
   id: string;
-  title: string;
   wallet?: Wallet | null;
   description?: string | null;
   amount: number;
