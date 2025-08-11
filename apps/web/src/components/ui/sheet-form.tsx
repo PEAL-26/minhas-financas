@@ -82,40 +82,38 @@ export function SheetForm<
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit}>
-        <Sheet open={open} onOpenChange={handleChangeOpen}>
-          <SheetContent className={contentClassName}>
-            <LoadingDataForm
-              isLoading={isLoadingData}
-              isError={isErrorLoadingData}
-              onReload={onReload}
-            >
-              <SheetHeader>
-                <SheetTitle>{titleDisplay}</SheetTitle>
-                {description && <SheetDescription>{description}</SheetDescription>}
-              </SheetHeader>
-              {children}
-              <SheetFooter>
-                <Button
-                  type="submit"
-                  variant="default"
-                  size="default"
-                  className="text-white"
-                  disabled={isSubmitting || isLoadingData}
-                  onClick={handleConfirm}
-                >
-                  {isSubmitting ? <Loader2Icon className="size-4 animate-spin" /> : 'Guardar'}
+      <Sheet open={open} onOpenChange={handleChangeOpen}>
+        <SheetContent className={contentClassName}>
+          <LoadingDataForm
+            isLoading={isLoadingData}
+            isError={isErrorLoadingData}
+            onReload={onReload}
+          >
+            <SheetHeader>
+              <SheetTitle>{titleDisplay}</SheetTitle>
+              {description && <SheetDescription>{description}</SheetDescription>}
+            </SheetHeader>
+            {children}
+            <SheetFooter>
+              <Button
+                type="submit"
+                variant="default"
+                size="default"
+                className="text-white"
+                disabled={isSubmitting || isLoadingData}
+                onClick={handleConfirm}
+              >
+                {isSubmitting ? <Loader2Icon className="size-4 animate-spin" /> : 'Guardar'}
+              </Button>
+              <SheetClose asChild disabled={isSubmitting || isLoadingData} onClick={onClose}>
+                <Button variant="outline" size="default">
+                  Fechar
                 </Button>
-                <SheetClose asChild disabled={isSubmitting || isLoadingData} onClick={onClose}>
-                  <Button variant="outline" size="default">
-                    Fechar
-                  </Button>
-                </SheetClose>
-              </SheetFooter>
-            </LoadingDataForm>
-          </SheetContent>
-        </Sheet>
-      </form>
+              </SheetClose>
+            </SheetFooter>
+          </LoadingDataForm>
+        </SheetContent>
+      </Sheet>
     </Form>
   );
 }

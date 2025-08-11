@@ -1,15 +1,15 @@
 'use client';
+import { useState } from 'react';
 
-import { CategoryComponent } from '@/components/ui/category-component';
 import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
 import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
-import { Category } from '@repo/types/category';
+import { Wallet } from '@repo/types/wallet';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
-import { useState } from 'react';
-import { CategoryFormSheet } from '../form';
 
-export function ListCategoriesTemplate() {
+import { WalletFormSheet } from '../form';
+
+export function ListTransactionsWalletsTemplate() {
   const [page, setPage] = useQueryStateParams<number>('page', 'int');
   const [size, setSize] = useQueryStateParams<number>('size', 'int');
   const [query] = useQueryStateParams('q');
@@ -17,11 +17,11 @@ export function ListCategoriesTemplate() {
   const [form, setForm] = useState<{ id?: string; open: boolean }>({ open: false });
   const [alertDelete, setAlertDelete] = useState<{ id?: string; open: boolean }>({ open: false });
 
-  const remove = useDelete({ repositoryName: 'category', queryKey: ['categories'] });
+  const remove = useDelete({ repositoryName: 'wallet', queryKey: ['wallets'] });
 
-  const listPaginate = useListPaginate<Category>({
-    repositoryName: 'category',
-    queryKey: ['categories'],
+  const listPaginate = useListPaginate<Wallet>({
+    repositoryName: 'wallet',
+    queryKey: ['wallets'],
     query,
     size,
     page,
@@ -36,17 +36,8 @@ export function ListCategoriesTemplate() {
           response={listPaginate}
           fields={[
             {
-              name: 'name',
-              title: 'Categoria',
-              render: (item) => {
-                return (
-                  <CategoryComponent
-                    backgroundColor={item?.color}
-                    icon={item?.icon}
-                    title={item.name}
-                  />
-                );
-              },
+              name: 'title',
+              title: 'Carteira',
             },
           ]}
           onEdit={(item) => setForm({ id: item.id, open: true })}
@@ -54,9 +45,9 @@ export function ListCategoriesTemplate() {
         />
       </div>
 
-      <CategoryFormSheet onClose={() => setForm({ open: false })} open={form.open} id={form.id} />
+      <WalletFormSheet onClose={() => setForm({ open: false })} open={form.open} id={form.id} />
       <AlertDialogCustom
-        description="Esta ação não pode ser desfeita. Isso excluirá permanentemente a categoria."
+        description="Esta ação não pode ser desfeita. Isso excluirá permanentemente a carteira."
         id={alertDelete?.id}
         fn={remove.handle}
         onClose={() => setAlertDelete({ open: false })}

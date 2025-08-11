@@ -1,7 +1,9 @@
 import { PageLayout } from '@/components/layouts/page';
 import { ListWalletActions } from '@/components/templates/wallet/actions';
+import { AddWalletButton } from '@/components/templates/wallet/actions/add-wallet-button';
+import { ListTransactionsWalletsTemplate } from '@/components/templates/wallet/list/transactions';
+import { ListWalletsTemplate } from '@/components/templates/wallet/list/wallets';
 import { MAIN_MENUS } from '@repo/constants/menus';
-import { Button } from '@repo/ui/button';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -35,19 +37,20 @@ export default function Page() {
           <div className="mt-4 rounded-md border">
             <div className="mb-2 flex items-center justify-between border-b px-3 py-2">
               <h2 className="text-xl font-bold">Minhas Carteiras</h2>
-              <Button variant="default" size="default">
-                Criar Carteira
-              </Button>
+              <AddWalletButton />
             </div>
             <div className="px-3 py-2">
               {/* Placeholder for no wallets */}
-              <p className="text-gray-500">Nenhuma carteira encontrada.</p>
+              <ListWalletsTemplate />
             </div>
           </div>
         </div>
 
         {/* Transactions */}
-        <div>{/* <ListWalletsTemplate /> */}</div>
+        <div>
+          transações
+          <ListTransactionsWalletsTemplate />
+        </div>
       </div>
     </PageLayout>
   );

@@ -1,5 +1,7 @@
 'use client';
 
+import type { FieldPath, FieldValues } from 'react-hook-form';
+import { Textarea } from '../../../textarea';
 import {
   FormControl,
   FormDescription,
@@ -7,9 +9,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@repo/ui/components/form';
-// import { Textarea } from '@repo/ui/components/textarea';
-import type { FieldPath, FieldValues } from 'react-hook-form';
+} from '../../form';
 
 import type { TextareaFormProps } from './types';
 
@@ -26,7 +26,9 @@ export function TextareaFormControl<
       render={({ field }) => (
         <FormItem>
           {label && <FormLabel className="font-bold text-black">{label}</FormLabel>}
-          <FormControl>{/* <Textarea {...field} {...rest} /> */}</FormControl>
+          <FormControl>
+            <Textarea {...field} {...rest} />
+          </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
         </FormItem>

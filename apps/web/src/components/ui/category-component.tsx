@@ -5,7 +5,10 @@ import { cn } from '@repo/ui/lib/utils';
 interface Props {
   title: string;
   description?: string | null;
+  backgroundColor?: string | null;
   color?: string | null;
+  defaultColor?: string;
+  borderColor?: string;
   icon?: string | null;
   titleClassName?: string;
   descriptionClassName?: string;
@@ -17,13 +20,16 @@ interface Props {
 
 export function CategoryComponent(props: Props) {
   const {
-    color,
     icon,
     title,
     description,
     titleClassName,
     descriptionClassName,
     containerClassName,
+    backgroundColor,
+    borderColor,
+    color,
+    defaultColor = colors.primary.DEFAULT,
     showIcon = true,
     sizeIcon = 32,
     onClick,
@@ -36,23 +42,24 @@ export function CategoryComponent(props: Props) {
       {showIcon && (
         <div
           style={{
-            backgroundColor: color || colors.primary.DEFAULT,
+            backgroundColor: backgroundColor || defaultColor,
+            borderColor: borderColor || 'transparent',
             width: sizeIcon,
             height: sizeIcon,
           }}
-          className="flex h-8 w-8 items-center justify-center rounded-full"
+          className="flex h-8 w-8 items-center justify-center rounded-full border"
         >
           <IconComponent
-            style={{ width: size, height: size }}
+            style={{ width: size, height: size, color: color || 'white' }}
             name={(icon as any) || 'tag'}
             className="size-4 text-white"
           />
         </div>
       )}
-      <div className="flex flex-col">
-        <span className={cn(titleClassName)}>{title}</span>
+      <div className="flex flex-col gap-[2px] leading-none">
+        <span className={cn('text-sm font-medium', titleClassName)}>{title}</span>
         {description && (
-          <span className={cn('text-[9px] text-gray-400', descriptionClassName)}>
+          <span className={cn('text-[8px] text-gray-400', descriptionClassName)}>
             {description}
           </span>
         )}

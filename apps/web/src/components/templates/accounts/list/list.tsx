@@ -42,9 +42,16 @@ export function ListAccountsTemplate() {
               render: (item) => {
                 const type = ACCOUNT_TYPE_MAP[item.type];
                 return (
-                  <div style={{ backgroundColor: type.color }} className="flex items-center gap-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full border">
-                      <IconComponent name={type.icon as any} className="size-4" />
+                  <div className="flex items-center gap-2">
+                    <div
+                      style={{ borderColor: type?.color }}
+                      className="flex h-10 w-10 items-center justify-center rounded-full border"
+                    >
+                      <IconComponent
+                        name={type.icon as any}
+                        color={type?.color}
+                        className="size-4"
+                      />
                     </div>
                     <div className="flex flex-col">
                       <span className="text-base font-medium text-black">{item.name}</span>

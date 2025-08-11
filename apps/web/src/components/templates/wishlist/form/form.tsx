@@ -82,12 +82,17 @@ export function WishlistFormSheet(props: WishlistFormProps) {
               <CustomCardDropdown
                 modal
                 title={field.value?.name}
-                color={field.value?.color || colors.primary.DEFAULT}
+                backgroundColor={field.value?.color || colors.primary.DEFAULT}
                 icon={field.value?.icon || 'tag'}
                 labelField="name"
                 placeholder="Selecione uma categoria"
-                onChange={field.onChange}
-                items={selectCategories.data}
+                onChange={({ backgroundColor, ...rest }) =>
+                  field.onChange({ ...rest, color: backgroundColor })
+                }
+                items={selectCategories.data.map(({ color, ...rest }) => ({
+                  ...rest,
+                  backgroundColor: color,
+                }))}
                 onSearch={selectCategories.search}
                 loading={selectCategories.isLoadingAll}
               />

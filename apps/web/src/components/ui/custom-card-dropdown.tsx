@@ -16,7 +16,10 @@ import { CategoryComponent } from './category-component';
 interface Props<T> {
   title?: string;
   description?: string;
-  color?: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  color?: string | null;
+  defaultColor?: string;
   icon?: string;
   placeholder?: string;
   items: T[];
@@ -35,6 +38,9 @@ export function CustomCardDropdown<T>(props: Props<T>) {
     title,
     description,
     color,
+    backgroundColor,
+    defaultColor,
+    borderColor,
     icon,
     placeholder = 'Selecione um item',
     labelField = 'name',
@@ -91,6 +97,9 @@ export function CustomCardDropdown<T>(props: Props<T>) {
               title={title || placeholder}
               description={description}
               color={color}
+              defaultColor={defaultColor}
+              backgroundColor={backgroundColor}
+              borderColor={borderColor}
               icon={icon}
               titleClassName={`${!title ? 'text-gray-300 font-light' : ''}`}
               sizeIcon={24}
@@ -123,6 +132,9 @@ export function CustomCardDropdown<T>(props: Props<T>) {
                       title={(item as any)?.[labelField]}
                       description={(item as any)?.description}
                       color={(item as any)?.color}
+                      defaultColor={(item as any)?.defaultColor}
+                      backgroundColor={(item as any)?.backgroundColor}
+                      borderColor={(item as any)?.borderColor}
                       icon={(item as any)?.icon}
                       onClick={() => handleChangeItem(item)}
                     />

@@ -1,6 +1,7 @@
 import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 import z from 'zod';
 
+import { ACCOUNT_TYPE_ENUM } from '../account';
 import * as account from './account';
 
 export const base = z.object({
@@ -20,11 +21,16 @@ export const base = z.object({
 });
 
 export const walletSchema = base.transform((schema) => {
+  let iban = schema?.iban;
+  if (schema?.account?.type !== ACCOUNT_TYPE_ENUM.BANK) {
+    iban = null;
+  }
+
   return {
     ...schema,
     title: schema?.title?.trim(),
     reference: schema?.reference?.trim(),
-    iban: checkNullUndefinedValue(schema?.iban, {
+    iban: checkNullUndefinedValue(iban, {
       convert: 'emptyToNull',
       fn: (value) => String(value).trim(),
     }),
