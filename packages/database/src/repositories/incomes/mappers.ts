@@ -1,12 +1,10 @@
 import { Income } from '@repo/types';
-import { walletToEntityMap } from '../wallet';
 
 export function incomeToEntityMap(raw: any): Income {
   // TODO Melhorar esse mapeamento
   return {
     id: raw.id,
-    title: raw.title,
-    wallet: walletToEntityMap(raw.wallet),
+    wallet: raw.wallet,
     description: raw.description,
     amount: raw.amount,
     type: raw.type,
@@ -25,7 +23,6 @@ export function incomeToEntityMap(raw: any): Income {
 export function incomeToDatabaseMap(raw: Income) {
   // TODO Melhorar esse mapeamento
   return {
-    title: raw.title,
     walletId: raw.wallet?.id,
     description: raw.description,
     amount: raw.amount,

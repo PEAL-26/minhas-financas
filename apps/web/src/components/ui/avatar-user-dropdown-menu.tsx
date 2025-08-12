@@ -25,7 +25,7 @@ export function AvatarUserDropdownMenu(props: Props) {
         <div>
           <Avatar className="h-14 w-14 rounded-lg bg-white hover:cursor-pointer">
             <AvatarImage src={user.avatarUrl} />
-            <AvatarFallback className="text-2xl text-gray-400 font-bold">
+            <AvatarFallback className="text-2xl font-bold text-gray-400">
               {user?.name?.split(' ')?.[0]?.substring(0, 1)?.toUpperCase() || ''}
             </AvatarFallback>
           </Avatar>

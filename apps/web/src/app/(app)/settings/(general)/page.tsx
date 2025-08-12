@@ -1,3 +1,4 @@
+import { GeneralSettingsTemplate } from '@/components/templates/general-settings';
 import { SETTINGS_MENUS } from '@repo/constants/menus';
 import { Metadata } from 'next';
 
@@ -7,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <></>;
+  return <GeneralSettingsTemplate />;
 }

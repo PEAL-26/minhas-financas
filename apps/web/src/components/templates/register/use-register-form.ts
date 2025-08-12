@@ -47,6 +47,5 @@ export function useRegisterForm() {
     isLocking,
     handleSubmit: form.handleSubmit(onSubmit),
     setIsLocking,
-    
   };
 }

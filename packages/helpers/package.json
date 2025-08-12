@@ -3,6 +3,9 @@
   "description": "",
   "version": "1.0.0",
   "author": "",
+  "dependencies": {
+    "dayjs": "^1.11.13"
+  },
   "devDependencies": {
     "@repo/config-eslint": "1.0.0",
     "@repo/config-prettier": "1.0.0",
@@ -18,8 +21,5 @@
   "license": "ISC",
   "scripts": {
     "format": "prettier ./src --write"
-  },
-  "dependencies": {
-    "dayjs": "^1.11.13"
   }
 }

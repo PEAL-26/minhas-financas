@@ -58,6 +58,10 @@ export function DatabaseProvider(props: DatabaseProviderProps) {
     return db;
   };
 
+  const handleBackup = () => {};
+
+  const handleRestore = () => {};
+
   useEffect(() => {
     if (!database) {
       const db = getDatabase();

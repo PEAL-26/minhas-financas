@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useMemo } from 'react';
 import { useDatabaseContext } from '../../contexts/database';
+import { getRepository } from '../../helpers/repository';
 import { IRepository } from '../../types';
 import { UseListAllProps } from './types';
-import { getRepository } from '../../helpers/repository';
 
 export function useListAll<T>(props: UseListAllProps) {
   const { queryKey, repositoryName, search } = props;

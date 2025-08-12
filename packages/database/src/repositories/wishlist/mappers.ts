@@ -33,10 +33,14 @@ export function wishlistToDatabaseMap(entity: Wishlist) {
     name: entity.name,
     type: entity.type,
     recurrence: entity.recurrence,
-    categoryId: entity.category?.id,
+    categoryId: checkNullUndefinedValue(entity.category, {
+      fn: (data) => data.id,
+    }),
     targetDate: entity.targetDate,
     priority: entity.priority,
-    expectedLocationId: entity.expectedLocation?.id,
+    expectedLocationId: checkNullUndefinedValue(entity.expectedLocation, {
+      fn: (data) => data.id,
+    }),
     estimatedCost: entity.estimatedCost,
     quantity: entity.quantity,
     total: entity.total,

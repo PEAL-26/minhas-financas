@@ -23,40 +23,40 @@ Este documento detalha as tarefas necessárias para implementar todas as funcion
     -   [ ] Tela de Cadastro.
     -   [ ] Tela de "Esqueci minha senha".
 -   [ ] **Implementar Lógica de Autenticação:**
-    -   [ ] Integrar as telas com o Firebase Auth (Email/Senha, Google).
-    -   [ ] Implementar a lógica de logout.
+    -   [x] Integrar as telas com o Firebase Auth (Email/Senha, Google).
+    -   [x] Implementar a lógica de logout.
 -   [ ] **Implementar Rotas Protegidas:**
     -   [ ] Configurar o `expo-router` e o `next.js` para redirecionar usuários não autenticados para a tela de login.
 
 ##  CRUD - Categorias
 
--   [ ] **Desenvolver Tela de Listagem de Categorias:**
-    -   [ ] Exibir todas as categorias do usuário.
-    -   [ ] Permitir a exclusão de uma categoria.
--   [ ] **Desenvolver Formulário de Criação/Edição de Categoria:**
-    -   [ ] Criar um formulário para adicionar e editar categorias.
-    -   [ ] Implementar a validação de dados com Zod.
+-   [x] **Desenvolver Tela de Listagem de Categorias:**
+    -   [x] Exibir todas as categorias do usuário.
+    -   [x] Permitir a exclusão de uma categoria.
+-   [x] **Desenvolver Formulário de Criação/Edição de Categoria:**
+    -   [x] Criar um formulário para adicionar e editar categorias.
+    -   [x] Implementar a validação de dados com Zod.
 -   [ ] **Implementar Lógica de Sincronização:**
     -   [ ] Sincronizar as operações de CRUD de categorias com o Firestore.
 
 ##  CRUD - Locais
 
--   [ ] **Desenvolver Tela de Listagem de Locais:**
-    -   [ ] Exibir todos os locais cadastrados pelo usuário.
-    -   [ ] Permitir a exclusão de um local.
--   [ ] **Desenvolver Formulário de Criação/Edição de Local:**
-    -   [ ] Criar um formulário para adicionar e editar locais.
-    -   [ ] Implementar a validação de dados com Zod.
+-   [x] **Desenvolver Tela de Listagem de Locais:**
+    -   [x] Exibir todos os locais cadastrados pelo usuário.
+    -   [x] Permitir a exclusão de um local.
+-   [x] **Desenvolver Formulário de Criação/Edição de Local:**
+    -   [x] Criar um formulário para adicionar e editar locais.
+    -   [x] Implementar a validação de dados com Zod.
 -   [ ] **Implementar Lógica de Sincronização:**
     -   [ ] Sincronizar as operações de CRUD de locais com o Firestore.
 
 ## 💸 CRUD - Rendas (Incomes)
 
--   [ ] **Desenvolver Tela de Listagem de Rendas:**
+-   [x] **Desenvolver Tela de Listagem de Rendas:**
     -   [ ] Exibir todas as rendas (únicas e recorrentes).
-    -   [ ] Permitir a exclusão de uma renda.
+    -   [x] Permitir a exclusão de uma renda.
 -   [ ] **Desenvolver Formulário de Criação/Edição de Renda:**
-    -   [ ] Criar um formulário completo com todos os campos da tabela `incomes`.
+    -   [x] Criar um formulário completo com todos os campos da tabela `incomes`.
     -   [ ] Implementar a lógica para rendas recorrentes.
     -   [ ] Implementar a validação de dados com Zod.
 -   [ ] **Implementar Lógica de Sincronização:**
@@ -64,11 +64,11 @@ Este documento detalha as tarefas necessárias para implementar todas as funcion
 
 ## 💳 CRUD - Despesas (Expenses)
 
--   [ ] **Desenvolver Tela de Listagem de Despesas:**
-    -   [ ] Exibir todas as despesas (únicas e recorrentes).
-    -   [ ] Permitir a exclusão de uma despesa.
+-   [x] **Desenvolver Tela de Listagem de Despesas:**
+    -   [x] Exibir todas as despesas (únicas e recorrentes).
+    -   [x] Permitir a exclusão de uma despesa.
 -   [ ] **Desenvolver Formulário de Criação/Edição de Despesa:**
-    -   [ ] Criar um formulário completo com todos os campos da tabela `expenses`.
+    -   [x] Criar um formulário completo com todos os campos da tabela `expenses`.
     -   [ ] Implementar a lógica para despesas recorrentes.
     -   [ ] Implementar a validação de dados com Zod.
 -   [ ] **Implementar Lógica de Sincronização:**
@@ -77,11 +77,11 @@ Este documento detalha as tarefas necessárias para implementar todas as funcion
 ## ✨ CRUD - Necessidades (Wishlist)
 
 -   [ ] **Desenvolver Tela de Listagem de Necessidades:**
-    -   [ ] Exibir a lista de desejos do usuário.
-    -   [ ] Permitir a exclusão de uma necessidade.
+    -   [x] Exibir a lista de desejos do usuário.
+    -   [x] Permitir a exclusão de uma necessidade.
 -   [ ] **Desenvolver Formulário de Criação/Edição de Necessidade:**
-    -   [ ] Criar um formulário para adicionar e editar necessidades.
-    -   [ ] Implementar a validação de dados com Zod.
+    -   [x] Criar um formulário para adicionar e editar necessidades.
+    -   [x] Implementar a validação de dados com Zod.
 -   [ ] **Implementar Lógica de Sincronização:**
     -   [ ] Sincronizar as operações de CRUD de necessidades com o Firestore.
 

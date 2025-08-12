@@ -28,7 +28,7 @@ function Calendar({
       weekStartsOn={0}
       firstWeekContainsDate={1}
       showOutsideDays={showOutsideDays}
-       className={cn(
+      className={cn(
         'group/calendar bg-background p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent',
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
@@ -127,18 +127,18 @@ function Calendar({
         WeekNumber: ({ children, ...props }) => {
           return (
             <td {...props}>
-              <div className="flex items-center justify-center text-center">
-                {children}
-              </div>
+              <div className="flex items-center justify-center text-center">{children}</div>
             </td>
           );
         },
-          Weekday: ({children, ...props}) => {
-          return <td {...props}>
-                  <div className="flex items-center justify-center text-center px-1 font-bold text-xs">
-                    {children?.toString().slice(0, 3).toUpperCase()}
-                  </div>
-                </td>
+        Weekday: ({ children, ...props }) => {
+          return (
+            <td {...props}>
+              <div className="flex items-center justify-center px-1 text-center text-xs font-bold">
+                {children?.toString().slice(0, 3).toUpperCase()}
+              </div>
+            </td>
+          );
         },
         ...components,
       }}

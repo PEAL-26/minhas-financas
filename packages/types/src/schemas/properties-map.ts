@@ -56,8 +56,8 @@ export const propertiesMap = {
   iban: 'IBAN',
   details: 'Detalhes',
   active: 'Ativo',
-  targetDate: 'Data Prevista', 
-  expectedLocationId: 'ID Local Previsto', 
-  expectedLocation: 'Local Previsto', 
+  targetDate: 'Data Prevista',
+  expectedLocationId: 'ID Local Previsto',
+  expectedLocation: 'Local Previsto',
   estimatedCost: 'Custo Estimado',
 };

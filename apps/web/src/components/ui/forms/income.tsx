@@ -21,7 +21,7 @@ export function IncomeFormComponent(props: Props) {
             labelField="title"
             icon={field.value?.icon || 'wallet'}
             backgroundColor="transparent"
-            borderColor={field?.value?.color || 'transparent'}
+            borderColor={field?.value?.borderColor || 'transparent'}
             color={field?.value?.color || 'black'}
             placeholder="Selecione uma renda"
             items={[
@@ -40,9 +40,12 @@ export function IncomeFormComponent(props: Props) {
                 return {
                   ...income,
                   ...type,
+                  title: income?.description || 'Não definida',
                   description: `${type?.display ? `${type.display} |` : ''} ${income?.wallet?.title ? `${income.wallet.title} |` : ''} ${income?.amount || 0}`,
                   backgroundColor: 'transparent',
                   borderColor: type?.color || 'transparent',
+                  icon: type?.icon || 'wallet',
+                  color: type?.color || 'black',
                 };
               }),
             ]}

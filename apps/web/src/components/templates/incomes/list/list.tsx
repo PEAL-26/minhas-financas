@@ -56,7 +56,7 @@ export function ListIncomesTemplate() {
                     title={item.description || ''}
                     description={`${accountType?.display ? `${accountType.display} |` : ''} ${item.wallet?.title || ''}`}
                     backgroundColor="transparent"
-                    borderColor={color}
+                    borderColor={color || 'transparent'}
                     color={color}
                     icon={icon}
                   />

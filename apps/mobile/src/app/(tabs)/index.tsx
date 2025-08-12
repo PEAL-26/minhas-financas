@@ -1,5 +1,5 @@
 //import { listTransactions } from '@/services/transactions';
-import { Image, Text, View } from 'react-native';
+import { View } from 'react-native';
 
 export default function DashboardScreen() {
   return (

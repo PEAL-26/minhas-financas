@@ -2,8 +2,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 
 import { useDatabaseContext } from '../../contexts/database';
-import { UseDeleteProps } from './types';
 import { getRepository } from '../../helpers/repository';
+import { UseDeleteProps } from './types';
 
 export function useDelete(props: UseDeleteProps) {
   const { queryKey, repositoryName } = props;

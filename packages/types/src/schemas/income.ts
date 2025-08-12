@@ -13,11 +13,9 @@ export const base = z.object({
     })
     .nullish(),
   description: z.string().nullish(),
-  amount: z
-    .number({
-      error: (e) => (e.input === undefined ? 'Campo obrigatório' : 'Valor inválido'),
-    })
-    ,
+  amount: z.number({
+    error: (e) => (e.input === undefined ? 'Campo obrigatório' : 'Valor inválido'),
+  }),
   type: z.enum(RECURRENCE_TYPE_ENUM, enumValidate(RECURRENCE_TYPE_MAP)),
   recurrence: z.int({ error: 'Valor inválido' }).nullish(),
   duration: z.int({ error: 'Valor inválido' }).nullish(),

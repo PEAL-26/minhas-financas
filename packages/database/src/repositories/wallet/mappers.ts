@@ -1,12 +1,11 @@
 import { Wallet } from '@repo/types';
-import { accountToEntityMap } from '../accounts';
 
 export function walletToEntityMap(raw: any): Wallet {
   // TODO Melhorar o mapeamento
   return {
     id: raw.id,
     title: raw.title,
-    account: accountToEntityMap(raw.account),
+    account: raw.account,
     reference: raw.reference,
     iban: raw.iban,
     details: raw.details,

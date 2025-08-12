@@ -1,25 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { FormProvider } from 'react-hook-form';
-import { View } from 'react-native';
-
-import { Button } from '@/components/ui/button';
-import { useRegister } from '@/hooks/use-register';
-
-import { ErrorComponent } from '@/components/ui/error';
-import {
-  InputAutocompleteController,
-  InputController,
-  InputDatetimeController,
-  SelectController,
-  SwitchToggleTextController,
-  TextareaController,
-} from '@/components/ui/form-controller';
-import { Loading } from '@/components/ui/loading';
-import { useQueryFilter } from '@/hooks/use-query-filter';
 
 import { BottomSheetBaseModal } from '../bottom-sheet-base-modal';
-import { transactionSchema, TransactionSchemaType } from './schema';
 import { TransactionRegisterModalProps } from './types';
 
 export function TransactionRegisterModal(props: TransactionRegisterModalProps) {
@@ -65,7 +46,7 @@ export function TransactionRegisterModal(props: TransactionRegisterModalProps) {
       title={transactionId ? 'Editar Transação' : 'Nova Transação'}
       show={show}
       onClose={onClose}
-     // isLoading={isLoading}
+      // isLoading={isLoading}
     >
       <></>
       {/* {transaction.isLoading && !transaction.isError && <Loading />}
