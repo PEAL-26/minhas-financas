@@ -12,6 +12,7 @@ export function InputMoney(props: InputMoneyProps) {
     currency,
     currencies,
     modal = true,
+    containerClassName,
     onChangeCurrency,
     onChangeValue,
     ...rest
@@ -38,7 +39,7 @@ export function InputMoney(props: InputMoneyProps) {
   }, [value]);
 
   return (
-    <div className="relative">
+    <div className={cn('relative', containerClassName)}>
       <CurrencyFormat
         {...rest}
         thousandSeparator=" "

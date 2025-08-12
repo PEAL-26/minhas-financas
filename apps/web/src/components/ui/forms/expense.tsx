@@ -1,27 +1,70 @@
+'use client';
 import { CustomCardDropdown } from '@/components/ui/custom-card-dropdown';
 import { wishlistMockData } from '@repo/database/mocks';
 import { formatCurrency } from '@repo/helpers/currency';
 import { colors } from '@repo/ui/colors';
 import { FormControlCustom } from '@repo/ui/form/control';
+import { useEffect, useState } from 'react';
 
 interface Props {
   form: any;
   response: any;
+  name?: string;
+  label?: string;
+  containerClassName?: string;
+  enableChange?: boolean;
+  item?: any | null;
+  onChange?(item: any | null): void;
 }
 
 export function ExpenseFormComponent(props: Props) {
-  const { form, response } = props;
+  const {
+    form,
+    response,
+    name = 'expense',
+    label,
+    containerClassName,
+    enableChange = true,
+    item,
+    onChange,
+  } = props;
+
+  const [currentValue, setCurrentValue] = useState(() => item);
+
+  const handleChangeItem = (item: any, field: any, update = true) => {
+    const data = item?.id === 'NULL' ? null : item;
+
+    setCurrentValue(data);
+
+    if (enableChange) {
+      field?.onChange(data);
+    }
+
+    if (update) {
+      onChange?.(data);
+    }
+  };
+
+  useEffect(() => {
+    handleChangeItem(item, undefined, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item]);
 
   return (
-    <FormControlCustom label="Despesa" name="expense" control={form?.control}>
+    <FormControlCustom
+      label={label}
+      name={name}
+      control={form?.control}
+      containerClassName={containerClassName}
+    >
       {({ field }) => {
         return (
           <CustomCardDropdown
             modal
-            title={field.value?.name}
-            description={field.value?.description}
-            backgroundColor={field.value?.backgroundColor || colors.primary.DEFAULT}
-            icon={field.value?.icon || 'tag'}
+            title={currentValue?.name}
+            description={currentValue?.description}
+            backgroundColor={currentValue?.backgroundColor || colors.primary.DEFAULT}
+            icon={currentValue?.icon || 'tag'}
             labelField="name"
             placeholder="Selecione uma despesa"
             items={[
@@ -42,11 +85,7 @@ export function ExpenseFormComponent(props: Props) {
               }),
             ]}
             onChange={(item) => {
-              if (item?.id === 'NULL') {
-                field.onChange(null);
-              } else {
-                field.onChange(item);
-              }
+              handleChangeItem(item, field);
             }}
             onSearch={response.search}
             loading={response.isLoadingAll}

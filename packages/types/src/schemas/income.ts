@@ -8,7 +8,7 @@ import * as wallet from './wallet';
 export const base = z.object({
   wallet: z
     .object({
-      ...wallet.base.shape,
+      ...wallet.base.partial().shape,
       id: z.string({ error: 'Campo obrigatório.' }),
     })
     .nullish(),

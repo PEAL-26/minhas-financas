@@ -20,7 +20,7 @@ export const base = z.object({
     .nullish(),
   category: z
     .object({
-      ...category.base.shape,
+      ...category.base.partial().shape,
       id: z.string({ error: 'Campo obrigatório.' }),
     })
     .nullish(),
@@ -48,7 +48,7 @@ export const base = z.object({
   prices: z
     .array(
       z.object({
-        ...price.base.shape,
+        ...price.base.partial().shape,
         id: z.string({ error: 'Campo obrigatório.' }),
       }),
     )

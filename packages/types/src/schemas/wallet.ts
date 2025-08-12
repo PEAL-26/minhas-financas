@@ -8,7 +8,7 @@ export const base = z.object({
   title: z.string({ error: 'Campo obrigatório.' }),
   account: z.object(
     {
-      ...account.base.shape,
+      ...account.base.partial().shape,
       id: z.string({ error: 'Campo obrigatório.' }),
     },
     { error: 'Campo obrigatório.' },

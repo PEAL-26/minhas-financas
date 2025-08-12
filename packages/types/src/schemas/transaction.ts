@@ -7,7 +7,7 @@ import * as location from './location';
 
 export const transactionIncomeSchema = z.object({
   income: z.object({
-    ...income.base.shape,
+    ...income.base.partial().shape,
     id: z.string({ error: 'Campo obrigatório.' }),
   }),
   amount: z.number(),
@@ -15,7 +15,7 @@ export const transactionIncomeSchema = z.object({
 
 export const transactionExpenseSchema = z.object({
   expense: z.object({
-    ...expense.base.shape,
+    ...expense.base.partial().shape,
     id: z.string({ error: 'Campo obrigatório.' }),
   }),
   amount: z.number(),
@@ -23,13 +23,13 @@ export const transactionExpenseSchema = z.object({
   total: z.number(),
   location: z
     .object({
-      ...location.base.shape,
+      ...location.base.partial().shape,
       id: z.string({ error: 'Campo obrigatório.' }),
     })
     .nullish(),
   income: z
     .object({
-      ...income.base.shape,
+      ...income.base.partial().shape,
       id: z.string({ error: 'Campo obrigatório.' }),
     })
     .nullish(),

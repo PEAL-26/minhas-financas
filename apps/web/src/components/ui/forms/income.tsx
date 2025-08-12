@@ -5,13 +5,22 @@ import { FormControlCustom } from '@repo/ui/form/control';
 interface Props {
   form: any;
   response: any;
+  name?: string;
+  label?: string;
+  containerClassName?: string;
+  onChange?(item?: any): void;
 }
 
 export function IncomeFormComponent(props: Props) {
-  const { form, response } = props;
+  const { form, response, name = 'income', label, containerClassName, onChange } = props;
 
   return (
-    <FormControlCustom label="Renda" name="income" control={form?.control}>
+    <FormControlCustom
+      label={label}
+      name={name}
+      control={form?.control}
+      containerClassName={containerClassName}
+    >
       {({ field }) => {
         return (
           <CustomCardDropdown
@@ -50,11 +59,9 @@ export function IncomeFormComponent(props: Props) {
               }),
             ]}
             onChange={(income) => {
-              if (income?.id === 'NULL') {
-                field.onChange(null);
-              } else {
-                field.onChange(income);
-              }
+              const data = income?.id === 'NULL' ? null : income;
+              field.onChange(data);
+              onChange?.(data);
             }}
             onSearch={response.search}
             loading={response.isLoadingAll}

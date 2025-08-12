@@ -3,7 +3,7 @@ import * as location from './location';
 
 export const base = z.object({
   location: z.object({
-    ...location.base.shape,
+    ...location.base.partial().shape,
     id: z.string({ error: 'Campo obrigatório.' }),
   }),
   amount: z.number({ error: 'Campo obrigatório.' }),

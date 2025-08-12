@@ -17,19 +17,19 @@ const idSchema = z.string({ error: 'Campo obrigatório.' });
 export const base = z.object({
   wishlist: z
     .object({
-      ...wishlist.base.shape,
+      ...wishlist.base.partial().shape,
       id: idSchema,
     })
     .nullish(),
   income: z
     .object({
-      ...income.base.shape,
+      ...income.base.partial().shape,
       id: idSchema,
     })
     .nullish(),
   category: z
     .object({
-      ...category.base.shape,
+      ...category.base.partial().shape,
       id: idSchema,
     })
     .nullish(),
@@ -51,7 +51,7 @@ export const base = z.object({
   prices: z
     .array(
       z.object({
-        ...price.base.shape,
+        ...price.base.partial().shape,
         id: idSchema,
       }),
     )

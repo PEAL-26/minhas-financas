@@ -6,6 +6,7 @@ export type InputMoneyProps = Props & {
   modal?: boolean;
   currency?: Currency;
   currencies?: Currency[];
+  containerClassName?: string;
   onChangeValue?: (value: string | undefined) => void;
   onChangeCurrency?: (currency: Currency) => void;
 };
