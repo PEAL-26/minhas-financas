@@ -1,4 +1,4 @@
-import { Account } from '@repo/types';
+import { Account } from '@repo/types/account';
 import { IRepository } from '../../types';
 
 export type AccountCreateData = Pick<

@@ -1,4 +1,4 @@
-import { Expense } from '@repo/types';
+import { Expense } from '@repo/types/expense';
 import { IRepository } from '../../types';
 
 export type ExpenseCreateData = Pick<
@@ -6,7 +6,6 @@ export type ExpenseCreateData = Pick<
   | 'wishlist'
   | 'income'
   | 'category'
-  | 'title'
   | 'description'
   | 'estimatedDate'
   | 'priority'

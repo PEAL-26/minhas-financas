@@ -1,4 +1,4 @@
-import { Expense } from '@repo/types';
+import { Expense } from '@repo/types/expense';
 import {
   DatabaseConfig,
   IDatabase,

@@ -1,4 +1,4 @@
-import { LOCATION_TYPE_ENUM } from '@repo/types';
+import { LOCATION_TYPE_ENUM } from '@repo/types/location';
 import { sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 

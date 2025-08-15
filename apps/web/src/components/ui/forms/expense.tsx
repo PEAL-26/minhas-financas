@@ -1,6 +1,5 @@
 'use client';
 import { CustomCardDropdown } from '@/components/ui/custom-card-dropdown';
-import { wishlistMockData } from '@repo/database/mocks';
 import { formatCurrency } from '@repo/helpers/currency';
 import { colors } from '@repo/ui/colors';
 import { FormControlCustom } from '@repo/ui/form/control';
@@ -74,7 +73,7 @@ export function ExpenseFormComponent(props: Props) {
                 showIcon: false,
                 className: 'text-center text-gray-300',
               },
-              ...wishlistMockData.map((item) => {
+              ...response.data.map((item: any) => {
                 const category = item.category;
                 return {
                   ...item,

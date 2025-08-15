@@ -1,6 +1,6 @@
 interface Options {
-  locales: Intl.LocalesArgument;
-  currency: string;
+  locales?: string | string[];
+  currency?: string;
 }
 
 export const formatCurrency = (value?: number | null, options?: Options) => {

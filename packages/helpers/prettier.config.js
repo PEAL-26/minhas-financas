@@ -1,2 +1,2 @@
-const baseConfig = require('@repo/config-prettier');
-module.exports = baseConfig;
+import baseConfig from '@repo/config-prettier';
+export default baseConfig;

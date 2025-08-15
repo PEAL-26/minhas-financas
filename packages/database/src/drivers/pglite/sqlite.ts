@@ -1,7 +1,7 @@
+import { PGliteInterface } from '@electric-sql/pglite';
 import {
   DatabaseConfig,
   Field,
-  IConnection,
   IDatabase,
   ListPaginateConfigs,
   PaginatedResult,
@@ -17,25 +17,8 @@ import {
   serialize,
 } from '../sqlite/utils';
 
-export class DatabasePGLite<
-  T,
-  TSQLiteStatement,
-  TTransaction,
-  SQLiteBindParams,
-  SQLiteRunResult extends { lastInsertRowId: any },
-  SQLiteVariadicBindParams extends Array<T>,
-> implements IDatabase
-{
-  constructor(
-    private connection: IConnection<
-      T,
-      TSQLiteStatement,
-      TTransaction,
-      SQLiteBindParams,
-      SQLiteRunResult,
-      SQLiteVariadicBindParams
-    >,
-  ) {}
+export class DatabasePGLite implements IDatabase {
+  constructor(private connection: PGliteInterface) {}
 
   async transaction(callback: () => Promise<void>) {
     return this.connection.withTransactionAsync(callback);
@@ -46,7 +29,8 @@ export class DatabasePGLite<
   }
 
   async query<T>(sql: string): Promise<T[]> {
-    return this.connection.getAllAsync(sql);
+    const result = await this.connection.query<T>(sql);
+    return result.rows;
   }
 
   async insert<T>(tableName: string, data: Record<string, any>): Promise<T> {
@@ -118,10 +102,10 @@ export class DatabasePGLite<
       tableName,
     ])}${includesFields} FROM ${tableName} ${includes.joins} ${whereClause}`;
 
-    const result = await this.connection.getAllAsync<T>(query);
-    if (result.length === 0) return null;
+    const result = await this.connection.query<T>(query);
+    if (result.rows.length === 0) return null;
 
-    return serialize(result[0], [tableName, ...includes.tables]) as T;
+    return serialize(result.rows[0], [tableName, ...includes.tables]) as T;
   }
 
   select<T>(fields: Field<T>, tableName: string): Promise<T[]> {
@@ -130,8 +114,8 @@ export class DatabasePGLite<
 
   async listAll<T>(tableName: string, configs?: DatabaseConfig): Promise<T[]> {
     const { baseQuery, includes } = generateQuerySql(tableName, configs);
-    const result = await this.connection.getAllAsync<T>(baseQuery);
-    const data = result.map((item) => serialize(item, [tableName, ...includes.tables]) as T);
+    const result = await this.connection.query<T>(baseQuery);
+    const data = result.rows.map((item) => serialize(item, [tableName, ...includes.tables]) as T);
 
     return data;
   }
@@ -147,15 +131,19 @@ export class DatabasePGLite<
 
     // Consulta para contar o total de itens
     const totalItemsQuery = `SELECT COUNT(*) as count FROM (${baseQuery}) as total_count_query`;
-    const totalItemsResult = await this.connection.getAllAsync<{
+    const totalItemsResult = await this.connection.query<{
       count: number;
     }>(totalItemsQuery);
-    const totalItems = parseInt(String(totalItemsResult[0].count), 10);
+
+    const totalItems = parseInt(String(totalItemsResult.rows?.[0]?.count), 10);
 
     // Consulta para obter os dados paginados
     const paginatedQuery = `${baseQuery} LIMIT ${size} OFFSET ${offset}`;
-    const result = await this.connection.getAllAsync<T>(paginatedQuery);
-    const data = result.map((item) => serialize(item, [tableName, ...includes.tables]) as T);
+    //    const result = await this.connection.getAllAsync<T>(paginatedQuery);
+    const result = await this.connection.query<T>(paginatedQuery);
+
+    console.log(result);
+    //  const data = result.map((item) => serialize(item, [tableName, ...includes.tables]) as T);
 
     // Calcular informações de paginação
     const totalPages = Math.ceil(totalItems / size);
@@ -163,7 +151,7 @@ export class DatabasePGLite<
     const next = page < totalPages ? page + 1 : null;
 
     return {
-      data,
+      data: [],
       totalItems,
       totalPages,
       currentPage: page,

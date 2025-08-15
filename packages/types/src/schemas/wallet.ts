@@ -4,11 +4,11 @@ import z from 'zod';
 import { ACCOUNT_TYPE_ENUM } from '../account';
 import * as account from './account';
 
-export const base = z.object({
+export const walletSchemaBase = z.object({
   title: z.string({ error: 'Campo obrigatório.' }),
   account: z.object(
     {
-      ...account.base.partial().shape,
+      ...account.accountSchemaBase.partial().shape,
       id: z.string({ error: 'Campo obrigatório.' }),
     },
     { error: 'Campo obrigatório.' },
@@ -20,7 +20,7 @@ export const base = z.object({
   active: z.boolean().default(true).optional(),
 });
 
-export const walletSchema = base.transform((schema) => {
+export const walletSchema = walletSchemaBase.transform((schema) => {
   let iban = schema?.iban;
   if (schema?.account?.type !== ACCOUNT_TYPE_ENUM.BANK) {
     iban = null;

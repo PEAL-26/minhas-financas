@@ -3,7 +3,7 @@ import { firebaseConfig } from '@/configs/firebase';
 import { AuthProvider } from '@repo/database/contexts/auth';
 import { DatabaseProvider } from '@repo/database/contexts/database';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 export function Providers({ children }: { children: ReactNode }) {
   const { env, connectionType, databaseDriver } = appConfig;
@@ -16,7 +16,9 @@ export function Providers({ children }: { children: ReactNode }) {
         connectionType={connectionType}
         firebaseConfig={firebaseConfig}
       >
-        <AuthProvider platform="web">{children}</AuthProvider>
+        <AuthProvider platform="web">
+          <Suspense>{children}</Suspense>
+        </AuthProvider>
       </DatabaseProvider>
     </NuqsAdapter>
   );

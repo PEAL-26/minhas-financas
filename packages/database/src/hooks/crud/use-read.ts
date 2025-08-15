@@ -1,29 +1,27 @@
-import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
 import { useDatabaseContext } from '../../contexts/database';
 import { getRepository } from '../../helpers/repository';
-import { IRepository } from '../../types';
 import { UseReadProps } from './types';
 
-export function useRead<T>(props: UseReadProps) {
+type Result<T> = Omit<UseQueryResult<T>, 'data' | 'isLoadingError'> & {
+  data: T | null;
+  isLoadingError?: boolean;
+};
+
+export function useRead<T>(props: UseReadProps): Result<T> {
   const { id, repositoryName } = props;
 
   const { getDatabase } = useDatabaseContext();
 
-  const repository = useMemo(() => {
-    const database = getDatabase();
-    const repository = getRepository(repositoryName, database) as unknown as IRepository<T>;
-
-    return repository;
-  }, []);
-
-  const { data = null, ...rest } = useQuery({
+  const { data = null, ...rest } = useQuery<T>({
     queryFn: async () => {
       if (!id) return null;
 
+      const database = await getDatabase();
+      const repository = getRepository(repositoryName, database);
       const response = await repository.getById(id);
-      return response;
+      return response as any;
     },
     queryKey: [repositoryName, id],
   });

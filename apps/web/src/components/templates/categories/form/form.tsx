@@ -1,8 +1,8 @@
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
-import { useMutation } from '@repo/database/hooks/crud';
+import { useMutation } from '@repo/database/hooks/crud/use-mutation';
 import { colorGenerate } from '@repo/helpers/color-generate';
-import { CategorySchemaType } from '@repo/types/schemas';
+import { CategorySchemaType } from '@repo/types/schemas/category';
 import { ColorPicker } from '@repo/ui/color-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';

@@ -1,4 +1,5 @@
-import { INCOME_STATUS_ENUM, RECURRENCE_TYPE_ENUM } from '@repo/types';
+import { RECURRENCE_TYPE_ENUM } from '@repo/types/recurrence';
+import { INCOME_STATUS_ENUM } from '@repo/types/status';
 import { sql } from 'drizzle-orm';
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 

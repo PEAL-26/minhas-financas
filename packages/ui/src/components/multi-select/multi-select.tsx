@@ -41,7 +41,7 @@ export function MultiSelect<T>(props: Props<T>) {
   } = props;
 
   const valuesToItemMap = (values: any[]) => {
-    return values
+    const data = values
       .map((value) => {
         const item = items.find((i) => String(i[fieldValue]) === value);
         if (item) {
@@ -51,6 +51,8 @@ export function MultiSelect<T>(props: Props<T>) {
         return null;
       })
       .filter((item) => item !== null);
+
+    return data as T[];
   };
 
   const [itemsSelected, setItemsSelected] = useState<T[]>(() => {

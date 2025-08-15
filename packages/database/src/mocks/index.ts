@@ -1,13 +1,9 @@
-import {
-  ACCOUNT_TYPE_ENUM,
-  EXPENSE_STATUS_ENUM,
-  INCOME_STATUS_ENUM,
-  LOCATION_TYPE_ENUM,
-  PRIORITY_ENUM,
-  RECURRENCE_TYPE_ENUM,
-  TRANSACTION_TYPE_ENUM,
-  WISHLIST_STATUS_ENUM,
-} from '@repo/types/index';
+import { ACCOUNT_TYPE_ENUM } from '@repo/types/account';
+import { LOCATION_TYPE_ENUM } from '@repo/types/location';
+import { PRIORITY_ENUM } from '@repo/types/priority';
+import { RECURRENCE_TYPE_ENUM } from '@repo/types/recurrence';
+import { EXPENSE_STATUS_ENUM, INCOME_STATUS_ENUM, WISHLIST_STATUS_ENUM } from '@repo/types/status';
+import { TRANSACTION_TYPE_ENUM } from '@repo/types/transaction';
 
 export const usersMockData = [
   {

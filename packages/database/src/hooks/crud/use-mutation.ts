@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
 import { useDatabaseContext } from '../../contexts/database';
@@ -20,13 +20,6 @@ export function useMutation<SchemaType extends FieldValues = any>(
 
   const { getDatabase } = useDatabaseContext();
 
-  const repository = useMemo(() => {
-    const database = getDatabase();
-    const repository = getRepository(repositoryName, database);
-
-    return repository;
-  }, []);
-
   const schema = getSchema(repositoryName);
 
   const form = useForm<SchemaType>({
@@ -44,6 +37,8 @@ export function useMutation<SchemaType extends FieldValues = any>(
       setSubmitting(true);
       setSuccess(false);
 
+      const database = await getDatabase();
+      const repository = getRepository(repositoryName, database);
       const data = await schema.parseAsync(input);
 
       if (id) {
@@ -73,6 +68,8 @@ export function useMutation<SchemaType extends FieldValues = any>(
         setIsLoadingData(true);
         setLoadingDataError(null);
 
+        const database = await getDatabase();
+        const repository = getRepository(repositoryName, database);
         const response = await repository.getById(id);
         const data = await schema.parseAsync(response);
 

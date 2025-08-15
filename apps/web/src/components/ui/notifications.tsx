@@ -8,12 +8,14 @@ export function Notifications() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className="relative">
-          {hasNotifications && (
-            <div className="absolute -right-0.5 -top-1 h-2 w-2 rounded-full bg-red-600" />
-          )}
-          <BellIcon className="h-4 w-4 stroke-white" />
-        </Button>
+        <div>
+          <Button className="relative">
+            {hasNotifications && (
+              <div className="absolute -right-0.5 -top-1 h-1.5 w-1.5 rounded-full bg-red-600" />
+            )}
+            <BellIcon className="h-4 w-4 stroke-white" />
+          </Button>
+        </div>
       </PopoverTrigger>
       <PopoverContent className="h-96 w-80 p-0" side="right" align="start">
         <div className="flex h-full flex-1 flex-col">
@@ -34,7 +36,7 @@ export function Notifications() {
                 </span>
 
                 <div className="absolute bottom-0 right-0 top-0 flex items-center justify-center">
-                  <div className="h-2 w-2 rounded-full bg-red-600" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-red-600" />
                 </div>
               </div>
             ))}

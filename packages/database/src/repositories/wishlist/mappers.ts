@@ -1,5 +1,5 @@
 import { checkNullUndefinedValue } from '@repo/helpers/checkers';
-import { Wishlist } from '@repo/types';
+import { Wishlist } from '@repo/types/wishlist';
 import { categoryToEntityMap } from '../categories';
 import { locationToEntityMap } from '../locations';
 

@@ -22,5 +22,6 @@
     "./nextjs": "./nextjs.js"
   },
   "keywords": [],
-  "license": "ISC"
+  "license": "ISC",
+  "main": "base.js"
 }

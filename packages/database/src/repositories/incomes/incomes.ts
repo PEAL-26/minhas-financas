@@ -1,4 +1,4 @@
-import { Income } from '@repo/types';
+import { Income } from '@repo/types/income';
 import {
   DatabaseConfig,
   IDatabase,

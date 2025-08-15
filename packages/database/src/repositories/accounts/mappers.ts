@@ -1,4 +1,4 @@
-import { Account } from '@repo/types';
+import { Account } from '@repo/types/account';
 
 export function accountToEntityMap(raw: any): Account {
   return {

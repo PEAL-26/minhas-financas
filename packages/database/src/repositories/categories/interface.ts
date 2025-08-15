@@ -1,4 +1,4 @@
-import { Category } from '@repo/types';
+import { Category } from '@repo/types/category';
 import { IRepository } from '../../types';
 
 export type CategoryCreateData = Pick<Category, 'name' | 'icon' | 'color'>;

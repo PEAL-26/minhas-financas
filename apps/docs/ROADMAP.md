@@ -18,7 +18,7 @@ Este documento descreve as futuras melhorias e implementações planejadas para 
 
 ## Implementações
 
-- [ ] **CRUD Completo**
+- [x] **CRUD Completo**
   - **Descrição:** Desenvolver as telas e a lógica de negócios para permitir que o usuário crie, leia, atualize e exclua todas as entidades da aplicação (categorias, transações, despesas, rendas, necessidades e locais).
 
 - [ ] **Dashboard Financeiro**

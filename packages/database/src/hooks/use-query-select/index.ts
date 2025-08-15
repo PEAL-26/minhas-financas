@@ -1,18 +1,22 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useDatabaseContext } from '../../contexts/database';
 import { getRepository } from '../../helpers/repository';
-import { IRepository, RepositoryName } from '../../types';
-import { useQueryPagination } from '../use-query-pagination';
+import { PaginatedResult, RepositoryName } from '../../types';
+import { IQueryPaginationResponse, useQueryPagination } from '../use-query-pagination';
 
-interface Props<TData, TParams = Record<string, any>> {
+interface Props {
   repositoryName: RepositoryName;
   queryKey: string[];
   defaultSize?: number;
 }
 
+type Result<TData> = IQueryPaginationResponse<TData> & {
+  search?(text: string): void;
+};
+
 export function useQuerySelect<TData = any, TParams extends Record<string, any> = any>(
-  props: Props<TData, TParams>,
-) {
+  props: Props,
+): Result<TData> {
   const { repositoryName, queryKey, defaultSize = 10 } = props;
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,13 +24,6 @@ export function useQuerySelect<TData = any, TParams extends Record<string, any> 
   //const searchQueryDebounced = ''; //useDebounceValue(searchQuery);
 
   const { getDatabase } = useDatabaseContext();
-
-  const repository = useMemo(() => {
-    const database = getDatabase();
-    const repository = getRepository(repositoryName, database) as unknown as IRepository<TData>;
-
-    return repository;
-  }, []);
 
   const selectQuery = useQueryPagination({
     // query: searchQueryDebounced,
@@ -38,9 +35,11 @@ export function useQuerySelect<TData = any, TParams extends Record<string, any> 
     ],
     enableSetPageParams: false,
     fn: async ({ page }) => {
+      const database = await getDatabase();
+      const repository = getRepository(repositoryName, database);
       const params = { page, query: searchQuery, size: defaultSize } as unknown as TParams;
       const response = await repository.listPaginate(params);
-      return response;
+      return response as PaginatedResult<TData>;
     },
   });
 

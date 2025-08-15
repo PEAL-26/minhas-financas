@@ -1,4 +1,4 @@
-import { ExpenseSchemaType } from '@repo/types';
+import { ExpenseSchemaType } from '@repo/types/schemas';
 import { ExpenseRepository } from '../repositories/expenses';
 
 export class ExpenseService {

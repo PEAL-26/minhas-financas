@@ -1,25 +1,23 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { useMemo } from 'react';
 import { useDatabaseContext } from '../../contexts/database';
 import { getRepository } from '../../helpers/repository';
-import { IRepository } from '../../types';
 import { UseListAllProps } from './types';
 
-export function useListAll<T>(props: UseListAllProps) {
+type Result<T> = Omit<UseQueryResult<T[]>, 'isLoadingError'> & {
+  data: T[];
+  isLoadingError?: boolean;
+};
+
+export function useListAll<T>(props: UseListAllProps): Result<T> {
   const { queryKey, repositoryName, search } = props;
 
   const { getDatabase } = useDatabaseContext();
 
-  const repository = useMemo(() => {
-    const database = getDatabase();
-    const repository = getRepository(repositoryName, database) as unknown as IRepository<T>;
-
-    return repository;
-  }, []);
-
   const { data = [], ...rest } = useQuery({
     queryFn: async () => {
+      const database = await getDatabase();
+      const repository = getRepository(repositoryName, database);
       const response = await repository.listAll(/* TODO Implementar queries */);
       return response as T[];
     },

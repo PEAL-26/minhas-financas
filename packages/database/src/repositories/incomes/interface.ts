@@ -1,9 +1,8 @@
-import { Income } from '@repo/types';
+import { Income } from '@repo/types/income';
 import { IRepository } from '../../types';
 
 export type IncomeCreateData = Pick<
   Income,
-  | 'title'
   | 'wallet'
   | 'description'
   | 'amount'

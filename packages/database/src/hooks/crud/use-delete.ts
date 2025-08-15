@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { useDatabaseContext } from '../../contexts/database';
 import { getRepository } from '../../helpers/repository';
@@ -9,13 +9,6 @@ export function useDelete(props: UseDeleteProps) {
   const { queryKey, repositoryName } = props;
 
   const { getDatabase } = useDatabaseContext();
-
-  const repository = useMemo(() => {
-    const database = getDatabase();
-    const repository = getRepository(repositoryName, database);
-
-    return repository;
-  }, []);
 
   const [error, setError] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +26,8 @@ export function useDelete(props: UseDeleteProps) {
 
       if (!id) throw new Error('id required');
 
+      const database = await getDatabase();
+      const repository = getRepository(repositoryName, database);
       await repository.delete(id);
 
       setTimeout(async () => {

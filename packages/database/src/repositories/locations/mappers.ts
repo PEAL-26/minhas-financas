@@ -1,4 +1,4 @@
-import { Location } from '@repo/types';
+import { Location } from '@repo/types/location';
 
 export function locationToEntityMap(raw: any): Location {
   return {

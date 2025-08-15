@@ -16,7 +16,7 @@ const APP_NAME = 'Minhas Finanças App';
 const APP_DEFAULT_TITLE = 'Minhas Finanças App';
 const APP_TITLE_TEMPLATE = '%s | Minhas Finanças App';
 const APP_DESCRIPTION =
-  'O Minhas Finanças é um sistema para gerenciar suas finanças pessoais de maneira eficaz.';
+  'Minhas Finanças é um aplicativo para gerenciar suas finanças pessoais de maneira eficaz.';
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,

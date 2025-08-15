@@ -1,4 +1,4 @@
-import { TRANSACTION_TYPE_ENUM } from '@repo/types';
+import { TRANSACTION_TYPE_ENUM } from '@repo/types/transaction';
 import { sql } from 'drizzle-orm';
 import * as t from 'drizzle-orm/sqlite-core';
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';

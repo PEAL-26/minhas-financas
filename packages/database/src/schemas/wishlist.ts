@@ -1,4 +1,6 @@
-import { PRIORITY_ENUM, RECURRENCE_TYPE_ENUM, WISHLIST_STATUS_ENUM } from '@repo/types';
+import { PRIORITY_ENUM } from '@repo/types/priority';
+import { RECURRENCE_TYPE_ENUM } from '@repo/types/recurrence';
+import { WISHLIST_STATUS_ENUM } from '@repo/types/status';
 import { sql } from 'drizzle-orm';
 import * as t from 'drizzle-orm/sqlite-core';
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';

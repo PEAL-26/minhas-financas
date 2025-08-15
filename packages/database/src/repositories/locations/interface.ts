@@ -1,4 +1,4 @@
-import { Location } from '@repo/types';
+import { Location } from '@repo/types/location';
 import { IRepository } from '../../types';
 
 export abstract class ILocationRepository extends IRepository<

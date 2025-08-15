@@ -1,3 +1,4 @@
+import { firebaseConfig } from '../configs/firebase';
 import {
   DatabaseConfig,
   Field,
@@ -37,3 +38,7 @@ export abstract class IRepository<T, TCreate = any, TUpdate = any> {
   abstract listAll(configs?: DatabaseConfig): Promise<T[]>;
   abstract listPaginate(options?: ListPaginateRepositoryOption): Promise<PaginatedResult<T>>;
 }
+
+export declare const drivers: readonly ['expo', 'pglite', 'firebase'];
+export type Driver = (typeof drivers)[number];
+export type FirebaseConfig = typeof firebaseConfig;

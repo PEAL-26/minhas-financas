@@ -5,10 +5,10 @@ import { INCOME_STATUS_ENUM, INCOME_STATUS_MAP } from '../status';
 import { enumValidate } from '../helpers/zod';
 import * as wallet from './wallet';
 
-export const base = z.object({
+export const incomeSchemaBase = z.object({
   wallet: z
     .object({
-      ...wallet.base.partial().shape,
+      ...wallet.walletSchemaBase.partial().shape,
       id: z.string({ error: 'Campo obrigatório.' }),
     })
     .nullish(),
@@ -32,7 +32,7 @@ export const base = z.object({
     .optional(),
 });
 
-export const incomeSchema = base.transform((schema) => {
+export const incomeSchema = incomeSchemaBase.transform((schema) => {
   return { ...schema };
 });
 

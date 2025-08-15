@@ -1,4 +1,4 @@
-import { User } from '@repo/types';
+import { User } from '@repo/types/user';
 import { IRepository } from '../../types';
 
 export type UserCreateData = Pick<User, 'name' | 'email' | 'passwordHash' | 'providerId'>;

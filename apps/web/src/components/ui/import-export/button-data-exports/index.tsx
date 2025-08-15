@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { AiOutlineLoading } from 'react-icons/ai';
 import { TfiExport } from 'react-icons/tfi';
 
-import { listarTodosDespesas } from '@/services/despesas';
-
 export function ExportarDados() {
   const [exportedData, setExportedData] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
@@ -12,20 +10,20 @@ export function ExportarDados() {
   const exportToTxt = async () => {
     try {
       setLoading(true);
-      const despesas = await listarTodosDespesas();
-      const formattedData = despesas.map((despesa) => {
-        const { data, data_termino, local, descricao, quantidade, preco, total } = despesa;
+      // const despesas = await listarTodosDespesas();
+      // const formattedData = despesas.map((despesa) => {
+      //   const { data, data_termino, local, descricao, quantidade, preco, total } = despesa;
 
-        const dataStr = data.toLocaleDateString('pt-PT');
-        const dataTerminoStr = data_termino ? data_termino.toLocaleDateString('pt-PT') : '';
+      //   const dataStr = data.toLocaleDateString('pt-PT');
+      //   const dataTerminoStr = data_termino ? data_termino.toLocaleDateString('pt-PT') : '';
 
-        return `${dataStr};${dataTerminoStr};${local};${descricao};${quantidade};${preco};${total}`;
-      });
+      //   return `${dataStr};${dataTerminoStr};${local};${descricao};${quantidade};${preco};${total}`;
+      // });
 
-      const txtContent = formattedData.join('\n');
-      const blob = new Blob([txtContent], { type: 'text/plain' });
+      // const txtContent = formattedData.join('\n');
+      // const blob = new Blob([txtContent], { type: 'text/plain' });
 
-      setExportedData(blob);
+      // setExportedData(blob);
 
       console.log(`Dados exportados para o arquivo`);
     } catch (error) {
@@ -38,10 +36,10 @@ export function ExportarDados() {
 
   useEffect(() => {
     if (exportedData) {
-      const downloadLink = document.createElement('a');
-      downloadLink.href = URL.createObjectURL(exportedData);
-      downloadLink.download = 'dados_exportados.txt';
-      downloadLink.click();
+      // const downloadLink = document.createElement('a');
+      // downloadLink.href = URL.createObjectURL(exportedData);
+      // downloadLink.download = 'dados_exportados.txt';
+      // downloadLink.click();
       setExportedData(null);
     }
   }, [exportedData]);

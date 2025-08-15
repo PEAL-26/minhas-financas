@@ -15,7 +15,7 @@ const config = (driver: 'expo' | 'pglite'): Config => {
   return {
     ...config,
     schema: '../../packages/database/src/schemas/*',
-    out: `'./drizzle`,
+    out: `../../packages/database/src/schemas/drizzle/${driver}`,
     casing: 'camelCase',
   };
 };

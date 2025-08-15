@@ -1,4 +1,4 @@
-import { Location } from '@repo/types';
+import { Location } from '@repo/types/location';
 import {
   DatabaseConfig,
   IDatabase,

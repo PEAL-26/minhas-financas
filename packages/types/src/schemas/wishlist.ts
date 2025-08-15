@@ -7,7 +7,7 @@ import { WISHLIST_STATUS_ENUM, WISHLIST_STATUS_MAP } from '../status';
 import * as category from './category';
 import * as price from './price';
 
-export const base = z.object({
+export const wishlistSchemaBase = z.object({
   name: z.string({ error: 'Campo obrigatório.' }),
   type: z.enum(RECURRENCE_TYPE_ENUM, {
     error: `Valor inválido (deve ser ${Object.values(RECURRENCE_TYPE_MAP)
@@ -20,7 +20,7 @@ export const base = z.object({
     .nullish(),
   category: z
     .object({
-      ...category.base.partial().shape,
+      ...category.categorySchemaBase.partial().shape,
       id: z.string({ error: 'Campo obrigatório.' }),
     })
     .nullish(),
@@ -48,14 +48,14 @@ export const base = z.object({
   prices: z
     .array(
       z.object({
-        ...price.base.partial().shape,
+        ...price.priceSchemaBase.partial().shape,
         id: z.string({ error: 'Campo obrigatório.' }),
       }),
     )
     .optional(),
 });
 
-export const wishlistSchema = base.transform((schema) => {
+export const wishlistSchema = wishlistSchemaBase.transform((schema) => {
   return {
     ...schema,
     name: schema?.name?.trim(),

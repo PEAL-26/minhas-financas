@@ -1,24 +1,21 @@
 'use client';
 
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { firebaseConfig } from '../configs/firebase';
+import { getConnection } from '../drivers/connection';
 import { DatabaseInMemory } from '../factories/database-factory';
 import { QueryClientProvider } from '../providers/query-client';
-import { IDatabase } from '../types';
+import { Driver, FirebaseConfig, IDatabase } from '../types';
 
 interface DatabaseContextProps {
-  getDatabase(): IDatabase;
+  getDatabase(): Promise<IDatabase>;
 }
-
-declare const drivers: readonly ['expo', 'pglite', 'firebase'];
-type Driver = (typeof drivers)[number];
 
 type DatabaseProviderProps = {
   driver: Driver;
   children: ReactNode;
   connectionType?: 'IN_MEMORY' | 'DATABASE_ENGINE';
   env?: 'test' | 'development' | 'production';
-  firebaseConfig?: typeof firebaseConfig;
+  firebaseConfig?: FirebaseConfig;
 };
 
 const DatabaseContext = createContext<DatabaseContextProps>({} as DatabaseContextProps);
@@ -27,30 +24,19 @@ export function DatabaseProvider(props: DatabaseProviderProps) {
   const [database, setDatabase] = useState<IDatabase | null>(null);
   const { driver, children, connectionType = 'DATABASE_ENGINE', firebaseConfig } = props || {};
 
-  const getDatabase = () => {
+  const getDatabase = async () => {
     let db = null;
 
     if (database) return database;
 
     if (connectionType === 'IN_MEMORY') {
-      db = new DatabaseInMemory();
+      db = new DatabaseInMemory() as IDatabase;
     }
 
     if (connectionType === 'DATABASE_ENGINE') {
-      if (driver === 'expo') {
-        const { DatabaseSQLite } = require('../drivers/sqlite');
-        db = new DatabaseSQLite();
-      }
+      db = await getConnection({ driver, firebaseConfig });
 
-      if (driver === 'firebase') {
-        const { DatabaseFirebase } = require('../drivers/firebase');
-        db = new DatabaseFirebase(firebaseConfig);
-      }
-
-      if (driver === 'pglite') {
-        const { DatabasePGLite } = require('../drivers/pglite');
-        db = new DatabasePGLite();
-      }
+      console.log({ db });
     }
 
     if (!db) throw new Error('Database not defined');
@@ -63,10 +49,12 @@ export function DatabaseProvider(props: DatabaseProviderProps) {
   const handleRestore = () => {};
 
   useEffect(() => {
-    if (!database) {
-      const db = getDatabase();
-      setDatabase(db);
-    }
+    (async () => {
+      if (!database) {
+        const db = await getDatabase();
+        setDatabase(db);
+      }
+    })();
   }, []);
 
   return (

@@ -2,8 +2,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { AiFillCheckCircle, AiOutlineLoading } from 'react-icons/ai';
 
-import { createBulkDespesas } from '@/services/despesas';
-
 export default function ImportarDadosInput() {
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -52,7 +50,7 @@ export default function ImportarDadosInput() {
       setIsLoading(true);
 
       const data = processData(content);
-      await createBulkDespesas(data);
+      //await createBulkDespesas(data);
 
       setContent('');
       setIsLoading(false);
@@ -104,7 +102,7 @@ export default function ImportarDadosInput() {
           placeholder="Dados a importar content..."
           required
           value={content}
-          onChange={(event) => setContent(event.target.value)}
+          onChange={(event) => setContent((event.target as any)?.value)}
         />
       </div>
       <div className="flex items-center justify-between rounded-b-md border-t border-green-700/20 bg-green-700 px-3 py-2">

@@ -14,22 +14,22 @@ import * as wishlist from './wishlist';
 
 const idSchema = z.string({ error: 'Campo obrigatório.' });
 
-export const base = z.object({
+export const expenseSchemaBase = z.object({
   wishlist: z
     .object({
-      ...wishlist.base.partial().shape,
+      ...wishlist.wishlistSchemaBase.partial().shape,
       id: idSchema,
     })
     .nullish(),
   income: z
     .object({
-      ...income.base.partial().shape,
+      ...income.incomeSchemaBase.partial().shape,
       id: idSchema,
     })
     .nullish(),
   category: z
     .object({
-      ...category.base.partial().shape,
+      ...category.categorySchemaBase.partial().shape,
       id: idSchema,
     })
     .nullish(),
@@ -51,7 +51,7 @@ export const base = z.object({
   prices: z
     .array(
       z.object({
-        ...price.base.partial().shape,
+        ...price.priceSchemaBase.partial().shape,
         id: idSchema,
       }),
     )
@@ -62,7 +62,7 @@ export const base = z.object({
     .optional(),
 });
 
-export const expenseSchema = base.transform((schema) => {
+export const expenseSchema = expenseSchemaBase.transform((schema) => {
   return {
     ...schema,
     quantity: checkNullUndefinedValue(schema.quantity, {

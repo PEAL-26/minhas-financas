@@ -1,9 +1,9 @@
-import base from "./base.js";
-import { FlatCompat } from "@eslint/eslintrc";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import tseslint from "typescript-eslint";
-import reactEsLintConfig from "./react.js";
+const base = require("./base.js");
+const { FlatCompat } = require("@eslint/eslintrc");
+const { dirname } = require("path");
+const { fileURLToPath } = require("url");
+const tseslint = require("typescript-eslint");
+const reactEsLintConfig = require("./react.js");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,4 +20,4 @@ const configs = [
   },
 ];
 
-export default tseslint.config(reactEsLintConfig, configs);
+module.exports = tseslint.config(reactEsLintConfig, configs);

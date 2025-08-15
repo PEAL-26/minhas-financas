@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "author": "",
   "dependencies": {
-    "@electric-sql/pglite": "^0.3.6",
+    "@electric-sql/pglite": "^0.3.7",
     "@electric-sql/react": "^1.0.7",
     "@hookform/resolvers": "^3.10.0",
     "@repo/helpers": "1.0.0",
@@ -12,6 +12,7 @@
     "@tanstack/react-query": "^5.60.6",
     "case-naming-converter": "^1.1.2",
     "drizzle-orm": "^0.44.4",
+    "expo-sqlite": "^15.2.14",
     "firebase": "^10.1.0",
     "pg": "^8.16.3",
     "react-hook-form": "^7.62.0"
@@ -27,13 +28,9 @@
     "typescript": "^5.3.3"
   },
   "exports": {
+    "./*": "./src/*.ts",
     "./contexts/*": "./src/contexts/*.tsx",
-    "./drivers*": "./src/drivers/*.ts",
-    "./hooks/*": "./src/hooks/*.ts",
-    "./providers/*": "./src/providers/*.ts",
-    "./repositories/*": "./src/repositories/*.ts",
-    "./schemas/*": "./src/schemas/*.ts",
-    "./types/*": "./src/types/*.ts",
+    "./providers/*": "./src/providers/*.tsx",
     "./drizzle.config": "./drizzle.config.ts"
   },
   "keywords": [],
@@ -43,6 +40,8 @@
     "react": "18.3.1"
   },
   "scripts": {
+    "build": "tsc --build --clean && tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
     "format": "prettier ./src --write"
   }
 }

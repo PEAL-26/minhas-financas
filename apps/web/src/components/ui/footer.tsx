@@ -1,4 +1,4 @@
-import { HeartIcon } from '@heroicons/react/24/solid';
+import { HeartIcon } from '@repo/ui/lib/lucide';
 import Link from 'next/link';
 
 const LINKS = [{ name: 'Github', path: 'https://github.com/PEAL-26/minhas-financas' }];

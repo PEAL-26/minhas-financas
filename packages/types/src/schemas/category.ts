@@ -1,7 +1,7 @@
 import { colorGenerate } from '@repo/helpers/color-generate';
 import { z } from 'zod';
 
-export const base = z.object({
+export const categorySchemaBase = z.object({
   name: z
     .string({ error: 'Campo Obrigatório.' })
     .min(1, { error: 'Deve ter no mínimo 1 caractere' }),
@@ -9,7 +9,7 @@ export const base = z.object({
   color: z.string({ error: 'Valor inválido.' }).nullish(),
 });
 
-export const categorySchema = base.transform((schema) => {
+export const categorySchema = categorySchemaBase.transform((schema) => {
   const color = schema.color ? schema.color : colorGenerate().rgb;
   const icon = schema.icon ? schema.icon : 'tag';
   return { name: schema?.name?.trim(), color, icon };

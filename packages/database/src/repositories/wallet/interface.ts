@@ -1,4 +1,4 @@
-import { Wallet } from '@repo/types';
+import { Wallet } from '@repo/types/wallet';
 import { IRepository } from '../../types';
 
 export type WalletCreateData = Pick<

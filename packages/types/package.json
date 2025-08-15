@@ -16,14 +16,19 @@
     "typescript": "^5.3.3"
   },
   "exports": {
-    "./*": "./src/*.ts",
-    "./schemas/*": "./src/schemas/*.ts"
+    "./*": "./dist/*.js"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [],
   "license": "ISC",
-  "main": "index.ts",
+  "main": "./dist/index.js",
   "scripts": {
+    "build": "tsc --build --clean && tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
     "format": "prettier ./src --write"
   },
-  "type": "module"
+  "type": "module",
+  "types": "./dist/index.d.ts"
 }

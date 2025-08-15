@@ -16,7 +16,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLoadingPage(false);
-    }, 300);
+    }, 600);
 
     return () => clearTimeout(timeout);
   }, []);

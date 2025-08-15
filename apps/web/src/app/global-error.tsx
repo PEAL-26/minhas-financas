@@ -1,8 +1,7 @@
 'use client';
 
-import { Button } from '@repo/ui/button';
-import { AlertCircle } from 'lucide-react';
-import Link from 'next/link';
+//import { Button } from '@repo/ui/button';
+//import { AlertCircle } from 'lucide-react';
 import { useEffect } from 'react';
 
 export default function GlobalError({
@@ -26,7 +25,7 @@ export default function GlobalError({
             <div className="mb-8">
               <div className="relative">
                 <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-destructive/10">
-                  <AlertCircle className="h-12 w-12 text-destructive" />
+                  {/* <AlertCircle className="h-12 w-12 text-destructive" /> */}
                 </div>
                 <div className="absolute -right-2 top-0">
                   <div className="h-8 w-8 animate-bounce rounded-full bg-secondary" />
@@ -49,7 +48,7 @@ export default function GlobalError({
 
             {/* Action Buttons */}
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
-              <Button
+              {/* <Button
                 onClick={reset}
                 //variant="default"
                 className="bg-secondary text-white hover:bg-secondary/90"
@@ -63,7 +62,7 @@ export default function GlobalError({
                 className="border-secondary text-secondary hover:bg-secondary/10"
               >
                 <Link href="/">Voltar para Home</Link>
-              </Button>
+              </Button> */}
             </div>
 
             {/* Error Details */}

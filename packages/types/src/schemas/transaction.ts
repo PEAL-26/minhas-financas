@@ -7,7 +7,7 @@ import * as location from './location';
 
 export const transactionIncomeSchema = z.object({
   income: z.object({
-    ...income.base.partial().shape,
+    ...income.incomeSchemaBase.partial().shape,
     id: z.string({ error: 'Campo obrigatório.' }),
   }),
   amount: z.number(),
@@ -15,7 +15,7 @@ export const transactionIncomeSchema = z.object({
 
 export const transactionExpenseSchema = z.object({
   expense: z.object({
-    ...expense.base.partial().shape,
+    ...expense.expenseSchemaBase.partial().shape,
     id: z.string({ error: 'Campo obrigatório.' }),
   }),
   amount: z.number(),
@@ -23,19 +23,19 @@ export const transactionExpenseSchema = z.object({
   total: z.number(),
   location: z
     .object({
-      ...location.base.partial().shape,
+      ...location.locationSchemaBase.partial().shape,
       id: z.string({ error: 'Campo obrigatório.' }),
     })
     .nullish(),
   income: z
     .object({
-      ...income.base.partial().shape,
+      ...income.incomeSchemaBase.partial().shape,
       id: z.string({ error: 'Campo obrigatório.' }),
     })
     .nullish(),
 });
 
-export const base = z.object({
+export const transactionSchemaBase = z.object({
   type: z.enum(TRANSACTION_TYPE_ENUM, {
     error: `Valor inválido (deve ser ${Object.values(TRANSACTION_TYPE_MAP)
       .map((v) => v.display)
@@ -48,7 +48,7 @@ export const base = z.object({
   note: z.string().nullish(),
 });
 
-export const transactionSchema = base.transform((schema) => schema);
+export const transactionSchema = transactionSchemaBase.transform((schema) => schema);
 
 export type TransactionSchemaType = z.infer<typeof transactionSchema>;
 export type TransactionIncomeSchemaType = z.infer<typeof transactionIncomeSchema>;

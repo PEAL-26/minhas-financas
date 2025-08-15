@@ -2,7 +2,7 @@ import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 import { z } from 'zod';
 import { ACCOUNT_TYPE_ENUM } from '../account';
 
-export const base = z.object({
+export const accountSchemaBase = z.object({
   name: z.string({ error: 'Campo obrigatório.' }),
   type: z.enum(ACCOUNT_TYPE_ENUM, { error: 'Campo obrigatório.' }),
   currencies: z
@@ -14,7 +14,7 @@ export const base = z.object({
   swiftCode: z.string({ error: 'Valor inválido.' }).nullish(),
 });
 
-export const accountSchema = base.transform((schema) => {
+export const accountSchema = accountSchemaBase.transform((schema) => {
   return {
     ...schema,
     name: schema?.name?.trim(),

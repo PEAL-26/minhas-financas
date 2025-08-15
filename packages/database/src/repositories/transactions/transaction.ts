@@ -1,4 +1,4 @@
-import { Transaction } from '@repo/types';
+import { Transaction } from '@repo/types/transaction';
 import {
   DatabaseConfig,
   IDatabase,

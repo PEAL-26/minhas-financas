@@ -1,7 +1,7 @@
 import { LocationPricesFormComponent } from '@/components/ui/forms/location-prices';
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
-import { useMutation } from '@repo/database/hooks/crud';
+import { useMutation } from '@repo/database/hooks/crud/use-mutation';
 import { useQuerySelect } from '@repo/database/hooks/use-query-select';
 import { WishlistSchemaType } from '@repo/types/schemas';
 import { WISHLIST_STATUS_MAP } from '@repo/types/status';

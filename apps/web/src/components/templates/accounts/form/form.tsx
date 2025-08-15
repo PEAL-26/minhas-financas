@@ -1,7 +1,7 @@
 import { CurrenciesFormComponent } from '@/components/ui/forms/currencies';
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
-import { useMutation } from '@repo/database/hooks/crud';
+import { useMutation } from '@repo/database/hooks/crud/use-mutation';
 import { ACCOUNT_TYPE_MAP } from '@repo/types/account';
 import { AccountSchemaType } from '@repo/types/schemas';
 import { FormControlCustom } from '@repo/ui/form/control';

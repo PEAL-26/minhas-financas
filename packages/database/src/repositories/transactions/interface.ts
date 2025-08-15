@@ -1,4 +1,4 @@
-import { Transaction } from '@repo/types';
+import { Transaction } from '@repo/types/transaction';
 import { IRepository } from '../../types';
 
 export type TransactionCreateData = Pick<

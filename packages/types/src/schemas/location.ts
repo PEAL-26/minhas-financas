@@ -2,7 +2,7 @@ import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 import z from 'zod';
 import { LOCATION_TYPE_ENUM, LOCATION_TYPE_MAP } from '../location';
 
-export const base = z.object({
+export const locationSchemaBase = z.object({
   name: z.string({ error: 'Campo obrigatório.' }),
   type: z.enum(LOCATION_TYPE_ENUM, {
     error: `Valor inválido (deve ser ${Object.values(LOCATION_TYPE_MAP)
@@ -22,7 +22,7 @@ export const base = z.object({
   contacts: z.array(z.string()).optional(),
 });
 
-export const locationSchema = base.transform((schema) => {
+export const locationSchema = locationSchemaBase.transform((schema) => {
   return {
     ...schema,
     name: schema?.name?.trim(),

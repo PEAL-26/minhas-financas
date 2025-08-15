@@ -1,14 +1,14 @@
 import z from 'zod';
 import * as location from './location';
 
-export const base = z.object({
+export const priceSchemaBase = z.object({
   location: z.object({
-    ...location.base.partial().shape,
+    ...location.locationSchemaBase.partial().shape,
     id: z.string({ error: 'Campo obrigatório.' }),
   }),
   amount: z.number({ error: 'Campo obrigatório.' }),
 });
 
-export const priceSchema = base.transform((schema) => schema);
+export const priceSchema = priceSchemaBase.transform((schema) => schema);
 
 export type PriceSchemaType = z.infer<typeof priceSchema>;

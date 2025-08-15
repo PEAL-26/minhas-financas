@@ -1,4 +1,4 @@
-import { ACCOUNT_TYPE_ENUM } from '@repo/types';
+import { ACCOUNT_TYPE_ENUM } from '@repo/types/account';
 import { sql } from 'drizzle-orm';
 import * as t from 'drizzle-orm/sqlite-core';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';

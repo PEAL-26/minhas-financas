@@ -1,12 +1,9 @@
 {
   "extends": "@repo/config-typescript/base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@repo/helpers/*": [
-        "../../packages/helpers/src/*"
-      ]
-    }
+    "composite": true,
+    "noEmit": true,
+    "baseUrl": "."
   },
   "include": [
     "src"

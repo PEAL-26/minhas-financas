@@ -1,4 +1,4 @@
-import { User } from '@repo/types';
+import { User } from '@repo/types/user';
 
 export function userToEntityMap(raw: any): User {
   // TODO Melhorar o mapeamento

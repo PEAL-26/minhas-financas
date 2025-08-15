@@ -2,13 +2,11 @@
   "extends": "@repo/config-typescript/base.json",
   "compilerOptions": {
     "strict": true,
-    "jsx": "react-jsx",
+    "composite": true,
+    "noEmit": true,
     "baseUrl": ".",
-    "paths": {
-      "@repo/helpers/*": [
-        "../../packages/helpers/src/*"
-      ]
-    }
+    "rootDir": "src",
+    "moduleResolution": "bundler",
   },
   "include": [
     "src"

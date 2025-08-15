@@ -1,4 +1,4 @@
-import { Expense } from '@repo/types';
+import { Expense } from '@repo/types/expense';
 
 export function expenseToEntityMap(raw: any): Expense {
   // TODO Melhorar esse mapeamento

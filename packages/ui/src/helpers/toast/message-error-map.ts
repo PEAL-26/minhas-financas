@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 
 //import { axiosErrorToMessage } from './axios-error';
 import { INTERNAL_SERVER_ERROR_MESSAGE } from '@repo/constants/messages';
-import { propertiesMap } from '@repo/types/schemas';
+import { propertiesMap } from '@repo/types/schemas/properties-map';
 import { firebaseAuthErrorMap } from './firebase';
 
 const checkTypeErrors = (err: any) => {

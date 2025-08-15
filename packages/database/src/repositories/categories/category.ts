@@ -1,4 +1,4 @@
-import { Category } from '@repo/types';
+import { Category } from '@repo/types/category';
 import {
   DatabaseConfig,
   IDatabase,

@@ -1,7 +1,7 @@
-import { FlatCompat } from "@eslint/eslintrc";
-import path from "path";
-import { fileURLToPath } from "url";
-import js from "@eslint/js";
+const { FlatCompat } = require("@eslint/eslintrc");
+const path = require("path");
+const { fileURLToPath } = require("url");
+const js = require("@eslint/js");
 
 const configs = {
   extends: [
@@ -28,12 +28,12 @@ const configs = {
   ],
 };
 
-const __filename = fileURLToPath(import.meta.url);
+//const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
+  //baseDirectory: __dirname,
+  //recommendedConfig: js.configs.recommended,
 });
 
-export default [...compat.config(configs)];
+module.exports = { configs: compat.config(configs) };

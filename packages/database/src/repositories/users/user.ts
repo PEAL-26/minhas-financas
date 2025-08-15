@@ -1,4 +1,4 @@
-import { User } from '@repo/types';
+import { User } from '@repo/types/user';
 import {
   DatabaseConfig,
   IDatabase,

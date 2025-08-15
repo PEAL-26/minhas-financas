@@ -1,4 +1,4 @@
-import { Income } from '@repo/types';
+import { Income } from '@repo/types/income';
 
 export function incomeToEntityMap(raw: any): Income {
   // TODO Melhorar esse mapeamento

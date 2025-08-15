@@ -1,4 +1,4 @@
-import { Wallet } from '@repo/types';
+import { Wallet } from '@repo/types/wallet';
 
 export function walletToEntityMap(raw: any): Wallet {
   // TODO Melhorar o mapeamento

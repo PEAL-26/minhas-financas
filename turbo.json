@@ -39,6 +39,30 @@
     "dev:https": {
       "cache": false,
       "persistent": true
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "migration:generate": {
+      "cache": false,
+      "persistent": true
+    },
+    "migration:apply": {
+      "cache": false,
+      "persistent": true
+    },
+    "migration:push": {
+      "cache": false,
+      "persistent": true
+    },
+    "migration:pull": {
+      "cache": false,
+      "persistent": true
+    },
+    "migration:seed": {
+      "cache": false,
+      "persistent": true
     }
   }
 }

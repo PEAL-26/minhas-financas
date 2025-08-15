@@ -1,10 +1,13 @@
 type ConvertTypes = 'emptyToNull' | 'emptyToUndefined' | 'nullToEmpty' | 'undefinedToEmpty';
-interface CheckNullUndefinedValueOption {
-  fn?: (value: any) => any;
+interface CheckNullUndefinedValueOption<R = any> {
+  fn?: (value: any) => R;
   convert?: ConvertTypes;
 }
 
-export function checkNullUndefinedValue(input: any, options?: CheckNullUndefinedValueOption) {
+export function checkNullUndefinedValue<R = any>(
+  input: any,
+  options?: CheckNullUndefinedValueOption<R>,
+) {
   const { fn, convert } = options || {};
 
   const value = convertTo(input, convert);

@@ -1,4 +1,4 @@
-import { Wishlist } from '@repo/types';
+import { Wishlist } from '@repo/types/wishlist';
 import {
   DatabaseConfig,
   IDatabase,
