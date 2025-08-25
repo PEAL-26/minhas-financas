@@ -3,7 +3,7 @@ import { IRepository } from '../../types';
 
 export type CategoryCreateData = Pick<Category, 'name' | 'icon' | 'color'>;
 
-export type CategoryUpdateData = Partial<CategoryCreateData>;
+export type CategoryUpdateData = Partial<Category>;
 
 export abstract class ICategoryRepository extends IRepository<
   Category,

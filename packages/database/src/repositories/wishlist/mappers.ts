@@ -1,50 +1,63 @@
 import { checkNullUndefinedValue } from '@repo/helpers/checkers';
+import { Price } from '@repo/types/location';
 import { Wishlist } from '@repo/types/wishlist';
-import { categoryToEntityMap } from '../categories';
-import { locationToEntityMap } from '../locations';
+import { toDatabasePropertiesCommonMap, toEntityPropertiesCommonMap } from '../..//helpers/map';
+import * as categoryMapper from '../categories';
+import * as locationMapper from '../locations';
 
-export function wishlistToEntityMap(raw: any): Wishlist {
-  // TODO Melhorar o mapeamento
+export function toEntityMap(raw: any): Wishlist {
   return {
-    id: raw.id,
     name: raw.name,
     type: raw.type,
     recurrence: raw.recurrence,
     category: checkNullUndefinedValue(raw.category, {
-      fn: (data) => categoryToEntityMap(data),
+      fn: (data) => categoryMapper.toEntityMap(data),
     }),
-    targetDate: raw.targetDate,
+    targetDate: checkNullUndefinedValue(raw.targetDate, { fn: (value) => new Date(value) }),
     priority: raw.priority,
     expectedLocation: checkNullUndefinedValue(raw.expectedLocation, {
-      fn: (data) => locationToEntityMap(data),
+      fn: (data) => locationMapper.toEntityMap(data),
     }),
-    estimatedCost: raw.estimatedCost,
-    quantity: raw.quantity,
-    total: raw.total,
+    estimatedCost: checkNullUndefinedValue(raw.estimatedCost, { fn: (value) => Number(value) }),
+    quantity: checkNullUndefinedValue(raw.quantity, { fn: (value) => Number(value) }),
+    total: checkNullUndefinedValue(raw.total, { fn: (value) => Number(value) }),
     status: raw.status,
-    prices: raw.prices,
-    createdAt: raw?.createdAt ? new Date(raw?.createdAt) : raw?.createdAt,
-    updatedAt: raw?.updatedAt ? new Date(raw?.updatedAt) : raw?.updatedAt,
+    prices: checkNullUndefinedValue(raw.prices, { fn: (value) => Number(value) }),
+    ...toEntityPropertiesCommonMap(raw),
   };
 }
 
-export function wishlistToDatabaseMap(entity: Wishlist) {
+export function toDatabaseMap(entity: Partial<Wishlist>) {
   return {
-    name: entity.name,
-    type: entity.type,
-    recurrence: entity.recurrence,
+    name: checkNullUndefinedValue(entity.name, { convert: 'emptyToUndefined' }),
+    type: checkNullUndefinedValue(entity.type, { convert: 'emptyToUndefined' }),
+    recurrence: checkNullUndefinedValue(entity.recurrence, { convert: 'emptyToNull' }),
     categoryId: checkNullUndefinedValue(entity.category, {
-      fn: (data) => data.id,
+      convert: 'emptyToNull',
+      fn: (data) => data?.id,
     }),
-    targetDate: entity.targetDate,
-    priority: entity.priority,
+    targetDate: checkNullUndefinedValue(entity.targetDate, {
+      convert: 'emptyToNull',
+      fn: (value) => new Date(value).getTime(),
+    }),
+    priority: checkNullUndefinedValue(entity.priority, { convert: 'emptyToUndefined' }),
     expectedLocationId: checkNullUndefinedValue(entity.expectedLocation, {
-      fn: (data) => data.id,
+      convert: 'emptyToNull',
+      fn: (data) => data?.id,
     }),
     estimatedCost: entity.estimatedCost,
-    quantity: entity.quantity,
-    total: entity.total,
-    status: entity.status,
-    prices: entity.prices,
+    quantity: checkNullUndefinedValue(entity.quantity, { convert: 'emptyToNull' }),
+    total: checkNullUndefinedValue(entity.total, { convert: 'emptyToNull' }),
+    status: checkNullUndefinedValue(entity.status, { convert: 'emptyToNull' }),
+    prices: checkNullUndefinedValue(entity.prices, {
+      convert: 'emptyToNull',
+      fn: (prices) => {
+        return prices.map((price: Price) => ({
+          locationId: price?.location?.id,
+          amount: price.amount,
+        }));
+      },
+    }),
+    ...toDatabasePropertiesCommonMap(entity),
   };
 }

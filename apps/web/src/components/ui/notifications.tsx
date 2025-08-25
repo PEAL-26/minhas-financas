@@ -7,9 +7,9 @@ export function Notifications() {
   const notifications = [1, 2, 3, 4, 5, 6];
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild className="h-4 w-4">
         <div>
-          <Button className="relative">
+          <Button className="relative h-4 w-4">
             {hasNotifications && (
               <div className="absolute -right-0.5 -top-1 h-1.5 w-1.5 rounded-full bg-red-600" />
             )}

@@ -18,14 +18,28 @@ export type DatabaseWhere = {
   [key: string]: DatabaseWhereField;
 };
 
+export type DatabaseIncludeProps = {
+  data?: 'object' | 'array';
+  type?: 'INNER' | 'LEFT' | 'RIGHT';
+  as?: string;
+  singular?: string;
+  select?: DatabaseConfigSelect;
+  include?: DatabaseInclude;
+  references?: { left: string; right: string };
+};
+
 export type DatabaseInclude = {
-  [key: string]: {
-    type?: 'INNER' | 'LEFT' | 'RIGHT';
-    as?: string;
-    singular: string;
-    select?: DatabaseConfigSelect;
-    include?: DatabaseInclude;
-    references?: { left: string; right: string };
+  [key: string]: DatabaseIncludeProps;
+};
+
+export type DatabaseMutationConfig = {
+  include?: {
+    [key: string]: Pick<DatabaseIncludeProps, 'as'> & {
+      data: any;
+      foreignKey: string;
+      key?: string;
+      tableName: string;
+    };
   };
 };
 
@@ -59,7 +73,7 @@ export interface PaginatedResult<T> {
 }
 
 export type UpdateBulkData = Record<string, any> & {
-  id: number;
+  id: any;
 };
 
 export enum DATABASE_COLUMNS_TYPE_ENUM {

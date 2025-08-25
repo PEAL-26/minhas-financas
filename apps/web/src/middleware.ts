@@ -1,21 +1,25 @@
+import { COOKIES } from '@repo/constants/cookies';
 import { NextRequest, NextResponse } from 'next/server';
 
 const AUTH_ROUTES = ['/login', '/register'];
-const PUBLIC_ROUTES = ['/', '/terms', ...AUTH_ROUTES];
+const PUBLIC_ROUTES = ['/', '/terms'];
 
 export function middleware(req: NextRequest, res: NextResponse) {
-  // const isAuthenticated = req.cookies.get('user')?.value;
-  // const loginURL = new URL('/login', req.url);
-  // const dashboardURL = new URL('/dashboard', req.url);
-  // const { pathname } = req.nextUrl;
+  const isAuthenticated =  "token_teste"// !!req.cookies.get(COOKIES.TOKEN)?.value;
+  const loginURL = new URL('/login', req.url);
+  const dashboardURL = new URL('/dashboard', req.url);
+  const { pathname } = req.nextUrl;
 
-  // if (!isAuthenticated && !PUBLIC_ROUTES.includes(pathname)) {
-  //   return NextResponse.redirect(loginURL);
-  // }
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+  const isAuthRoute = AUTH_ROUTES.includes(pathname);
 
-  // if (isAuthenticated && AUTH_ROUTES.includes(pathname)) {
-  //   return NextResponse.redirect(dashboardURL);
-  // }
+  if (!isAuthenticated && !isPublicRoute && !isAuthRoute) {
+    return NextResponse.redirect(loginURL);
+  }
+
+  if (isAuthenticated && !isPublicRoute && isAuthRoute) {
+    return NextResponse.redirect(dashboardURL);
+  }
 
   return NextResponse.next();
 }

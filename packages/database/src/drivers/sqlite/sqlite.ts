@@ -9,13 +9,13 @@ import {
 } from '../../types';
 import {
   fieldsMap,
-  generateCreateFields,
+  generateFieldsValuesCreate,
   generateIncludes,
   generateQueryFields,
   generateQuerySql,
   generateWhereClause,
   serialize,
-} from './utils';
+} from '../utils';
 
 export class DatabaseSQLite<
   T,
@@ -50,7 +50,7 @@ export class DatabaseSQLite<
   }
 
   async insert<T>(tableName: string, data: Record<string, any>): Promise<T> {
-    const { fields, values } = generateCreateFields(data);
+    const { fields, values } = generateFieldsValuesCreate(data);
     const result = await this.connection.runAsync(
       `INSERT INTO ${tableName} (${fields.join(', ')}) VALUES (${fields
         .map(() => '?')
@@ -145,19 +145,19 @@ export class DatabaseSQLite<
     const offset = (page - 1) * size;
     const { baseQuery, includes } = generateQuerySql(tableName, configs);
 
-    // Consulta para contar o total de itens
     const totalItemsQuery = `SELECT COUNT(*) as count FROM (${baseQuery}) as total_count_query`;
-    const totalItemsResult = await this.connection.getAllAsync<{
-      count: number;
-    }>(totalItemsQuery);
-    const totalItems = parseInt(String(totalItemsResult[0].count), 10);
-
-    // Consulta para obter os dados paginados
     const paginatedQuery = `${baseQuery} LIMIT ${size} OFFSET ${offset}`;
-    const result = await this.connection.getAllAsync<T>(paginatedQuery);
+
+    const [totalItemsResult, result] = await Promise.all([
+      this.connection.getAllAsync<{
+        count: number;
+      }>(totalItemsQuery),
+      this.connection.getAllAsync<T>(paginatedQuery),
+    ]);
+
+    const totalItems = parseInt(String(totalItemsResult?.[0]?.count), 10);
     const data = result.map((item) => serialize(item, [tableName, ...includes.tables]) as T);
 
-    // Calcular informações de paginação
     const totalPages = Math.ceil(totalItems / size);
     const prev = page > 1 ? page - 1 : null;
     const next = page < totalPages ? page + 1 : null;

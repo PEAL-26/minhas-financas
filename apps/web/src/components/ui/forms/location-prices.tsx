@@ -1,3 +1,4 @@
+import { useQuerySelect } from '@repo/database/hooks/use-query-select';
 import { Button } from '@repo/ui/button';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { SelectFormControl } from '@repo/ui/form/control/select';
@@ -27,8 +28,18 @@ export function LocationPricesFormComponent<
   };
 
   const updateValue = (index: number, values: any) => {
-    array.update(index, { ...values });
+    const data = array.fields[index];
+
+    if (data) {
+      array.update(index, { ...data, ...values });
+    }
   };
+
+  const selectLocations = useQuerySelect({
+    repositoryName: 'location',
+    queryKey: ['locations'],
+    defaultSize: 100,
+  });
 
   return (
     <div className="flex flex-col">
@@ -52,8 +63,23 @@ export function LocationPricesFormComponent<
                 className="w-full bg-white"
                 item={(field as any)?.location}
                 onSelect={(location) => {
-                  updateValue(index, { location });
+                  const data = location.id === 'NULL' ? null : location;
+                  updateValue(index, { location: data });
                 }}
+                items={[
+                  {
+                    id: 'NULL',
+                    name: 'Desselecionar',
+                    backgroundColor: undefined,
+                    showIcon: false,
+                    className: 'text-center text-gray-300',
+                  },
+                  ...selectLocations.data.map((item: any) => {
+                    return { ...item };
+                  }),
+                ]}
+                onSearch={selectLocations.search}
+                loading={selectLocations.isLoadingAll}
               />
               <div className="flex items-center gap-2">
                 <FormControlCustom
@@ -65,7 +91,7 @@ export function LocationPricesFormComponent<
                     <InputMoney
                       value={(field as any)?.amount}
                       onChangeValue={(amount) => {
-                        updateValue(index, { amount });
+                        updateValue(index, { amount: Number(amount || 0) });
                       }}
                       placeholder="0,00"
                     />

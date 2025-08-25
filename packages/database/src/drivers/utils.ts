@@ -3,10 +3,13 @@ import {
   DatabaseConfigSelect,
   DatabaseCreateTableColumns,
   DatabaseInclude,
+  DatabaseOptions,
   DatabaseWhere,
   DatabaseWhereField,
   ListPaginateConfigs,
-} from '../../types';
+} from '../types';
+
+import { camelToSnake, snakeToCamel } from 'case-naming-converter';
 
 export function generateQueryFields(select?: DatabaseConfigSelect) {
   if (!select) return ['*'];
@@ -57,15 +60,18 @@ export function generateWhereClause(where?: DatabaseWhere): string {
   return conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 }
 
+type Table = { name: string; original: string; type: 'array' | 'object'; reference: string };
+
 let joins: string[] = [];
 let fields: string[] = [];
-let tables: string[] = [];
+let tables: Table[] = [];
 
 export function generateIncludes(
   tableMain: string,
   include?: DatabaseInclude,
   recursive = false,
   clear = true,
+  reference = '',
 ) {
   if (clear) {
     joins = [];
@@ -81,27 +87,29 @@ export function generateIncludes(
   if (include) {
     const includes = Object.entries(include);
     for (const [table, attributes] of includes) {
-      const { singular, as, include, select, type, references } = attributes;
+      const { singular, as, include, select, type, references, data = 'object' } = attributes;
       const { left, right } = references || {};
 
+      const tableDisplay = `${as || singular || table}`;
+      const tableReference = reference ? `${reference}-` : '';
       const queryFields = select
-        ? generateQueryFields(select).map((field) => `${as || table}.${field}`)
-        : [];
+        ? generateQueryFields(select).map((field) => `${tableReference}${tableDisplay}.${field}`)
+        : [`${tableReference}${tableDisplay}.*`];
 
-      const tableName = `${table} ${as ? `AS ${as}` : ''}`.trim();
+      const tableName = `${table} ${as || singular ? `AS ${as || singular}` : ''}`.trim();
 
-      const referenceLeft = left || `${as || table}.id`;
+      const referenceLeft = left || `${tableDisplay}.id`;
       const referenceRight = right || `${tableMain}.${singular}_id`;
       const join = `${
         type || ''
       } JOIN ${tableName} ON ${referenceLeft} = ${referenceRight} `.trim();
 
-      tables.push(as || table);
+      tables.push({ name: tableDisplay, original: table, type: data, reference });
       fields.push(...queryFields);
       joins.push(join);
 
       if (include) {
-        generateIncludes(table, include, true, false);
+        generateIncludes(table, include, true, false, tableDisplay);
       }
     }
   }
@@ -109,45 +117,61 @@ export function generateIncludes(
   return { fields, joins: joins.join('\n'), tables };
 }
 
-export function serialize(data: any, tableNames: string[]) {
+export function serialize(data: any, tableNames: string[], configs?: { fields: string[] }) {
   const mainTable = tableNames[0];
   let obj: Record<string, any> = {};
+  const restTables = tableNames.slice(1);
 
   for (const [field, value] of Object.entries(data)) {
     if (field.startsWith(mainTable)) {
       const fieldReplaced = field.replaceAll(`${mainTable}_`, '');
       obj[fieldReplaced] = value;
-    } else {
-      const restTables = tableNames.slice(1);
+    }
 
-      if (!restTables.length) {
-        obj[field] = value;
-      }
+    if (!restTables.length) {
+      obj[field] = value;
+    }
 
-      if (restTables.length) {
-        for (const table of restTables) {
-          if (field.startsWith(table)) {
-            const fieldReplaced = field.replaceAll(`${table}_`, '');
-            if (field === `${table}_${fieldReplaced}`) {
-              setNestedValue(obj, `${table}.${fieldReplaced}`, value);
-              break;
-            }
+    let _continue = false;
+    if (restTables.length) {
+      for (const table of restTables) {
+        if (field.startsWith(table)) {
+          const fieldReplaced = field.replaceAll(`${table}_`, '');
+          if (field === `${table}_${fieldReplaced}`) {
+            setNestedValue(obj, `${table}.${fieldReplaced}`, value);
+            _continue = true;
+            break;
           }
         }
       }
     }
+
+    if (_continue) continue;
+
+    obj[field] = value;
   }
 
-  return obj;
+  return snakeToCamel(obj);
 }
 
-export function fieldsMap(fields: string[], tables: string[]) {
+export function fieldsMap(fields: string[], tables: string[], configs?: { separator?: string }) {
+  const { separator = '\`' } = configs || {};
   const newFields = [];
-  for (const field of fields) {
+  for (const fieldOld of fields) {
+    let referenceTable = '';
+    let field = fieldOld;
+
+    if (fieldOld.indexOf('-') > -1) {
+      const fieldSplitted = fieldOld.split('-');
+      referenceTable = `${fieldSplitted[0]}_`;
+      field = fieldSplitted[1];
+    }
+
     if (field === '*' && tables.length === 1) {
       newFields.push(`${tables[0]}.*`);
       break;
     }
+
     const fieldSplitted = field.split(' AS ');
     const main = fieldSplitted[0]?.trim();
     const fieldAs = fieldSplitted[1]?.trim();
@@ -158,15 +182,14 @@ export function fieldsMap(fields: string[], tables: string[]) {
       if (_field === '*') {
         newFields.push(`${table}.*`);
       } else {
-        const newField = `${table}_${_field}`;
-        newFields.push(`${main} AS \`${newField}\``);
+        const newField = `${referenceTable}${table}_${_field}`;
+        newFields.push(`${main} AS ${separator}${newField}${separator}`);
       }
     }
-    {
-      if (!_field && table && tables.length === 1) {
-        const newField = `${tables[0]}_${table}`;
-        newFields.push(`${tables[0]}.${main} AS \`${newField}\``);
-      }
+
+    if (!_field && table && tables.length === 1) {
+      const newField = `${referenceTable}${tables[0]}_${table}`;
+      newFields.push(`${tables[0]}.${main} AS ${separator}${newField}${separator}`);
     }
   }
 
@@ -209,15 +232,19 @@ export function generateOrderByClause(orderBy?: Record<string, 'asc' | 'desc'>[]
 
 const NOT_STRING_TYPES = ['boolean', 'number'];
 
-export function generateCreateFields(data: Record<string, any>) {
+export function generateFieldsValuesCreate(data: Record<string, any>, options?: DatabaseOptions) {
   let fields: string[] = [];
   let values: any[] = [];
-  for (const [field, value] of Object.entries(data)) {
+
+  const { casing } = options || {};
+
+  for (const [field, value] of Object.entries(data || {})) {
     if (value === undefined) {
       continue;
     }
 
-    fields.push(field);
+    const fieldConvert = caseConverting(field, casing);
+    fields.push(fieldConvert);
 
     if (value === null) {
       values.push(null);
@@ -239,6 +266,29 @@ export function generateCreateFields(data: Record<string, any>) {
   }
 
   return { fields, values };
+}
+
+export function generateFieldsValuesUpdate(data: Record<string, any>, options?: DatabaseOptions) {
+  const { casing, symbol = '$' } = options || {};
+  let sets: string[] = [];
+  let values: string[] = [];
+  let order = 0;
+
+  for (const [property, value] of Object.entries(data)) {
+    if (property === 'id') continue;
+
+    order++;
+
+    const fieldValue = symbol === '?' ? '?' : `$${order}`;
+    const fieldName = caseConverting(property, casing);
+
+    sets.push(`${fieldName}=${fieldValue}`);
+    values.push(value);
+  }
+
+  if (!sets.length) throw new Error('Deve informar os dados a serem salvos.');
+
+  return { sets, values };
 }
 
 export function join(array: any[], separator?: string) {
@@ -324,7 +374,12 @@ export function generateQuerySql(tableName: string, configs?: ListPaginateConfig
 
   const whereClause = generateWhereClause(where);
   const includesFields =
-    includes.fields.length > 0 ? `, ${fieldsMap(includes.fields, includes.tables)}` : '';
+    includes.fields.length > 0
+      ? `, ${fieldsMap(
+          includes.fields,
+          includes.tables.map((t) => t.name),
+        )}`
+      : '';
   const fns = generateFn(fn);
   const orderByClause = generateOrderByClause(orderBy);
   const groups = generateGroupBy(groupBy);
@@ -334,4 +389,63 @@ export function generateQuerySql(tableName: string, configs?: ListPaginateConfig
   } FROM ${tableName} ${includes.joins} ${whereClause} ${groups} ${orderByClause}`.trim();
 
   return { baseQuery, includes };
+}
+
+export function caseConverting(value: any, casing?: 'snakeCase' | 'camelCase') {
+  if (!casing) return value;
+
+  if (casing === 'camelCase') {
+    return snakeToCamel(value);
+  }
+
+  if (casing === 'snakeCase') {
+    return camelToSnake(value);
+  }
+}
+
+export function insertSql(input: { tableName: string; fields: string[]; symbol?: '$' | '?' }) {
+  const { tableName, fields, symbol = '$' } = input;
+
+  const fieldValues = fields
+    .map((_, index) => {
+      if (symbol === '?') return '?';
+      return `$${index + 1}`;
+    })
+    .join(', ');
+
+  return `INSERT INTO ${tableName} (${fields.join(', ')}) VALUES (${fieldValues});`;
+}
+
+export function updateSql(input: { tableName: string; sets: string[]; symbol?: '$' | '?' }) {
+  const { tableName, sets, symbol = '$' } = input;
+  const fieldId = symbol === '?' ? '?' : `$${sets.length + 1}`;
+  return `UPDATE ${tableName} SET ${sets.join(', ')} WHERE id=${fieldId}`;
+}
+
+export function generateIncludeFields(input: {
+  fields: string[];
+  tables: Table[];
+  separator?: string;
+}) {
+  const { fields, tables, separator } = input;
+  if (fields.length > 0) {
+    return `, ${fieldsMap(
+      fields,
+      tables.map((t) => t.name),
+      { separator },
+    )}`;
+  }
+
+  return '';
+}
+
+export function generateSelectFields(input: {
+  fields: string[];
+  tableName: string;
+  separator?: string;
+}) {
+  const { fields, tableName, separator } = input;
+  return fieldsMap(fields, [tableName], {
+    separator,
+  });
 }

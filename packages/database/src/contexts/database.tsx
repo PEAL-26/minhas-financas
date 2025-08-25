@@ -1,13 +1,15 @@
 'use client';
 
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { getConnection } from '../drivers/connection';
+import { applyBrowserMigrations } from '../database/browser-migration';
+import { getConnection } from '../database/connection';
 import { DatabaseInMemory } from '../factories/database-factory';
 import { QueryClientProvider } from '../providers/query-client';
-import { Driver, FirebaseConfig, IDatabase } from '../types';
+import { DatabaseOptions, Driver, FirebaseConfig, IDatabase } from '../types';
 
 interface DatabaseContextProps {
   getDatabase(): Promise<IDatabase>;
+  isLoading: boolean;
 }
 
 type DatabaseProviderProps = {
@@ -16,13 +18,15 @@ type DatabaseProviderProps = {
   connectionType?: 'IN_MEMORY' | 'DATABASE_ENGINE';
   env?: 'test' | 'development' | 'production';
   firebaseConfig?: FirebaseConfig;
+  options?: DatabaseOptions
 };
 
 const DatabaseContext = createContext<DatabaseContextProps>({} as DatabaseContextProps);
 
 export function DatabaseProvider(props: DatabaseProviderProps) {
   const [database, setDatabase] = useState<IDatabase | null>(null);
-  const { driver, children, connectionType = 'DATABASE_ENGINE', firebaseConfig } = props || {};
+  const { driver, children, connectionType = 'DATABASE_ENGINE', firebaseConfig, options } = props || {};
+  const [isLoading, setIsLoading] = useState(true);
 
   const getDatabase = async () => {
     let db = null;
@@ -34,9 +38,7 @@ export function DatabaseProvider(props: DatabaseProviderProps) {
     }
 
     if (connectionType === 'DATABASE_ENGINE') {
-      db = await getConnection({ driver, firebaseConfig });
-
-      console.log({ db });
+      db = await getConnection({ driver, firebaseConfig, options });
     }
 
     if (!db) throw new Error('Database not defined');
@@ -57,8 +59,18 @@ export function DatabaseProvider(props: DatabaseProviderProps) {
     })();
   }, []);
 
+  useEffect(() => {
+    setIsLoading(true);
+    (async () => {
+      if (database) {
+        await applyBrowserMigrations(database);
+      }
+    })();
+    setIsLoading(false);
+  }, [database]);
+
   return (
-    <DatabaseContext.Provider value={{ getDatabase }}>
+    <DatabaseContext.Provider value={{ getDatabase, isLoading }}>
       <QueryClientProvider>{children}</QueryClientProvider>
     </DatabaseContext.Provider>
   );

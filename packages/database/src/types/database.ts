@@ -1,6 +1,7 @@
 import { firebaseConfig } from '../configs/firebase';
 import {
   DatabaseConfig,
+  DatabaseMutationConfig,
   Field,
   ListPaginateConfigs,
   ListPaginateRepositoryOption,
@@ -21,11 +22,32 @@ export abstract class IDatabase {
     tableName: string,
     configs?: ListPaginateConfigs,
   ): AsyncIterableIterator<T>;
-  abstract insert<T>(tableName: string, data: Record<string, any>): Promise<T>;
-  abstract insertBulk(tableName: string, data: Record<string, any>[]): Promise<void>;
-  abstract update<T>(tableName: string, data: Record<string, any>, id: any): Promise<T>;
-  abstract updateBulk<T>(tableName: string, data: UpdateBulkData[]): Promise<T[]>;
-  abstract delete(tableName: string, where: Record<string, any>): Promise<void>;
+  abstract insert<T>(
+    tableName: string,
+    data: Record<string, any>,
+    configs?: DatabaseMutationConfig,
+  ): Promise<T>;
+  abstract insertBulk(
+    tableName: string,
+    data: Record<string, any>[],
+    configs?: DatabaseMutationConfig,
+  ): Promise<void>;
+  abstract update<T>(
+    tableName: string,
+    data: Record<string, any>,
+    id: any,
+    configs?: DatabaseMutationConfig,
+  ): Promise<T>;
+  abstract updateBulk<T>(
+    tableName: string,
+    data: UpdateBulkData[],
+    configs?: DatabaseMutationConfig,
+  ): Promise<T[]>;
+  abstract delete(
+    tableName: string,
+    where: Record<string, any>,
+    configs?: DatabaseMutationConfig,
+  ): Promise<void>;
   abstract select<T>(fields: Field<T>, tableName: string): Promise<T[]>;
   abstract getFirst<T>(tableName: string, configs?: DatabaseConfig): Promise<T | null>;
 }
@@ -42,3 +64,7 @@ export abstract class IRepository<T, TCreate = any, TUpdate = any> {
 export declare const drivers: readonly ['expo', 'pglite', 'firebase'];
 export type Driver = (typeof drivers)[number];
 export type FirebaseConfig = typeof firebaseConfig;
+export type DatabaseOptions = {
+  casing?: 'camelCase' | 'snakeCase';
+  symbol?: '$' | '?';
+};

@@ -27,7 +27,7 @@ export function TextareaFormControl<
         <FormItem>
           {label && <FormLabel className="font-bold text-black">{label}</FormLabel>}
           <FormControl>
-            <Textarea {...field} {...rest} />
+            <Textarea {...field} {...rest} value={field.value || ''} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

@@ -6,16 +6,18 @@ import {
   PaginatedResult,
 } from '../../types';
 import { AccountCreateData, AccountUpdateData, IAccountRepository } from './interface';
-import { accountToEntityMap } from './mappers';
+import * as mappers from './mappers';
 
 export class AccountRepository implements IAccountRepository {
   constructor(private database: IDatabase) {}
 
-  async create(data: AccountCreateData): Promise<void> {
+  async create(input: AccountCreateData): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.insert('accounts', data);
   }
 
-  async update(data: AccountUpdateData, id: string): Promise<void> {
+  async update(input: AccountUpdateData, id: string): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.update('accounts', data, id);
   }
 
@@ -26,12 +28,12 @@ export class AccountRepository implements IAccountRepository {
   async getById(id: string): Promise<Account | null> {
     const result = await this.database.getFirst('accounts', { where: { id } });
     if (!result) return null;
-    return accountToEntityMap(result);
+    return mappers.toEntityMap(result);
   }
 
   async listAll(configs?: DatabaseConfig): Promise<Account[]> {
     const rows = await this.database.listAll('accounts', configs);
-    return rows.map((row) => accountToEntityMap(row));
+    return rows.map((row) => mappers.toEntityMap(row));
   }
 
   async listPaginate(options?: ListPaginateRepositoryOption): Promise<PaginatedResult<Account>> {
@@ -45,7 +47,7 @@ export class AccountRepository implements IAccountRepository {
 
     return {
       ...result,
-      data: result.data.map((row) => accountToEntityMap(row)),
+      data: result.data.map((row) => mappers.toEntityMap(row)),
     };
   }
 }

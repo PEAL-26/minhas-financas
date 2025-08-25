@@ -1,3 +1,5 @@
+import { isEmpty } from './empty';
+
 type ConvertTypes = 'emptyToNull' | 'emptyToUndefined' | 'nullToEmpty' | 'undefinedToEmpty';
 interface CheckNullUndefinedValueOption<R = any> {
   fn?: (value: any) => R;
@@ -25,11 +27,11 @@ export function checkNullUndefinedValue<R = any>(
 function convertTo(value: any, type?: ConvertTypes) {
   if (!type) return value;
 
-  if (type === 'emptyToNull' && String(value).trim() === '') {
+  if (type === 'emptyToNull' && isEmpty(value)) {
     return null;
   }
 
-  if (type === 'emptyToUndefined' && String(value).trim() === '') {
+  if (type === 'emptyToUndefined' && isEmpty(value)) {
     return undefined;
   }
 

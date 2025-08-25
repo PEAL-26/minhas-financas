@@ -1,12 +1,21 @@
+import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 import { Category } from '@repo/types/category';
+import { toDatabasePropertiesCommonMap, toEntityPropertiesCommonMap } from '../../helpers/map';
 
-export function categoryToEntityMap(raw: any): Category {
+export function toEntityMap(raw: any): Category {
   return {
-    id: raw.id,
     name: raw.name,
     icon: raw?.icon,
     color: raw?.color,
-    createdAt: raw?.createdAt ? new Date(raw?.createdAt) : raw?.createdAt,
-    updatedAt: raw?.updatedAt ? new Date(raw?.updatedAt) : raw?.updatedAt,
+    ...toEntityPropertiesCommonMap(raw),
+  };
+}
+
+export function toDatabaseMap(entity: Partial<Category>) {
+  return {
+    name: checkNullUndefinedValue(entity?.name, { convert: 'emptyToUndefined' }),
+    icon: checkNullUndefinedValue(entity?.icon, { convert: 'emptyToNull' }),
+    color: checkNullUndefinedValue(entity?.color, { convert: 'emptyToNull' }),
+    ...toDatabasePropertiesCommonMap(entity),
   };
 }

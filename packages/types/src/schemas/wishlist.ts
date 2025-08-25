@@ -48,7 +48,7 @@ export const wishlistSchemaBase = z.object({
   prices: z
     .array(
       z.object({
-        ...price.priceSchemaBase.partial().shape,
+       // ...price.priceSchemaBase.partial().shape,
         id: z.string({ error: 'Campo obrigatório.' }),
       }),
     )
@@ -62,10 +62,6 @@ export const wishlistSchema = wishlistSchemaBase.transform((schema) => {
     recurrence: checkNullUndefinedValue(schema?.recurrence, {
       fn: (value) => Number(value),
     }),
-    // swiftCode: checkNullUndefinedValue(schema.swiftCode, {
-    //   convert: 'emptyToNull',
-    //   fn: (value) => String(value).trim(),
-    // }),
   };
 });
 

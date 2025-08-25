@@ -23,10 +23,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <div className="flex h-screen w-screen flex-1 overflow-hidden p-4">
-        <div className="flex h-full w-52 flex-col justify-between gap-2 py-4 pr-4">
+      <div className="flex h-screen w-screen flex-1 flex-col overflow-hidden p-4 transition-all md:flex-row">
+        {/* Desktop */}
+        <div className="hidden h-full w-52 flex-col justify-between gap-2 py-4 pr-4 md:flex">
           {/* HEADER */}
-          <div className="relative pt-10">
+          <div className="relative hidden pt-10 md:block">
             {/* Notifications */}
             <div className="absolute left-0 top-0">
               <Notifications />
@@ -55,7 +56,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <SidebarMenus />
 
           {/* FOOTER */}
-          <div className="mt-2 flex w-full justify-items-end">
+          <div className="mt-2 hidden w-full justify-items-end md:flex">
             <div className="flex flex-col">
               <div className="flex flex-col gap-3">
                 {/* Avatar */}
@@ -71,8 +72,39 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
 
+        {/* Device */}
+        <div className="flex w-full items-center justify-between pb-4 md:hidden">
+          {/* Logo */}
+          <Link href="/dashboard" className="flex flex-col items-center justify-center gap-2">
+            <Image
+              priority
+              src="/images/logo-branco-w736.png"
+              alt="minhas-finacas-logo-branco"
+              width={73.42}
+              height={80}
+            />
+            {/* <span className="font-bold uppercase text-white">Minhas Finanças</span> */}
+          </Link>
+
+          <div className="flex items-center gap-3">
+            {/* Notifications */}
+            <Notifications />
+
+            <Link href="/settings" className="relative">
+              <SettingsIcon className="h-4 w-4 stroke-white" />
+            </Link>
+
+            <AvatarUserDropdownMenu user={user} />
+          </div>
+        </div>
+
         <div className="h-full w-full flex-1 overflow-hidden rounded-[25px] bg-white">
           <div className="h-full w-full flex-1 overflow-y-auto p-8">{children}</div>
+        </div>
+
+        {/* Device */}
+        <div className="flex w-full pt-4 md:hidden">
+          <SidebarMenus />
         </div>
       </div>
 

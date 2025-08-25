@@ -6,16 +6,18 @@ import {
   PaginatedResult,
 } from '../../types';
 import { CategoryCreateData, CategoryUpdateData, ICategoryRepository } from './interface';
-import { categoryToEntityMap } from './mappers';
+import { toDatabaseMap, toEntityMap } from './mappers';
 
 export class CategoryRepository implements ICategoryRepository {
   constructor(private database: IDatabase) {}
 
-  async create(data: CategoryCreateData): Promise<void> {
+  async create(input: CategoryCreateData): Promise<void> {
+    const data = toDatabaseMap(input);
     await this.database.insert('categories', data);
   }
 
-  async update(data: CategoryUpdateData, id: string): Promise<void> {
+  async update(input: CategoryUpdateData, id: string): Promise<void> {
+    const data = toDatabaseMap(input);
     await this.database.update('categories', data, id);
   }
 
@@ -26,12 +28,12 @@ export class CategoryRepository implements ICategoryRepository {
   async getById(id: string): Promise<Category | null> {
     const result = await this.database.getFirst('categories', { where: { id } });
     if (!result) return null;
-    return categoryToEntityMap(result);
+    return toEntityMap(result);
   }
 
   async listAll(configs?: DatabaseConfig): Promise<Category[]> {
     const rows = await this.database.listAll('categories', configs);
-    return rows.map((row) => categoryToEntityMap(row));
+    return rows.map((row) => toEntityMap(row));
   }
 
   async listPaginate(options?: ListPaginateRepositoryOption): Promise<PaginatedResult<Category>> {
@@ -45,7 +47,7 @@ export class CategoryRepository implements ICategoryRepository {
 
     return {
       ...result,
-      data: result.data.map((row) => categoryToEntityMap(row)),
+      data: result.data.map((row) => toEntityMap(row)),
     };
   }
 }

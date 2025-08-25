@@ -82,7 +82,7 @@ export function ListWishlistsTemplate() {
               render: (item) => {
                 const priority = PRIORITY_MAP[item.priority];
                 return (
-                  <Badge style={{ backgroundColor: priority.color }}>{priority.display}</Badge>
+                  <Badge style={{ backgroundColor: priority?.color }}>{priority?.display}</Badge>
                 );
               },
             },
@@ -95,7 +95,7 @@ export function ListWishlistsTemplate() {
               title: 'Estado',
               render: (item) => {
                 const status = WISHLIST_STATUS_MAP[item.status];
-                return <Badge style={{ backgroundColor: status.color }}>{status.display}</Badge>;
+                return <Badge style={{ backgroundColor: status?.color }}>{status?.display}</Badge>;
               },
             },
           ]}

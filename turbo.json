@@ -44,6 +44,13 @@
       "cache": false,
       "persistent": true
     },
+    "migration:compile": {
+      "dependsOn": [
+        "migrate:generate"
+      ],
+      "cache": false,
+      "persistent": true
+    },
     "migration:generate": {
       "cache": false,
       "persistent": true

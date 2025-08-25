@@ -53,6 +53,7 @@ export function InputFormControl<
                     type={showPassword ? 'text' : 'password'}
                     {...rest}
                     {...field}
+                    value={field.value || ''}
                     disabled={disabled}
                     onChange={(e) => {
                       field.onChange(e);
@@ -78,6 +79,7 @@ export function InputFormControl<
                   type={type}
                   {...field}
                   {...rest}
+                  value={field.value || ''}
                   onChange={(e) => {
                     field.onChange(e);
                     onChange?.(e);

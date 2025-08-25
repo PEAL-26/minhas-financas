@@ -6,27 +6,29 @@ import {
   PaginatedResult,
 } from '../../types';
 import { ILocationRepository } from './interface';
-import { locationToEntityMap } from './mappers';
+import * as mapper from './mappers';
 
 export class LocationRepository implements ILocationRepository {
   constructor(private database: IDatabase) {}
 
   async create(
-    data: Pick<
+    input: Pick<
       Location,
       'name' | 'type' | 'province' | 'city' | 'address' | 'contacts' | 'coordinate'
     >,
   ): Promise<void> {
+    const data = mapper.toDatabaseMap(input);
     await this.database.insert('locations', data);
   }
 
   async update(
-    data: Pick<
+    input: Pick<
       Location,
       'name' | 'type' | 'province' | 'city' | 'address' | 'contacts' | 'coordinate'
     >,
     id: string,
   ): Promise<void> {
+    const data = mapper.toDatabaseMap(input);
     await this.database.update('locations', data, id);
   }
 
@@ -37,12 +39,12 @@ export class LocationRepository implements ILocationRepository {
   async getById(id: string): Promise<Location | null> {
     const result = await this.database.getFirst('locations', { where: { id } });
     if (!result) return null;
-    return locationToEntityMap(result);
+    return mapper.toEntityMap(result);
   }
 
   async listAll(configs?: DatabaseConfig): Promise<Location[]> {
     const rows = await this.database.listAll('locations', configs);
-    return rows.map((row) => locationToEntityMap(row));
+    return rows.map((row) => mapper.toEntityMap(row));
   }
 
   async listPaginate(options?: ListPaginateRepositoryOption): Promise<PaginatedResult<Location>> {
@@ -56,7 +58,7 @@ export class LocationRepository implements ILocationRepository {
 
     return {
       ...result,
-      data: result.data.map((row) => locationToEntityMap(row)),
+      data: result.data.map((row) => mapper.toEntityMap(row)),
     };
   }
 }
