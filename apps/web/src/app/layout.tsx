@@ -4,7 +4,6 @@ import '../styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 
 import { TopLoader } from '@/components/ui/top-loader';
-import { Providers } from '@/providers';
 import { Toaster } from '@repo/ui/sonner';
 import { poppins } from './fonts';
 
@@ -62,7 +61,7 @@ export default function Layout({ children }: RootLayoutProps) {
     <html lang="pt">
       <body className={`${poppins.className} bg-primary antialiased`}>
         <TopLoader />
-        <Providers>{children}</Providers>
+        {children}
         <Toaster />
       </body>
     </html>

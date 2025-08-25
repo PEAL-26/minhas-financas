@@ -10,6 +10,7 @@ import { DatabaseOptions, Driver, FirebaseConfig, IDatabase } from '../types';
 interface DatabaseContextProps {
   getDatabase(): Promise<IDatabase>;
   isLoading: boolean;
+  error: unknown | null;
 }
 
 type DatabaseProviderProps = {
@@ -33,6 +34,7 @@ export function DatabaseProvider(props: DatabaseProviderProps) {
     options,
   } = props || {};
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<unknown | null>(null);
 
   const getDatabase = async () => {
     let db = null;
@@ -58,25 +60,31 @@ export function DatabaseProvider(props: DatabaseProviderProps) {
 
   useEffect(() => {
     (async () => {
-      setIsLoading(true);
-      
-      let db = database;
-      
-      if (!database) {
-        db = await getDatabase();
-        setDatabase(db);
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        let db = database;
+
+        if (!database) {
+          db = await getDatabase();
+          setDatabase(db);
+        }
+
+        if (db) {
+          await applyBrowserMigrations(db);
+        }
+      } catch (error) {
+        setError(error);
+        console.error(error);
+      } finally {
+        setIsLoading(false);
       }
-
-      if (db) {
-        await applyBrowserMigrations(db);
-      } 
-
-      setIsLoading(false);
     })();
   }, []);
 
   return (
-    <DatabaseContext.Provider value={{ getDatabase, isLoading }}>
+    <DatabaseContext.Provider value={{ getDatabase, isLoading, error }}>
       <QueryClientProvider>{children}</QueryClientProvider>
     </DatabaseContext.Provider>
   );

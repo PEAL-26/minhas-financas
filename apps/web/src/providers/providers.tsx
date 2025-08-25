@@ -6,7 +6,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { ReactNode, Suspense } from 'react';
 import { LoadingProvider } from './loading';
 
-export function Providers({ children }: { children: ReactNode }) {
+export function AppProviders({ children }: { children: ReactNode }) {
   const { env, connectionType, databaseDriver } = appConfig;
 
   return (
