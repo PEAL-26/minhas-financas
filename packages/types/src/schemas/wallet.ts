@@ -3,6 +3,7 @@ import z from 'zod';
 
 import { ACCOUNT_TYPE_ENUM } from '../account';
 import * as account from './account';
+import { timestampsSchema } from './timestamps';
 
 export const walletSchemaBase = z.object({
   title: z.string({ error: 'Campo obrigatório.' }),
@@ -18,6 +19,7 @@ export const walletSchemaBase = z.object({
   details: z.string().nullish(),
   currencies: z.array(z.string().length(3, { error: 'Deve ter 3 carateres.' })).optional(),
   active: z.boolean().default(true).optional(),
+  ...timestampsSchema.partial().shape,
 });
 
 export const walletSchema = walletSchemaBase.transform((schema) => {
@@ -38,6 +40,7 @@ export const walletSchema = walletSchemaBase.transform((schema) => {
       convert: 'emptyToNull',
       fn: (value) => String(value).trim(),
     }),
+    updatedAt: new Date(),
   };
 });
 

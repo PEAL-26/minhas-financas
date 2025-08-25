@@ -1,6 +1,7 @@
 import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 import { z } from 'zod';
 import { ACCOUNT_TYPE_ENUM } from '../account';
+import { timestampsSchema } from './timestamps';
 
 export const accountSchemaBase = z.object({
   name: z.string({ error: 'Campo obrigatório.' }),
@@ -12,6 +13,7 @@ export const accountSchemaBase = z.object({
     .optional(),
   siteUrl: z.url({ error: 'URL inválida.' }).nullish(),
   swiftCode: z.string({ error: 'Valor inválido.' }).nullish(),
+  ...timestampsSchema.partial().shape,
 });
 
 export const accountSchema = accountSchemaBase.transform((schema) => {
@@ -26,6 +28,7 @@ export const accountSchema = accountSchemaBase.transform((schema) => {
       convert: 'emptyToNull',
       fn: (value) => String(value).trim(),
     }),
+    updatedAt: new Date(),
   };
 });
 

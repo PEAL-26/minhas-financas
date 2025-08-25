@@ -1,3 +1,5 @@
+import { DatabaseOptions } from './database';
+
 export type Field<T> = Record<keyof T, SelectField>;
 export type SelectField = boolean | { as?: string; to_replace?: boolean };
 export type DatabaseConfigSelect = {
@@ -32,16 +34,24 @@ export type DatabaseInclude = {
   [key: string]: DatabaseIncludeProps;
 };
 
+export type DatabaseMutationIncludeProps = Pick<DatabaseIncludeProps, 'as'> & {
+  data: any;
+  foreignKey: string;
+  key?: string;
+  tableName: string;
+};
+
 export type DatabaseMutationConfig = {
   include?: {
-    [key: string]: Pick<DatabaseIncludeProps, 'as'> & {
-      data: any;
-      foreignKey: string;
-      key?: string;
-      tableName: string;
-    };
+    [key: string]: DatabaseMutationIncludeProps;
   };
 };
+
+export interface BuildInsertIncludeSqlInput {
+  mainId: string;
+  include?: Record<string, DatabaseMutationIncludeProps>;
+  options?: DatabaseOptions;
+}
 
 export type DatabaseConfig = {
   select?: DatabaseConfigSelect;
@@ -55,6 +65,10 @@ export type DatabaseConfig = {
 export interface ListPaginateConfigs extends DatabaseConfig {
   size?: number;
   page?: number;
+}
+
+export interface GenerateQuerySqlConfig extends ListPaginateConfigs {
+  separator?: string;
 }
 
 export interface ListPaginateRepositoryOption {

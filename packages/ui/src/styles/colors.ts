@@ -21,7 +21,7 @@ export const colors = {
     DEFAULT: '#ffffff',
     foreground: '#1E1E1E',
   },
-  foreground: '#1E1E1E',
+  foreground: '#616973',
   card: {
     DEFAULT: '#ffffff',
     foreground: '#1E1E1E',

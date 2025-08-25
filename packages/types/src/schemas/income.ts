@@ -3,6 +3,7 @@ import { RECURRENCE_TYPE_ENUM, RECURRENCE_TYPE_MAP } from '../recurrence';
 import { INCOME_STATUS_ENUM, INCOME_STATUS_MAP } from '../status';
 
 import { enumValidate } from '../helpers/zod';
+import { timestampsSchema } from './timestamps';
 import * as wallet from './wallet';
 
 export const incomeSchemaBase = z.object({
@@ -30,10 +31,11 @@ export const incomeSchemaBase = z.object({
     .enum(INCOME_STATUS_ENUM, enumValidate(INCOME_STATUS_MAP))
     .default(INCOME_STATUS_ENUM.PENDING)
     .optional(),
+  ...timestampsSchema.partial().shape,
 });
 
 export const incomeSchema = incomeSchemaBase.transform((schema) => {
-  return { ...schema };
+  return { ...schema, updatedAt: new Date() };
 });
 
 export type IncomeSchemaType = z.infer<typeof incomeSchema>;

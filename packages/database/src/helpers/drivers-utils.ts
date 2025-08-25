@@ -1,12 +1,15 @@
+import { isEmpty } from '@repo/helpers/empty';
 import {
+  BuildInsertIncludeSqlInput,
   DATABASE_COLUMNS_TYPE_ENUM,
   DatabaseConfigSelect,
   DatabaseCreateTableColumns,
   DatabaseInclude,
+  DatabaseMutationIncludeProps,
   DatabaseOptions,
   DatabaseWhere,
   DatabaseWhereField,
-  ListPaginateConfigs,
+  GenerateQuerySqlConfig,
 } from '../types';
 
 import { camelToSnake, snakeToCamel } from 'case-naming-converter';
@@ -375,8 +378,8 @@ export function generateGroupBy(group?: string[]) {
   return `GROUP BY ${group.join(', ')}`;
 }
 
-export function generateQuerySql(tableName: string, configs?: ListPaginateConfigs) {
-  const { select, where, include, orderBy, groupBy, fn } = configs || {};
+export function generateQuerySql(tableName: string, configs?: GenerateQuerySqlConfig) {
+  const { select, where, include, orderBy, groupBy, fn, separator } = configs || {};
   const fields = generateQueryFields(select);
   const includes = generateIncludes(tableName, include);
 
@@ -386,15 +389,17 @@ export function generateQuerySql(tableName: string, configs?: ListPaginateConfig
       ? `, ${fieldsMap(
           includes.fields,
           includes.tables.map((t) => t.name),
+          { separator },
         )}`
       : '';
   const fns = generateFn(fn);
   const orderByClause = generateOrderByClause(orderBy);
   const groups = generateGroupBy(groupBy);
+  const selectFields = fieldsMap(fields, [tableName], { separator });
+  const selectFn = fns ? `, ${fns}` : '';
 
-  const baseQuery = `SELECT ${fieldsMap(fields, [tableName])}${includesFields}${
-    fns ? `, ${fns}` : ''
-  } FROM ${tableName} ${includes.joins} ${whereClause} ${groups} ${orderByClause}`.trim();
+  const baseQuery =
+    `SELECT ${selectFields}${includesFields}${selectFn} FROM ${tableName} ${includes.joins} ${whereClause} ${groups} ${orderByClause}`.trim();
 
   return { baseQuery, includes };
 }
@@ -424,10 +429,141 @@ export function insertSql(input: { tableName: string; fields: string[]; symbol?:
   return `INSERT INTO ${tableName} (${fields.join(', ')}) VALUES (${fieldValues});`;
 }
 
+export function setForeignKey(
+  data: any,
+  include: DatabaseMutationIncludeProps,
+  foreignKeyValue: any,
+) {
+  if (include?.foreignKey) {
+    data[include?.foreignKey as any] = foreignKeyValue;
+  }
+}
+
+export function buildInsertIncludeSql(input: BuildInsertIncludeSqlInput) {
+  const { mainId, include, options } = input;
+  const insertInclude: { sql: string; values: any[] }[] = [];
+
+  for (const [, values] of Object.entries(include || {})) {
+    if (isEmpty(values.data)) continue;
+
+    if (Array.isArray(values.data)) {
+      for (let includeData of values.data) {
+        setForeignKey(includeData, values, mainId);
+        const includeFields = generateFieldsValuesCreate(includeData, options);
+        const sql = insertSql({
+          tableName: values.tableName,
+          fields: includeFields.fields,
+          symbol: options?.symbol,
+        });
+        insertInclude.push({ sql, values: includeFields.values });
+      }
+    } else {
+      setForeignKey(values.data, values, mainId);
+      const includeFields = generateFieldsValuesCreate(values.data, options);
+      const sql = insertSql({
+        tableName: values.tableName,
+        fields: includeFields.fields,
+        symbol: options?.symbol,
+      });
+
+      insertInclude.push({ sql, values: includeFields.values });
+    }
+  }
+
+  return insertInclude;
+}
+
+function setKeysUpdateInclude(mainId: any, includeData: any, values: any) {
+  const obj: Record<string, any> = {};
+
+  if (includeData?.id) {
+    obj['id'] = includeData?.id;
+  }
+
+  if (values?.foreignKey) {
+    obj[values?.foreignKey] = mainId;
+  }
+
+  if (values?.key) {
+    obj[values?.key] = includeData?.[values.key];
+  }
+
+  return obj;
+}
+
+export function buildUpdateIncludeSql(input: BuildInsertIncludeSqlInput) {
+  const { mainId, include, options } = input;
+  const inserts: { sql: string; values: any[] }[] = [];
+  const removes: { [key: string]: Record<string, any>[] } = {};
+
+  for (const [_, values] of Object.entries(include || {})) {
+    removes[values.tableName] = [];
+
+    if (values.data === undefined) continue;
+
+    if (values.data === null || values?.data?.length === 0) {
+      removes[values.tableName].push(setKeysUpdateInclude(mainId, {}, values));
+      continue;
+    }
+
+    if (Array.isArray(values.data)) {
+      for (let includeData of values.data) {
+        removes[values.tableName].push(setKeysUpdateInclude(mainId, includeData, values));
+        setForeignKey(includeData, values, mainId);
+        const includeFields = generateFieldsValuesCreate(includeData, options);
+        const sql = insertSql({
+          tableName: values.tableName,
+          fields: includeFields.fields,
+          symbol: options?.symbol,
+        });
+        inserts.push({ sql, values: includeFields.values });
+      }
+    } else {
+      if (values.data) {
+        removes[values.tableName].push(setKeysUpdateInclude(mainId, values.data, values));
+        setForeignKey(values.data, values, mainId);
+        const includeFields = generateFieldsValuesCreate(values.data, options);
+        const sql = insertSql({
+          tableName: values.tableName,
+          fields: includeFields.fields,
+          symbol: options?.symbol,
+        });
+
+        inserts.push({ sql, values: includeFields.values });
+      }
+    }
+  }
+
+  return { inserts, removes };
+}
+
 export function updateSql(input: { tableName: string; sets: string[]; symbol?: '$' | '?' }) {
   const { tableName, sets, symbol = '$' } = input;
   const fieldId = symbol === '?' ? '?' : `$${sets.length + 1}`;
   return `UPDATE ${tableName} SET ${sets.join(', ')} WHERE id=${fieldId}`;
+}
+
+export function deleteSql(input: {
+  tableName: string;
+  data: Record<string, any>;
+  symbol?: '$' | '?';
+  casing?: 'snakeCase' | 'camelCase';
+}) {
+  const { tableName, data, symbol = '$', casing } = input;
+
+  const fields: string[] = [];
+  const values: any[] = [];
+
+  Object.entries(data || {}).forEach(([field, value], index) => {
+    if (value !== undefined) {
+      const fieldCasing = caseConverting(field, casing);
+      const fieldSymbol = `${symbol === '$' ? `$${index + 1}` : '?'}`;
+      fields.push(`${fieldCasing}=${fieldSymbol}`);
+      values.push(value);
+    }
+  });
+
+  return { sql: `DELETE FROM ${tableName} WHERE ${fields.join(' AND ')}`, values };
 }
 
 export function generateIncludeFields(input: {

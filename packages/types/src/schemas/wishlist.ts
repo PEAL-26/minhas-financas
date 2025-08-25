@@ -7,6 +7,7 @@ import { WISHLIST_STATUS_ENUM, WISHLIST_STATUS_MAP } from '../status';
 import * as category from './category';
 import * as location from './location';
 import * as price from './price';
+import { timestampsSchema } from './timestamps';
 
 export const wishlistSchemaBase = z.object({
   name: z.string({ error: 'Campo obrigatório.' }),
@@ -58,6 +59,7 @@ export const wishlistSchemaBase = z.object({
       }),
     )
     .optional(),
+  ...timestampsSchema.partial().shape,
 });
 
 export const wishlistSchema = wishlistSchemaBase.transform((schema) => {
@@ -67,6 +69,7 @@ export const wishlistSchema = wishlistSchemaBase.transform((schema) => {
     recurrence: checkNullUndefinedValue(schema?.recurrence, {
       fn: (value) => Number(value),
     }),
+    updatedAt: new Date(),
   };
 });
 

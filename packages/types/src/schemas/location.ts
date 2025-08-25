@@ -1,6 +1,7 @@
 import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 import z from 'zod';
 import { LOCATION_TYPE_ENUM, LOCATION_TYPE_MAP } from '../location';
+import { timestampsSchema } from './timestamps';
 
 export const locationSchemaBase = z.object({
   name: z.string({ error: 'Campo obrigatório.' }),
@@ -20,6 +21,7 @@ export const locationSchemaBase = z.object({
     })
     .nullish(),
   contacts: z.array(z.string()).default([]).nullish(),
+  ...timestampsSchema.partial().shape,
 });
 
 export const locationSchema = locationSchemaBase.transform((schema) => {
@@ -44,6 +46,7 @@ export const locationSchema = locationSchemaBase.transform((schema) => {
     }),
     coordinate: checkNullUndefinedValue(schema?.coordinate),
     contacts: checkNullUndefinedValue(schema?.contacts),
+    updatedAt: new Date(),
   };
 });
 

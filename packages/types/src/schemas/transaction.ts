@@ -4,6 +4,7 @@ import { TRANSACTION_TYPE_ENUM, TRANSACTION_TYPE_MAP } from '../transaction';
 import * as expense from './expense';
 import * as income from './income';
 import * as location from './location';
+import { timestampsSchema } from './timestamps';
 
 export const transactionIncomeSchema = z.object({
   income: z.object({
@@ -46,9 +47,13 @@ export const transactionSchemaBase = z.object({
   expenses: z.array(transactionExpenseSchema).default([]).optional(),
   totalAmount: z.number().default(0),
   note: z.string().nullish(),
+  ...timestampsSchema.partial().shape,
 });
 
-export const transactionSchema = transactionSchemaBase.transform((schema) => schema);
+export const transactionSchema = transactionSchemaBase.transform((schema) => ({
+  ...schema,
+  updatedAt: new Date(),
+}));
 
 export type TransactionSchemaType = z.infer<typeof transactionSchema>;
 export type TransactionIncomeSchemaType = z.infer<typeof transactionIncomeSchema>;

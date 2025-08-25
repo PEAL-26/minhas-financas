@@ -10,6 +10,7 @@ import { enumValidate } from '../helpers/zod';
 import * as category from './category';
 import * as income from './income';
 import * as price from './price';
+import { timestampsSchema } from './timestamps';
 import * as wishlist from './wishlist';
 
 const idSchema = z.string({ error: 'Campo obrigatório.' });
@@ -60,6 +61,7 @@ export const expenseSchemaBase = z.object({
     .enum(EXPENSE_STATUS_ENUM, enumValidate(EXPENSE_STATUS_MAP))
     .default(EXPENSE_STATUS_ENUM.PENDING)
     .optional(),
+  ...timestampsSchema.partial().shape,
 });
 
 export const expenseSchema = expenseSchemaBase.transform((schema) => {
@@ -81,6 +83,7 @@ export const expenseSchema = expenseSchemaBase.transform((schema) => {
       convert: 'emptyToNull',
       fn: (value) => String(value).trim(),
     }),
+    updatedAt: new Date(),
   };
 });
 

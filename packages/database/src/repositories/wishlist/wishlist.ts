@@ -93,7 +93,7 @@ export class WishlistRepository implements IWishlistRepository {
                 contacts: true,
               },
               singular: 'location',
-              type: "LEFT",
+              type: 'LEFT',
               references: {
                 left: 'prices.location_id',
                 right: 'location.id',
@@ -121,6 +121,19 @@ export class WishlistRepository implements IWishlistRepository {
       where: { name: { value: query, op: 'like' } },
       size,
       page,
+      include: {
+        categories: {
+          select: {
+            id: true,
+            name: true,
+            color: true,
+            icon: true,
+          },
+          singular: 'category',
+          type: 'LEFT',
+        },
+      },
+      orderBy: [{ 'wishlist.name': 'asc' }],
     });
 
     return {

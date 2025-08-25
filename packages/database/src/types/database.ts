@@ -67,4 +67,5 @@ export type FirebaseConfig = typeof firebaseConfig;
 export type DatabaseOptions = {
   casing?: 'camelCase' | 'snakeCase';
   symbol?: '$' | '?';
+  separator?: string;
 };

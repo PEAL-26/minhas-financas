@@ -1,7 +1,9 @@
 import { PGliteInterface } from '@electric-sql/pglite';
-import { isEmpty } from '@repo/helpers/empty';
 import { snakeToCamel } from 'case-naming-converter';
 import {
+  buildInsertIncludeSql,
+  buildUpdateIncludeSql,
+  deleteSql,
   generateFieldsValuesCreate,
   generateFieldsValuesUpdate,
   generateIncludeFields,
@@ -30,7 +32,10 @@ export class DatabasePGLite implements IDatabase {
   constructor(
     private connection: PGliteInterface,
     private options?: DatabaseOptions,
-  ) {}
+  ) {
+    const { symbol = '$', casing = 'snakeCase', separator = '', ...rest } = options || {};
+    this.options = { ...rest, symbol, casing };
+  }
 
   async transaction(callback: () => Promise<void>) {
     return this.connection.withTransactionAsync(callback);
@@ -51,44 +56,15 @@ export class DatabasePGLite implements IDatabase {
     configs?: DatabaseMutationConfig,
   ): Promise<T> {
     const { include } = configs || {};
-    const { fields, values: mainValuesInsert } = generateFieldsValuesCreate(data, this.options);
-    const mainSqlInsert = insertSql({ tableName, fields, symbol: '$' });
+    const options = { ...this.options, symbol: '$' as const };
 
-    const setForeignKey = (data: any, include: any, foreignKeyValue: any) => {
-      if (include?.foreignKey) {
-        data[include?.foreignKey as any] = foreignKeyValue;
-      }
-    };
-
-    const insertInclude: { sql: string; values: any[] }[] = [];
-    for (const [property, values] of Object.entries(include || {})) {
-      if (isEmpty(values.data)) continue;
-
-      if (Array.isArray(values.data)) {
-        for (let includeData of values.data) {
-          setForeignKey(includeData, include?.[property], data.id);
-          const includeFields = generateFieldsValuesCreate(includeData, this.options);
-          const sql = insertSql({
-            tableName: values.tableName,
-            fields: includeFields.fields,
-            symbol: '$',
-          });
-          insertInclude.push({ sql, values: includeFields.values });
-        }
-      } else {
-        setForeignKey(values.data, include?.[property], data.id);
-        const includeFields = generateFieldsValuesCreate(values.data, this.options);
-        const sql = insertSql({
-          tableName: values.tableName,
-          fields: includeFields.fields,
-          symbol: '$',
-        });
-
-        insertInclude.push({ sql, values: includeFields.values });
-      }
-
-      data[property] = values.data;
-    }
+    const { fields, values: mainValuesInsert } = generateFieldsValuesCreate(data, options);
+    const mainSqlInsert = insertSql({ tableName, fields, symbol: options.symbol });
+    const insertInclude = buildInsertIncludeSql({
+      mainId: data.id,
+      include,
+      options: this.options,
+    });
 
     await this.connection.transaction(async (tx) => {
       await tx.query(mainSqlInsert, mainValuesInsert);
@@ -114,11 +90,26 @@ export class DatabasePGLite implements IDatabase {
     configs?: DatabaseMutationConfig,
   ): Promise<T> {
     const { include } = configs || {};
-    const { sets, values } = generateFieldsValuesUpdate(data, { ...this.options, symbol: '$' });
-    const sql = updateSql({ tableName, sets, symbol: '$' });
-    await this.connection.query(sql, [...values, id]);
+    const options = { ...this.options, symbol: '$' as const };
+    const { sets, values } = generateFieldsValuesUpdate(data, options);
+    const sql = updateSql({ tableName, sets, symbol: options.symbol });
+    const includeBuild = buildUpdateIncludeSql({ mainId: id, include, options });
 
-    data.id = id;
+    await this.connection.transaction(async (tx) => {
+      await tx.query(sql, [...values, id]);
+
+      await Promise.all(
+        Object.entries(includeBuild.removes)
+          .flatMap(([tableName, fieldsData]) => {
+            return fieldsData.map((data) => {
+              return deleteSql({ tableName, data, symbol: '$', casing: options?.casing });
+            });
+          })
+          .map(({ sql, values }) => tx.query(sql, values)),
+      );
+
+      await Promise.all(includeBuild.inserts.map(({ sql, values }) => tx.query(sql, values)));
+    });
 
     return data as T;
   }
@@ -141,6 +132,7 @@ export class DatabasePGLite implements IDatabase {
 
   async getFirst<T>(tableName: string, configs?: DatabaseConfig): Promise<T | null> {
     const { select, where, include } = configs || {};
+
     const fields = generateQueryFields(select);
     const includes = generateIncludes(tableName, include);
     const whereClause = generateWhereClause(where);
@@ -149,10 +141,7 @@ export class DatabasePGLite implements IDatabase {
     const allSelectFields = selectFields + includesFields;
 
     const sql = `SELECT ${allSelectFields} FROM ${tableName} ${includes.joins} ${whereClause}`;
-
     const result = await this.connection.query<T>(sql);
-
-    console.log(result)
 
     if (result.rows.length === 0) return null;
 
@@ -187,7 +176,7 @@ export class DatabasePGLite implements IDatabase {
     const { size = 10, page = 1 } = configs || {};
 
     const offset = (page - 1) * size;
-    const { baseQuery, includes } = generateQuerySql(tableName, configs);
+    const { baseQuery, includes } = generateQuerySql(tableName, { ...configs, separator: '' });
 
     const totalItemsQuery = `SELECT COUNT(*) as count FROM (${baseQuery}) as total_count_query`;
     const paginatedQuery = `${baseQuery} LIMIT ${size} OFFSET ${offset}`;

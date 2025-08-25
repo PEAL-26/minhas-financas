@@ -7,7 +7,7 @@ export function HomeHeader() {
     <header id="home" className="bg-white">
       <div className="container mx-auto flex items-center justify-between py-3">
         <Link href="/" className="inline-flex items-center gap-2">
-          <Image src="/images/logo-w736.png" alt="minhas-financas-logo" width={36.71} height={40} />
+          <Image src="/images/logo.png" alt="minhas-financas-logo" width={36.71} height={40} />
           <span className="text-xl font-bold text-[#616973]">Minhas Finanças</span>
         </Link>
         <div className="flex items-center gap-8">
