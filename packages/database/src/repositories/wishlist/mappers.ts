@@ -30,14 +30,14 @@ export function toEntityMap(raw: any): Wishlist {
       fn: (data) => categoryMapper.toEntityMap(data),
     }),
     targetDate: checkNullUndefinedValue(raw.targetDate, { fn: (value) => new Date(value) }),
-    priority: raw.priority,
+    priority: raw.priority || undefined,
     expectedLocation: checkNullUndefinedValue(raw.expectedLocation, {
       fn: (data) => locationMapper.toEntityMap(data),
     }),
     estimatedCost: checkNullUndefinedValue(raw.estimatedCost, { fn: (value) => Number(value) }),
     quantity: checkNullUndefinedValue(raw.quantity, { fn: (value) => Number(value) }),
     total: checkNullUndefinedValue(raw.total, { fn: (value) => Number(value) }),
-    status: raw.status,
+    status: raw.status || undefined,
     prices: pricesToEntityMap(raw.prices),
     ...toEntityPropertiesCommonMap(raw),
   };

@@ -5,6 +5,7 @@ import { PRIORITY_ENUM, PRIORITY_MAP } from '../priority';
 import { RECURRENCE_TYPE_ENUM, RECURRENCE_TYPE_MAP } from '../recurrence';
 import { WISHLIST_STATUS_ENUM, WISHLIST_STATUS_MAP } from '../status';
 import * as category from './category';
+import * as location from './location';
 import * as price from './price';
 
 export const wishlistSchemaBase = z.object({
@@ -33,7 +34,12 @@ export const wishlistSchemaBase = z.object({
     })
     .default(PRIORITY_ENUM.NORMAL)
     .optional(),
-  expectedLocation: z.object().nullish(),
+  expectedLocation: z
+    .object({
+      ...location.locationSchemaBase.partial().shape,
+      id: z.string({ error: 'Campo obrigatório.' }),
+    })
+    .nullish(),
   estimatedCost: z.number().nullish(),
   quantity: z.number().nullish(),
   total: z.number().nullish(),

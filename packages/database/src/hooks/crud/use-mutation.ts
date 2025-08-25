@@ -71,6 +71,14 @@ export function useMutation<SchemaType extends FieldValues = any>(
         const database = await getDatabase();
         const repository = getRepository(repositoryName, database);
         const response = await repository.getById(id);
+
+        if (!response) {
+          const error = new Error('Recurso não encontrado!');
+          setLoadingDataError(error);
+          onError?.(error);
+          return;
+        }
+
         const data = await schema.parseAsync(response);
 
         Object.entries(data).forEach(([key, value]) => {

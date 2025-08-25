@@ -87,7 +87,15 @@ export function generateIncludes(
   if (include) {
     const includes = Object.entries(include);
     for (const [table, attributes] of includes) {
-      const { singular, as, include, select, type, references, structure: data = 'object' } = attributes;
+      const {
+        singular,
+        as,
+        include,
+        select,
+        type,
+        references,
+        structure: data = 'object',
+      } = attributes;
       const { left, right } = references || {};
 
       const tableDisplay = `${as || singular || table}`;

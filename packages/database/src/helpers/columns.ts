@@ -9,8 +9,8 @@ export const primaryKey = {
 
 export const timestamps = {
   pglite: {
-    updated_at: pgCore.timestamp("updated_at"),
-    created_at: pgCore.timestamp("created_at").defaultNow().notNull(),
+    updated_at: pgCore.timestamp('updated_at'),
+    created_at: pgCore.timestamp('created_at').defaultNow().notNull(),
   },
   sqlite: {
     createdAt: sqliteCore

@@ -18,14 +18,20 @@ type DatabaseProviderProps = {
   connectionType?: 'IN_MEMORY' | 'DATABASE_ENGINE';
   env?: 'test' | 'development' | 'production';
   firebaseConfig?: FirebaseConfig;
-  options?: DatabaseOptions
+  options?: DatabaseOptions;
 };
 
 const DatabaseContext = createContext<DatabaseContextProps>({} as DatabaseContextProps);
 
 export function DatabaseProvider(props: DatabaseProviderProps) {
   const [database, setDatabase] = useState<IDatabase | null>(null);
-  const { driver, children, connectionType = 'DATABASE_ENGINE', firebaseConfig, options } = props || {};
+  const {
+    driver,
+    children,
+    connectionType = 'DATABASE_ENGINE',
+    firebaseConfig,
+    options,
+  } = props || {};
   const [isLoading, setIsLoading] = useState(true);
 
   const getDatabase = async () => {
@@ -52,22 +58,22 @@ export function DatabaseProvider(props: DatabaseProviderProps) {
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true);
+      
+      let db = database;
+      
       if (!database) {
-        const db = await getDatabase();
+        db = await getDatabase();
         setDatabase(db);
       }
+
+      if (db) {
+        await applyBrowserMigrations(db);
+      } 
+
+      setIsLoading(false);
     })();
   }, []);
-
-  useEffect(() => {
-    setIsLoading(true);
-    (async () => {
-      if (database) {
-        await applyBrowserMigrations(database);
-      }
-    })();
-    setIsLoading(false);
-  }, [database]);
 
   return (
     <DatabaseContext.Provider value={{ getDatabase, isLoading }}>

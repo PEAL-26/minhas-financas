@@ -151,6 +151,9 @@ export class DatabasePGLite implements IDatabase {
     const sql = `SELECT ${allSelectFields} FROM ${tableName} ${includes.joins} ${whereClause}`;
 
     const result = await this.connection.query<T>(sql);
+
+    console.log(result)
+
     if (result.rows.length === 0) return null;
 
     const [data] = new RelationalSerializer({

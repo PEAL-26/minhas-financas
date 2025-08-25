@@ -1,13 +1,4 @@
 import {
-  DatabaseConfig,
-  Field,
-  IConnection,
-  IDatabase,
-  ListPaginateConfigs,
-  PaginatedResult,
-  UpdateBulkData,
-} from '../../types';
-import {
   fieldsMap,
   generateFieldsValuesCreate,
   generateIncludes,
@@ -16,6 +7,15 @@ import {
   generateWhereClause,
   serialize,
 } from '../../helpers/drivers-utils';
+import {
+  DatabaseConfig,
+  Field,
+  IConnection,
+  IDatabase,
+  ListPaginateConfigs,
+  PaginatedResult,
+  UpdateBulkData,
+} from '../../types';
 
 export class DatabaseSQLite<
   T,
@@ -113,7 +113,12 @@ export class DatabaseSQLite<
     const includes = generateIncludes(tableName, include);
     const whereClause = generateWhereClause(where);
     const includesFields =
-      includes.fields.length > 0 ? `, ${fieldsMap(includes.fields, includes.tables)}` : '';
+      includes.fields.length > 0
+        ? `, ${fieldsMap(
+            includes.fields,
+            includes.tables.map((t) => t.name),
+          )}`
+        : '';
     const query = `SELECT ${fieldsMap(fields, [
       tableName,
     ])}${includesFields} FROM ${tableName} ${includes.joins} ${whereClause}`;
@@ -121,7 +126,7 @@ export class DatabaseSQLite<
     const result = await this.connection.getAllAsync<T>(query);
     if (result.length === 0) return null;
 
-    return serialize(result[0], [tableName, ...includes.tables]) as T;
+    return serialize(result[0], [tableName, ...includes.tables.map((t) => t.name)]) as T;
   }
 
   select<T>(fields: Field<T>, tableName: string): Promise<T[]> {
@@ -131,7 +136,9 @@ export class DatabaseSQLite<
   async listAll<T>(tableName: string, configs?: DatabaseConfig): Promise<T[]> {
     const { baseQuery, includes } = generateQuerySql(tableName, configs);
     const result = await this.connection.getAllAsync<T>(baseQuery);
-    const data = result.map((item) => serialize(item, [tableName, ...includes.tables]) as T);
+    const data = result.map(
+      (item) => serialize(item, [tableName, ...includes.tables.map((t) => t.name)]) as T,
+    );
 
     return data;
   }
@@ -156,7 +163,9 @@ export class DatabaseSQLite<
     ]);
 
     const totalItems = parseInt(String(totalItemsResult?.[0]?.count), 10);
-    const data = result.map((item) => serialize(item, [tableName, ...includes.tables]) as T);
+    const data = result.map(
+      (item) => serialize(item, [tableName, ...includes.tables.map((t) => t.name)]) as T,
+    );
 
     const totalPages = Math.ceil(totalItems / size);
     const prev = page > 1 ? page - 1 : null;

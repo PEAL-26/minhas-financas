@@ -28,7 +28,7 @@ export function showToastWarning(message: string) {
 }
 
 export function showToastError(err: any) {
-  console.log(err)
+  console.log(err);
   const message = typeof err === 'string' ? err : messageErrorMap(err);
   toast('Oops! Algo deu errado.', {
     duration: 5000,

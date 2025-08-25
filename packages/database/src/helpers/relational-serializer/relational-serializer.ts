@@ -1,4 +1,4 @@
-import { DatabaseInclude } from '@repo/database/types';
+import { DatabaseInclude } from '../../types';
 import {
   ConfigProps,
   RawRow,

@@ -6,6 +6,7 @@ export function toEntityMap(raw: any): Location {
   return {
     name: raw.name,
     type: raw.type,
+    country: raw?.country,
     province: raw?.province,
     city: raw?.city,
     address: raw?.address,

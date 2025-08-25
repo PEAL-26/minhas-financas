@@ -93,6 +93,7 @@ export class WishlistRepository implements IWishlistRepository {
                 contacts: true,
               },
               singular: 'location',
+              type: "LEFT",
               references: {
                 left: 'prices.location_id',
                 right: 'location.id',
