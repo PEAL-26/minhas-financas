@@ -31,7 +31,7 @@ export class WishlistRepository implements IWishlistRepository {
         prices: {
           tableName: 'wishlist_prices',
           foreignKey: 'wishlistId',
-          key: "locationId",
+          key: 'locationId',
           data: prices,
         },
       },
@@ -57,6 +57,7 @@ export class WishlistRepository implements IWishlistRepository {
         },
         locations: {
           select: {
+            id: true,
             name: true,
             type: true,
             country: true,
@@ -71,7 +72,7 @@ export class WishlistRepository implements IWishlistRepository {
         },
         wishlist_prices: {
           as: 'prices',
-          data: 'array',
+          structure: 'array',
           select: { amount: true },
           type: 'LEFT',
           references: {
@@ -81,6 +82,7 @@ export class WishlistRepository implements IWishlistRepository {
           include: {
             locations: {
               select: {
+                id: true,
                 name: true,
                 type: true,
                 country: true,
@@ -101,8 +103,6 @@ export class WishlistRepository implements IWishlistRepository {
       },
       where: { 'wishlist.id': id },
     });
-
-    console.log(result);
 
     if (!result) return null;
     return mapper.toEntityMap(result);

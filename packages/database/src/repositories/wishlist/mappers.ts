@@ -5,6 +5,22 @@ import { toDatabasePropertiesCommonMap, toEntityPropertiesCommonMap } from '../.
 import * as categoryMapper from '../categories';
 import * as locationMapper from '../locations';
 
+export function pricesToEntityMap(prices: any) {
+  if (!prices) return [];
+
+  return prices.map((price: any) => {
+    return {
+      location: checkNullUndefinedValue(price.location, {
+        convert: 'emptyToNull',
+        fn: (value) => {
+          return locationMapper.toEntityMap(value);
+        },
+      }),
+      amount: Number(price.amount),
+    };
+  });
+}
+
 export function toEntityMap(raw: any): Wishlist {
   return {
     name: raw.name,
@@ -22,7 +38,7 @@ export function toEntityMap(raw: any): Wishlist {
     quantity: checkNullUndefinedValue(raw.quantity, { fn: (value) => Number(value) }),
     total: checkNullUndefinedValue(raw.total, { fn: (value) => Number(value) }),
     status: raw.status,
-    prices: checkNullUndefinedValue(raw.prices, { fn: (value) => Number(value) }),
+    prices: pricesToEntityMap(raw.prices),
     ...toEntityPropertiesCommonMap(raw),
   };
 }

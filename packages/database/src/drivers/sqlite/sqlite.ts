@@ -15,7 +15,7 @@ import {
   generateQuerySql,
   generateWhereClause,
   serialize,
-} from '../utils';
+} from '../../helpers/drivers-utils';
 
 export class DatabaseSQLite<
   T,

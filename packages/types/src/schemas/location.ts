@@ -19,7 +19,7 @@ export const locationSchemaBase = z.object({
       longitude: z.number({ error: 'Valor inválido' }),
     })
     .nullish(),
-  contacts: z.array(z.string()).optional(),
+  contacts: z.array(z.string()).default([]).nullish(),
 });
 
 export const locationSchema = locationSchemaBase.transform((schema) => {

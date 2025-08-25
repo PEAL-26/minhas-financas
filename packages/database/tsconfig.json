@@ -5,8 +5,14 @@
     "composite": true,
     "noEmit": true,
     "moduleResolution": "bundler",
+    "module": "preserve",
     "baseUrl": ".",
-    "rootDir": "src"
+    "rootDir": "src",
+    "paths": {
+      "@repo/database/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": [
     "src"

@@ -19,7 +19,7 @@ export type DatabaseWhere = {
 };
 
 export type DatabaseIncludeProps = {
-  data?: 'object' | 'array';
+  structure?: 'object' | 'array';
   type?: 'INNER' | 'LEFT' | 'RIGHT';
   as?: string;
   singular?: string;

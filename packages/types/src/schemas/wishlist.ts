@@ -48,8 +48,7 @@ export const wishlistSchemaBase = z.object({
   prices: z
     .array(
       z.object({
-       // ...price.priceSchemaBase.partial().shape,
-        id: z.string({ error: 'Campo obrigatório.' }),
+        ...price.priceSchemaBase.partial().shape,
       }),
     )
     .optional(),

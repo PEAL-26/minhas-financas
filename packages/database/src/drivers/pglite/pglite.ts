@@ -1,15 +1,6 @@
 import { PGliteInterface } from '@electric-sql/pglite';
-import { camelToSnake, snakeToCamel } from 'case-naming-converter';
-import {
-  DatabaseConfig,
-  DatabaseMutationConfig,
-  DatabaseOptions,
-  Field,
-  IDatabase,
-  ListPaginateConfigs,
-  PaginatedResult,
-  UpdateBulkData,
-} from '../../types';
+import { isEmpty } from '@repo/helpers/empty';
+import { snakeToCamel } from 'case-naming-converter';
 import {
   generateFieldsValuesCreate,
   generateFieldsValuesUpdate,
@@ -21,9 +12,19 @@ import {
   generateWhereClause,
   insertSql,
   serialize,
-  setNestedValue,
   updateSql,
-} from '../utils';
+} from '../../helpers/drivers-utils';
+import { RelationalSerializer } from '../../helpers/relational-serializer';
+import {
+  DatabaseConfig,
+  DatabaseMutationConfig,
+  DatabaseOptions,
+  Field,
+  IDatabase,
+  ListPaginateConfigs,
+  PaginatedResult,
+  UpdateBulkData,
+} from '../../types';
 
 export class DatabasePGLite implements IDatabase {
   constructor(
@@ -61,6 +62,8 @@ export class DatabasePGLite implements IDatabase {
 
     const insertInclude: { sql: string; values: any[] }[] = [];
     for (const [property, values] of Object.entries(include || {})) {
+      if (isEmpty(values.data)) continue;
+
       if (Array.isArray(values.data)) {
         for (let includeData of values.data) {
           setForeignKey(includeData, include?.[property], data.id);
@@ -150,68 +153,12 @@ export class DatabasePGLite implements IDatabase {
     const result = await this.connection.query<T>(sql);
     if (result.rows.length === 0) return null;
 
-    const data = result.rows.slice(0, 1).map((row) => {
-      const newObj: any = { ...row };
-
-      for (const field of includes.fields) {
-        newObj[camelToSnake(field) as any] = undefined;
-      }
-
-      return newObj;
-    })[0];
-
-    console.log({ includes, result });
-    //const data = serialize(result.rows[0], [tableName]) as T;
-
-    const setObj = (row: any, tableName: string) => {
-      const fields = Object.entries(row || {})
-        .map(([field, value]) => ({
-          field,
-          value,
-        }))
-        .filter((f) => f.field.startsWith(tableName));
-
-      const obj: Record<string, any> = {};
-      fields.forEach(({ field, value }) => {
-        const newField = field.replaceAll(`${tableName}_`, '');
-        obj[newField] = value;
-      });
-
-      return obj;
-    };
-
-    const obj: any = {};
-
-    for (const row of result.rows) {
-      const properties = Object.entries(row || {}).map(([field, value]) => ({
-        field,
-        value,
-      }));
-      
-      for (const includeField of includes.fields) {
-        if (includeField.indexOf('-') > -1) {
-          const [tableName, field] = includeField.split('-');
-          const fieldOriginal = camelToSnake(`${tableName}_${field}`);
-          const table = includes.tables.find((t) => t.name === tableName);
-          const property = properties.find((p) => p.field === fieldOriginal);
-          const newObj = setNestedValue({}, field, property?.value);
-          console.log({ property, newObj });
-
-          if (table?.type === 'array') {
-            if (!obj[tableName]) obj[tableName] = [];
-            obj[tableName].push(newObj);
-          }
-
-          if (table?.type === 'object') {
-            obj[tableName] = newObj;
-          }
-        } else {
-          // console.log({ includeField });
-        }
-      }
-    }
-
-    console.log(obj);
+    const [data] = new RelationalSerializer({
+      mainTable: tableName,
+      rowFields: Object.keys(result.rows[0] || {}),
+      includesFields: includes.fields,
+      include,
+    }).serializeResults(result.rows);
 
     return snakeToCamel(data) as T;
   }
@@ -250,9 +197,16 @@ export class DatabasePGLite implements IDatabase {
     ]);
 
     const totalItems = parseInt(String(totalItemsResult.rows?.[0]?.count), 10);
-    const data = result.rows.map(
-      (item) => serialize(item, [tableName, ...includes.tables.map((t) => t.name)]) as T,
-    );
+    // const data = result.rows.map(
+    //   (item) => serialize(item, [tableName, ...includes.tables.map((t) => t.name)]) as T,
+    // );
+
+    const data = new RelationalSerializer({
+      mainTable: tableName,
+      rowFields: Object.keys(result.rows[0] || {}),
+      includesFields: includes.fields,
+      include: configs?.include,
+    }).serializeResults(result.rows) as T[];
 
     const totalPages = Math.ceil(totalItems / size);
     const prev = page > 1 ? page - 1 : null;
