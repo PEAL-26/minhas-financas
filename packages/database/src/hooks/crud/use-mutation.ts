@@ -82,7 +82,7 @@ export function useMutation<SchemaType extends FieldValues = any>(
         const data = await schema.parseAsync(response);
 
         Object.entries(data).forEach(([key, value]) => {
-          form.setValue(key as any, value);
+          form.setValue(key as unknown as any, value);
         });
       } catch (error) {
         setLoadingDataError(error);
