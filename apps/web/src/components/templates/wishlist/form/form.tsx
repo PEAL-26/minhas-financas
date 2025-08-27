@@ -8,11 +8,11 @@ import { WISHLIST_STATUS_MAP } from '@repo/types/status';
 import { DatePicker } from '@repo/ui/date-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
-import { SelectFormControl } from '@repo/ui/form/control/select';
 import { showToastError } from '@repo/ui/helpers/toast';
 import { InputMoney } from '@repo/ui/input-money';
 
 import { CategoryFormComponent } from '@/components/ui/forms/category';
+import { LocationFormComponent } from '@/components/ui/forms/location';
 import { PriorityFormComponent } from '@/components/ui/forms/priority';
 import { RecurrenceFormComponent } from '@/components/ui/forms/recurrence';
 import { StatusFormComponent } from '@/components/ui/forms/status';
@@ -40,6 +40,14 @@ export function WishlistFormSheet(props: WishlistFormProps) {
     queryKey: ['categories'],
     defaultSize: 100,
   });
+
+  const selectLocation = useQuerySelect({
+    repositoryName: 'location',
+    queryKey: ['locations'],
+    defaultSize: 100,
+  });
+
+  console.log(mutation?.form?.watch());
 
   return (
     <SheetForm
@@ -76,12 +84,14 @@ export function WishlistFormSheet(props: WishlistFormProps) {
           )}
         </FormControlCustom>
 
-        <SelectFormControl
+        <LocationFormComponent
           modal
           label="Local Previsto"
+          placeholder="Selecione o local"
           name="expectedLocation"
           control={mutation?.form?.control}
           className="w-full bg-white"
+          response={selectLocation}
         />
 
         <FormControlCustom
@@ -109,7 +119,11 @@ export function WishlistFormSheet(props: WishlistFormProps) {
 
         {id && <StatusFormComponent form={mutation.form} statusMap={WISHLIST_STATUS_MAP} />}
 
-        <LocationPricesFormComponent control={mutation.form.control} name="prices" />
+        <LocationPricesFormComponent
+          control={mutation.form.control}
+          name="prices"
+          responseLocations={selectLocation}
+        />
       </div>
     </SheetForm>
   );

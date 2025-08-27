@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const AUTH_ROUTES = ['/login', '/register'];
-const PUBLIC_ROUTES = ['/', '/terms'];
+const PUBLIC_ROUTES = ['/', '/terms', 'example'];
 
 export function middleware(req: NextRequest, res: NextResponse) {
   const isAuthenticated = 'token_teste'; // !!req.cookies.get(COOKIES.TOKEN)?.value;

@@ -42,7 +42,7 @@ export function ListWalletsTemplate() {
             {
               name: 'account',
               title: 'Conta',
-              render: (item) => <>{item.account.name}</>,
+              render: (item) => <>{item?.account?.name}</>,
             },
             {
               name: 'reference',

@@ -1,23 +1,23 @@
 import { User } from '@repo/types/user';
+import { toDatabasePropertiesCommonMap, toEntityPropertiesCommonMap } from '../../helpers/map';
 
-export function userToEntityMap(raw: any): User {
+export function toEntityMap(raw: any): User {
   // TODO Melhorar o mapeamento
   return {
-    id: raw.id,
     name: raw.name,
     email: raw.email,
     passwordHash: raw.passwordHash,
     providerId: raw.providerId,
-    createdAt: raw?.createdAt ? new Date(raw?.createdAt) : raw?.createdAt,
-    updatedAt: raw?.updatedAt ? new Date(raw?.updatedAt) : raw?.updatedAt,
+    ...toEntityPropertiesCommonMap(raw),
   };
 }
 
-export function userToDatabaseMap(entity: User) {
+export function toDatabaseMap(entity: Partial<User>) {
   return {
     name: entity.name,
     email: entity.email,
     passwordHash: entity.passwordHash,
     providerId: entity.providerId,
+    ...toDatabasePropertiesCommonMap(entity),
   };
 }

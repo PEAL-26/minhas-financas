@@ -1,9 +1,9 @@
 import { Wallet } from '@repo/types/wallet';
+import { toDatabasePropertiesCommonMap, toEntityPropertiesCommonMap } from '../../helpers/map';
 
-export function walletToEntityMap(raw: any): Wallet {
+export function toEntityMap(raw: any): Wallet {
   // TODO Melhorar o mapeamento
   return {
-    id: raw.id,
     title: raw.title,
     account: raw.account,
     reference: raw.reference,
@@ -11,19 +11,19 @@ export function walletToEntityMap(raw: any): Wallet {
     details: raw.details,
     currencies: raw.currencies,
     active: raw.active,
-    createdAt: raw?.createdAt ? new Date(raw?.createdAt) : raw?.createdAt,
-    updatedAt: raw?.updatedAt ? new Date(raw?.updatedAt) : raw?.updatedAt,
+    ...toEntityPropertiesCommonMap(raw),
   };
 }
 
-export function walletToDatabaseMap(entity: Wallet) {
+export function toDatabaseMap(entity: Partial<Wallet>) {
   return {
     title: entity.title,
-    accountId: entity.account.id,
+    accountId: entity?.account?.id,
     reference: entity.reference,
     iban: entity.iban,
     details: entity.details,
     currencies: entity.currencies,
     active: entity.active,
+    ...toDatabasePropertiesCommonMap(entity),
   };
 }

@@ -6,16 +6,18 @@ import {
   PaginatedResult,
 } from '../../types';
 import { ITransactionRepository, TransactionCreateData } from './interface';
-import { transactionToEntityMap } from './mappers';
+import * as mappers from './mappers';
 
 export class TransactionRepository implements ITransactionRepository {
   constructor(private database: IDatabase) {}
 
-  async create(data: TransactionCreateData): Promise<void> {
+  async create(input: TransactionCreateData): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.insert('transactions', data);
   }
 
-  async update(data: Partial<TransactionCreateData>, id: string): Promise<void> {
+  async update(input: Partial<TransactionCreateData>, id: string): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.update('transactions', data, id);
   }
 
@@ -26,12 +28,12 @@ export class TransactionRepository implements ITransactionRepository {
   async getById(id: string): Promise<Transaction | null> {
     const result = await this.database.getFirst('transactions', { where: { id } });
     if (!result) return null;
-    return transactionToEntityMap(result);
+    return mappers.toEntityMap(result);
   }
 
   async listAll(configs?: DatabaseConfig): Promise<Transaction[]> {
     const rows = await this.database.listAll('transactions', configs);
-    return rows.map((row) => transactionToEntityMap(row));
+    return rows.map((row) => mappers.toEntityMap(row));
   }
 
   async listPaginate(
@@ -47,7 +49,7 @@ export class TransactionRepository implements ITransactionRepository {
 
     return {
       ...result,
-      data: result.data.map((row) => transactionToEntityMap(row)),
+      data: result.data.map((row) => mappers.toEntityMap(row)),
     };
   }
 }

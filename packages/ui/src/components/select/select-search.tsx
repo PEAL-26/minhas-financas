@@ -66,7 +66,8 @@ export function SelectSearch<T>(props: SelectSearchProps<T>) {
     const obj: Record<any, any> = {};
     setOpen(false);
     setSearch('');
-    setSelectedItem(item);
+    const isNull = item?.[fieldValue] === 'NULL';
+    setSelectedItem(isNull ? undefined : item);
 
     if (name) {
       setValue?.(name, item);
@@ -75,6 +76,7 @@ export function SelectSearch<T>(props: SelectSearchProps<T>) {
     if (update && item) {
       obj[fieldValue] = item[fieldValue];
       obj[fieldLabel] = item[fieldLabel];
+
       onSelect?.(item);
       handleChange(obj);
     }

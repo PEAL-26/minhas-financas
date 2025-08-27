@@ -75,6 +75,7 @@ export interface ListPaginateRepositoryOption {
   query?: string;
   size?: number;
   page?: number;
+  userId?: string;
 }
 
 export interface PaginatedResult<T> {

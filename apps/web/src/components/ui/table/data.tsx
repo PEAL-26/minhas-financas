@@ -19,20 +19,21 @@ interface Props<T extends { id?: any; [key: string]: any }> {
   onEdit?(item: T): void;
   onDelete?(id: string): void;
   fields: Field<T>[];
+  className?: string;
 }
 
 export function DataTable<T extends { id?: any; [key: string]: any } = any>(props: Props<T>) {
-  const { response, fields, onEdit, onDelete } = props;
+  const { response, fields, className, onEdit, onDelete } = props;
 
   return (
-    <table>
+    <table className={cn('', className)}>
       <thead>
         <tr>
           {fields.map((field, index) => (
             <th
               key={index}
               className={cn(
-                'border-y px-2 py-1 text-left font-medium text-gray-400',
+                'border-y px-2 py-1 text-left text-sm font-medium text-gray-400',
                 field.className,
               )}
             >
@@ -85,7 +86,7 @@ export function DataTable<T extends { id?: any; [key: string]: any } = any>(prop
                     }
 
                     return (
-                      <td key={index} className={cn('px-2 py-3', field.className)}>
+                      <td key={index} className={cn('px-2 py-3 text-sm', field.className)}>
                         {data}
                       </td>
                     );

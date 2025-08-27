@@ -6,16 +6,18 @@ import {
   PaginatedResult,
 } from '../../types';
 import { IIncomeRepository, IncomeCreateData } from './interface';
-import { incomeToEntityMap } from './mappers';
+import * as mappers from './mappers';
 
 export class IncomeRepository implements IIncomeRepository {
   constructor(private database: IDatabase) {}
 
-  async create(data: IncomeCreateData): Promise<void> {
+  async create(input: IncomeCreateData): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.insert('incomes', data);
   }
 
-  async update(data: Partial<IncomeCreateData>, id: string): Promise<void> {
+  async update(input: Partial<IncomeCreateData>, id: string): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.update('incomes', data, id);
   }
 
@@ -26,12 +28,12 @@ export class IncomeRepository implements IIncomeRepository {
   async getById(id: string): Promise<Income | null> {
     const result = await this.database.getFirst('incomes', { where: { id } });
     if (!result) return null;
-    return incomeToEntityMap(result);
+    return mappers.toEntityMap(result);
   }
 
   async listAll(configs?: DatabaseConfig): Promise<Income[]> {
     const rows = await this.database.listAll('incomes', configs);
-    return rows.map((row) => incomeToEntityMap(row));
+    return rows.map((row) => mappers.toEntityMap(row));
   }
 
   async listPaginate(options?: ListPaginateRepositoryOption): Promise<PaginatedResult<Income>> {
@@ -45,7 +47,7 @@ export class IncomeRepository implements IIncomeRepository {
 
     return {
       ...result,
-      data: result.data.map((row) => incomeToEntityMap(row)),
+      data: result.data.map((row) => mappers.toEntityMap(row)),
     };
   }
 }

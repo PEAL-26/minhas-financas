@@ -1,11 +1,10 @@
-import { useQuerySelect } from '@repo/database/hooks/use-query-select';
 import { Button } from '@repo/ui/button';
 import { FormControlCustom } from '@repo/ui/form/control';
-import { SelectFormControl } from '@repo/ui/form/control/select';
 import { InputMoney } from '@repo/ui/input-money';
 import { Label } from '@repo/ui/label';
 import { PlusCircleIcon, Trash2 } from '@repo/ui/lib/lucide';
 import { Control, FieldArrayPath, FieldValues, Path, useFieldArray } from 'react-hook-form';
+import { LocationFormComponent } from './location';
 
 interface LocationPricesProps<
   TFieldValues extends FieldValues,
@@ -13,13 +12,14 @@ interface LocationPricesProps<
 > {
   name: TName;
   control?: Control<TFieldValues>;
+  responseLocations: any;
 }
 
 export function LocationPricesFormComponent<
   TFieldValues extends FieldValues,
   TName extends FieldArrayPath<TFieldValues>,
 >(props: LocationPricesProps<TFieldValues, TName>) {
-  const { name, control } = props;
+  const { name, control, responseLocations } = props;
 
   const array = useFieldArray<TFieldValues, TName, '_id'>({ name, control });
 
@@ -35,12 +35,6 @@ export function LocationPricesFormComponent<
     }
   };
 
-  const selectLocations = useQuerySelect({
-    repositoryName: 'location',
-    queryKey: ['locations'],
-    defaultSize: 100,
-  });
-
   return (
     <div className="flex flex-col">
       <Label className="font-bold text-black">Preços: </Label>
@@ -55,37 +49,24 @@ export function LocationPricesFormComponent<
         <div className="flex flex-col gap-2">
           {array.fields.map((field, index) => (
             <div key={index} className="grid grid-cols-2 gap-2">
-              <SelectFormControl
+              <LocationFormComponent
                 modal
                 placeholder="Selecione o local"
                 name={`${name}.${index}.location` as Path<TFieldValues>}
                 control={control}
                 className="w-full bg-white"
                 item={(field as any)?.location}
+                response={responseLocations}
                 onSelect={(location) => {
-                  const data = location.id === 'NULL' ? null : location;
+                  const data = location?.id === 'NULL' ? null : location;
                   updateValue(index, { location: data });
                 }}
-                items={[
-                  {
-                    id: 'NULL',
-                    name: 'Desselecionar',
-                    backgroundColor: undefined,
-                    showIcon: false,
-                    className: 'text-center text-gray-300',
-                  },
-                  ...selectLocations.data.map((item: any) => {
-                    return { ...item };
-                  }),
-                ]}
-                onSearch={selectLocations.search}
-                loading={selectLocations.isLoadingAll}
               />
               <div className="flex items-center gap-2">
                 <FormControlCustom
                   control={control}
                   name={`${name}.${index}.amount` as Path<TFieldValues>}
-                  defaultValue={(field as any)?.amount}
+                  //defaultValue={(field as any)?.amount}
                 >
                   {() => (
                     <InputMoney

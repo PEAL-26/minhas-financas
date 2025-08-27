@@ -1,5 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
+import { useAuthContext } from '../../contexts/auth';
 import { useDatabaseContext } from '../../contexts/database';
 import { getRepository } from '../../helpers/repository';
 import { UseReadProps } from './types';
@@ -13,6 +14,7 @@ export function useRead<T>(props: UseReadProps): Result<T> {
   const { id, repositoryName } = props;
 
   const { getDatabase } = useDatabaseContext();
+  const { user } = useAuthContext();
 
   const { data = null, ...rest } = useQuery<T>({
     queryFn: async () => {

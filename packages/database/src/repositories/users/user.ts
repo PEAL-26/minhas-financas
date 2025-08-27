@@ -6,16 +6,18 @@ import {
   PaginatedResult,
 } from '../../types';
 import { IUserRepository, UserCreateData } from './interface';
-import { userToEntityMap } from './mappers';
+import * as mappers from './mappers';
 
 export class UserRepository implements IUserRepository {
   constructor(private database: IDatabase) {}
 
-  async create(data: UserCreateData): Promise<void> {
+  async create(input: UserCreateData): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.insert('users', data);
   }
 
-  async update(data: Partial<UserCreateData>, id: string): Promise<void> {
+  async update(input: Partial<UserCreateData>, id: string): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.update('users', data, id);
   }
 
@@ -26,12 +28,12 @@ export class UserRepository implements IUserRepository {
   async getById(id: string): Promise<User | null> {
     const result = await this.database.getFirst('users', { where: { id } });
     if (!result) return null;
-    return userToEntityMap(result);
+    return mappers.toEntityMap(result);
   }
 
   async listAll(configs?: DatabaseConfig): Promise<User[]> {
     const rows = await this.database.listAll('users', configs);
-    return rows.map((row) => userToEntityMap(row));
+    return rows.map((row) => mappers.toEntityMap(row));
   }
 
   async listPaginate(options?: ListPaginateRepositoryOption): Promise<PaginatedResult<User>> {
@@ -45,7 +47,7 @@ export class UserRepository implements IUserRepository {
 
     return {
       ...result,
-      data: result.data.map((row) => userToEntityMap(row)),
+      data: result.data.map((row) => mappers.toEntityMap(row)),
     };
   }
 }

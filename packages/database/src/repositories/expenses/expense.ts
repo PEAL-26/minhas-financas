@@ -6,16 +6,18 @@ import {
   PaginatedResult,
 } from '../../types';
 import { ExpenseCreateData, IExpenseRepository } from './interface';
-import { expenseToEntityMap } from './mappers';
+import * as mappers from './mappers';
 
 export class ExpenseRepository implements IExpenseRepository {
   constructor(private database: IDatabase) {}
 
-  async create(data: ExpenseCreateData): Promise<void> {
+  async create(input: ExpenseCreateData): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.insert('expenses', data);
   }
 
-  async update(data: Partial<ExpenseCreateData>, id: string): Promise<void> {
+  async update(input: Partial<ExpenseCreateData>, id: string): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.update('expenses', data, id);
   }
 
@@ -26,12 +28,12 @@ export class ExpenseRepository implements IExpenseRepository {
   async getById(id: string): Promise<Expense | null> {
     const result = await this.database.getFirst('expenses', { where: { id } });
     if (!result) return null;
-    return expenseToEntityMap(result);
+    return mappers.toEntityMap(result);
   }
 
   async listAll(configs?: DatabaseConfig): Promise<Expense[]> {
     const rows = await this.database.listAll('expenses', configs);
-    return rows.map((row) => expenseToEntityMap(row));
+    return rows.map((row) => mappers.toEntityMap(row));
   }
 
   async listPaginate(options?: ListPaginateRepositoryOption): Promise<PaginatedResult<Expense>> {
@@ -45,7 +47,7 @@ export class ExpenseRepository implements IExpenseRepository {
 
     return {
       ...result,
-      data: result.data.map((row) => expenseToEntityMap(row)),
+      data: result.data.map((row) => mappers.toEntityMap(row)),
     };
   }
 }

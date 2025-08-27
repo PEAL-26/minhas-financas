@@ -1,4 +1,5 @@
 'use client';
+import { useAuthContext } from '@repo/database/contexts/auth';
 import { useDatabaseContext } from '@repo/database/contexts/database';
 import { colors } from '@repo/ui/colors';
 import { TriangleAlertIcon } from '@repo/ui/lib/lucide';
@@ -7,6 +8,7 @@ import { ReactNode } from 'react';
 
 export function LoadingProvider({ children }: { children: ReactNode }) {
   const { isLoading, error } = useDatabaseContext();
+  const auth = useAuthContext();
 
   if (isLoading && !error) {
     return (

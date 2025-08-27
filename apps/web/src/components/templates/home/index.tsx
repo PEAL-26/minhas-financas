@@ -1,3 +1,3 @@
+export * from '../../ui/header';
 export * from './excellent';
-export * from './header';
 export * from './hero';

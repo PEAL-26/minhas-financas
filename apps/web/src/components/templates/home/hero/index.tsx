@@ -3,7 +3,10 @@ import { MockUp } from './mockup';
 
 export function HomeHero() {
   return (
-    <section className="relative mt-6 h-[556px] w-full rounded-t-[52px] bg-green-500 pt-16 text-center text-white">
+    <section
+      id="home"
+      className="relative mt-6 h-[556px] w-full rounded-t-[52px] bg-green-500 pt-16 text-center text-white"
+    >
       <div className="flex flex-col items-center justify-center text-center">
         <span className="text-base">Abraçando a modernidade</span>
         <hr className="mt-2 h-px w-40 rounded-full border-0 bg-gray-200/50" />

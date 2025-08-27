@@ -1,9 +1,9 @@
 import { Expense } from '@repo/types/expense';
+import { toDatabasePropertiesCommonMap, toEntityPropertiesCommonMap } from '../../helpers/map';
 
-export function expenseToEntityMap(raw: any): Expense {
+export function toEntityMap(raw: any): Expense {
   // TODO Melhorar esse mapeamento
   return {
-    id: raw.id,
     wishlist: raw.wishlist,
     income: raw.income,
     category: raw.category,
@@ -19,28 +19,28 @@ export function expenseToEntityMap(raw: any): Expense {
     total: raw.total,
     prices: raw.prices,
     status: raw.status,
-    createdAt: raw?.createdAt ? new Date(raw?.createdAt) : raw?.createdAt,
-    updatedAt: raw?.updatedAt ? new Date(raw?.updatedAt) : raw?.updatedAt,
+    ...toEntityPropertiesCommonMap(raw),
   };
 }
 
-export function expenseToDatabaseMap(expense: Expense) {
+export function toDatabaseMap(entity: Partial<Expense>) {
   // TODO Melhorar esse mapeamento
   return {
-    wishlistId: expense.wishlist?.id,
-    incomeId: expense.income?.id,
-    categoryId: expense.category?.id,
-    description: expense.description,
-    estimatedDate: expense.estimatedDate,
-    priority: expense.priority,
-    type: expense.type,
-    recurrence: expense.recurrence,
-    startDate: expense.startDate,
-    endDate: expense.endDate,
-    estimatedAmount: expense.estimatedAmount,
-    quantity: expense.quantity,
-    total: expense.total,
-    prices: expense.prices,
-    status: expense.status,
+    wishlistId: entity.wishlist?.id,
+    incomeId: entity.income?.id,
+    categoryId: entity.category?.id,
+    description: entity.description,
+    estimatedDate: entity.estimatedDate,
+    priority: entity.priority,
+    type: entity.type,
+    recurrence: entity.recurrence,
+    startDate: entity.startDate,
+    endDate: entity.endDate,
+    estimatedAmount: entity.estimatedAmount,
+    quantity: entity.quantity,
+    total: entity.total,
+    prices: entity.prices,
+    status: entity.status,
+    ...toDatabasePropertiesCommonMap(entity),
   };
 }

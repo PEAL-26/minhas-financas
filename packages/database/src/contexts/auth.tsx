@@ -11,6 +11,7 @@ export type User = {
 
 interface AuthContextProps {
   user: User | null;
+  isLoading: boolean;
 }
 
 type AuthProviderProps = {
@@ -18,11 +19,13 @@ type AuthProviderProps = {
   platform: 'web' | 'mobile';
 };
 
-const AuthsContext = createContext<AuthContextProps>({} as AuthContextProps);
+const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 export function AuthProvider(props: AuthProviderProps) {
   const { children, platform } = props;
+
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setSiLoading] = useState(true);
 
   const getUser = async () => {
     if (user) return user;
@@ -31,21 +34,23 @@ export function AuthProvider(props: AuthProviderProps) {
   };
 
   useEffect(() => {
-    if (!user) {
-      //const db = getAuths();
-      //setAuths(db);
-    }
+    (async () => {
+      setSiLoading(true);
+      // TODO Implementar o código de carregar o usuário
+
+      setSiLoading(false);
+    })();
   }, []);
 
   return (
-    <AuthsContext.Provider value={{ user }}>
+    <AuthContext.Provider value={{ user, isLoading }}>
       <>{children}</>
-    </AuthsContext.Provider>
+    </AuthContext.Provider>
   );
 }
 
-export const useAuthsContext = () => {
-  const context = useContext(AuthsContext);
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
 
   if (!context) {
     throw new Error('useAuthsContext deve ser usado dentro do AuthProvider.');

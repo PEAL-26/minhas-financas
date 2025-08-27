@@ -6,16 +6,18 @@ import {
   PaginatedResult,
 } from '../../types';
 import { IWalletRepository, WalletCreateData } from './interface';
-import { walletToEntityMap } from './mappers';
+import * as mappers from './mappers';
 
 export class WalletRepository implements IWalletRepository {
   constructor(private database: IDatabase) {}
 
-  async create(data: WalletCreateData): Promise<void> {
+  async create(input: WalletCreateData): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.insert('wallets', data);
   }
 
-  async update(data: Partial<WalletCreateData>, id: string): Promise<void> {
+  async update(input: Partial<WalletCreateData>, id: string): Promise<void> {
+    const data = mappers.toDatabaseMap(input);
     await this.database.update('wallets', data, id);
   }
 
@@ -26,12 +28,12 @@ export class WalletRepository implements IWalletRepository {
   async getById(id: string): Promise<Wallet | null> {
     const result = await this.database.getFirst('wallets', { where: { id } });
     if (!result) return null;
-    return walletToEntityMap(result);
+    return mappers.toEntityMap(result);
   }
 
   async listAll(configs?: DatabaseConfig): Promise<Wallet[]> {
     const rows = await this.database.listAll('wallets', configs);
-    return rows.map((row) => walletToEntityMap(row));
+    return rows.map((row) => mappers.toEntityMap(row));
   }
 
   async listPaginate(options?: ListPaginateRepositoryOption): Promise<PaginatedResult<Wallet>> {
@@ -41,11 +43,18 @@ export class WalletRepository implements IWalletRepository {
       where: { title: { value: query, op: 'like' } },
       size,
       page,
+      include: {
+        accounts: {
+          singular: 'account',
+          select: { id: true, name: true, type: true },
+          structure: 'object',
+        },
+      },
     });
 
     return {
       ...result,
-      data: result.data.map((row) => walletToEntityMap(row)),
+      data: result.data.map((row) => mappers.toEntityMap(row)),
     };
   }
 }

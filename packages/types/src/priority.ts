@@ -5,7 +5,7 @@ export enum PRIORITY_ENUM {
 }
 
 export const PRIORITY_MAP = {
-  [PRIORITY_ENUM.LOW]: { display: 'Baixa', color: '#2AB546' },
-  [PRIORITY_ENUM.NORMAL]: { display: 'Normal', color: '#facc15' },
+  [PRIORITY_ENUM.LOW]: { display: 'Baixa', color: '#facc15' },
+  [PRIORITY_ENUM.NORMAL]: { display: 'Normal', color: '#2AB546' },
   [PRIORITY_ENUM.HIGH]: { display: 'Alta', color: '#ef4444' },
 };

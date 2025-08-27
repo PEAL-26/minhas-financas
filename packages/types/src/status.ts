@@ -4,8 +4,8 @@ export enum BASE_STATUS_ENUM {
 }
 
 export const BASE_STATUS_MAP = {
-  [BASE_STATUS_ENUM.PENDING]: { display: 'Pendente' },
-  [BASE_STATUS_ENUM.DONE]: { display: 'Feito' },
+  [BASE_STATUS_ENUM.PENDING]: { display: 'Pendente', color: '#facc15' },
+  [BASE_STATUS_ENUM.DONE]: { display: 'Feito', color: '#2AB546' },
 };
 
 export enum WISHLIST_STATUS_ENUM {

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { HeaderRegister } from './register';
 
-export function HomeHeader() {
+export function HeaderMain() {
   return (
     <header id="home" className="bg-white">
       <div className="container mx-auto flex items-center justify-between py-3">
@@ -11,10 +11,10 @@ export function HomeHeader() {
           <span className="text-xl font-bold text-[#616973]">Minhas Finanças</span>
         </Link>
         <div className="flex items-center gap-8">
-          <Link href="#home" className="text-[#616973]">
+          <Link href="/#home" className="text-[#616973]">
             Home
           </Link>
-          <Link href="#faqs" className="text-[#616973]">
+          <Link href="/#faqs" className="text-[#616973]">
             FAQs
           </Link>
         </div>

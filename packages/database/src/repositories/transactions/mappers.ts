@@ -1,21 +1,20 @@
 import { Transaction } from '@repo/types/transaction';
+import { toDatabasePropertiesCommonMap, toEntityPropertiesCommonMap } from '../../helpers/map';
 
-export function transactionToEntityMap(raw: any): Transaction {
+export function toEntityMap(raw: any): Transaction {
   // TODO Melhorar esse mapeamento
   return {
-    id: raw.id,
     type: raw.type,
     date: raw.date,
     incomes: raw.incomes,
     expenses: raw.expenses,
     totalAmount: raw.totalAmount,
     note: raw.note,
-    createdAt: raw?.createdAt ? new Date(raw?.createdAt) : raw?.createdAt,
-    updatedAt: raw?.updatedAt ? new Date(raw?.updatedAt) : raw?.updatedAt,
+    ...toEntityPropertiesCommonMap(raw),
   };
 }
 
-export function transactionToDatabaseMap(entity: Transaction) {
+export function toDatabaseMap(entity: Partial<Transaction>) {
   // TODO Melhorar esse mapeamento
   return {
     type: entity.type,
@@ -24,5 +23,6 @@ export function transactionToDatabaseMap(entity: Transaction) {
     expenses: entity.expenses,
     totalAmount: entity.totalAmount,
     note: entity.note,
+    ...toDatabasePropertiesCommonMap(entity),
   };
 }

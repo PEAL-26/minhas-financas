@@ -69,6 +69,11 @@ export const wishlistSchema = wishlistSchemaBase.transform((schema) => {
     recurrence: checkNullUndefinedValue(schema?.recurrence, {
       fn: (value) => Number(value),
     }),
+    category: checkNullUndefinedValue(schema?.category, { convert: 'emptyToNull' }),
+    targetDate: checkNullUndefinedValue(schema?.targetDate, { convert: 'emptyToNull' }),
+    priority: checkNullUndefinedValue(schema?.priority, { convert: 'emptyToUndefined' }),
+    expectedLocation: checkNullUndefinedValue(schema?.expectedLocation, { convert: 'emptyToNull' }),
+
     updatedAt: new Date(),
   };
 });

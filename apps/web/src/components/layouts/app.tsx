@@ -23,7 +23,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <div className="flex h-screen w-screen flex-1 flex-col overflow-hidden p-4 transition-all md:flex-row">
+      <div className="flex h-screen w-screen flex-1 flex-col overflow-hidden bg-primary p-4 transition-all md:flex-row">
         {/* Desktop */}
         <div className="hidden h-full w-52 flex-col justify-between gap-2 py-4 pr-4 md:flex">
           {/* HEADER */}
@@ -99,7 +99,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </div>
 
         <div className="h-full w-full flex-1 overflow-hidden rounded-[25px] bg-white">
-          <div className="h-full w-full flex-1 overflow-y-auto p-8">{children}</div>
+          <div className="h-full w-full flex-1 overflow-y-auto p-4 lg:p-8">{children}</div>
         </div>
 
         {/* Device */}

@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
+import { useAuthContext } from '../../contexts/auth';
 import { useDatabaseContext } from '../../contexts/database';
 import { getRepository, getSchema } from '../../helpers/repository';
 import { UseMutationProps } from './types';
@@ -19,6 +20,7 @@ export function useMutation<SchemaType extends FieldValues = any>(
   const [loadingDataError, setLoadingDataError] = useState<any>(null);
 
   const { getDatabase } = useDatabaseContext();
+  const { user } = useAuthContext();
 
   const schema = getSchema(repositoryName);
 
@@ -42,9 +44,9 @@ export function useMutation<SchemaType extends FieldValues = any>(
       const data = await schema.parseAsync(input);
 
       if (id) {
-        await repository.update(data as any, id);
+        await repository.update({ ...data, userId: user?.id } as any, id);
       } else {
-        await repository.create(data as any);
+        await repository.create({ ...data, userId: user?.id } as any);
       }
 
       setTimeout(async () => {
@@ -68,6 +70,7 @@ export function useMutation<SchemaType extends FieldValues = any>(
         setIsLoadingData(true);
         setLoadingDataError(null);
 
+        await new Promise((resolve) => setTimeout(resolve, 300));
         const database = await getDatabase();
         const repository = getRepository(repositoryName, database);
         const response = await repository.getById(id);
