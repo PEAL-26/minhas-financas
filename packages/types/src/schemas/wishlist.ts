@@ -1,6 +1,7 @@
 import { checkNullUndefinedValue } from '@repo/helpers/checkers';
 import z from 'zod';
 
+import { numericString } from '@repo/helpers/zod';
 import { PRIORITY_ENUM, PRIORITY_MAP } from '../priority';
 import { RECURRENCE_TYPE_ENUM, RECURRENCE_TYPE_MAP } from '../recurrence';
 import { WISHLIST_STATUS_ENUM, WISHLIST_STATUS_MAP } from '../status';
@@ -41,9 +42,9 @@ export const wishlistSchemaBase = z.object({
       id: z.string({ error: 'Campo obrigatório.' }),
     })
     .nullish(),
-  estimatedCost: z.number().nullish(),
-  quantity: z.number().nullish(),
-  total: z.number().nullish(),
+  estimatedCost: numericString(z.number()).nullish(),
+  quantity: numericString(z.number()).nullish(),
+  total: numericString(z.number()).nullish(),
   status: z
     .enum(WISHLIST_STATUS_ENUM, {
       error: `Valor inválido (deve ser ${Object.values(WISHLIST_STATUS_MAP)
@@ -63,6 +64,10 @@ export const wishlistSchemaBase = z.object({
 });
 
 export const wishlistSchema = wishlistSchemaBase.transform((schema) => {
+  const estimatedCost = schema.estimatedCost;
+  const quantity = schema.quantity;
+  const total = Number(estimatedCost || 0) * Number(quantity || 1);
+
   return {
     ...schema,
     name: schema?.name?.trim(),
@@ -73,7 +78,9 @@ export const wishlistSchema = wishlistSchemaBase.transform((schema) => {
     targetDate: checkNullUndefinedValue(schema?.targetDate, { convert: 'emptyToNull' }),
     priority: checkNullUndefinedValue(schema?.priority, { convert: 'emptyToUndefined' }),
     expectedLocation: checkNullUndefinedValue(schema?.expectedLocation, { convert: 'emptyToNull' }),
-
+    estimatedCost,
+    quantity,
+    total,
     updatedAt: new Date(),
   };
 });

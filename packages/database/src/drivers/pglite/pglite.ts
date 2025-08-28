@@ -13,13 +13,13 @@ import {
   generateSelectFields,
   generateWhereClause,
   insertSql,
-  serialize,
   updateSql,
 } from '../../helpers/drivers-utils';
 import { RelationalSerializer } from '../../helpers/relational-serializer';
 import {
   DatabaseConfig,
   DatabaseMutationConfig,
+  DatabaseMutationInputData,
   DatabaseOptions,
   Field,
   IDatabase,
@@ -52,12 +52,15 @@ export class DatabasePGLite implements IDatabase {
 
   async insert<T>(
     tableName: string,
-    data: Record<string, any>,
+    inputData: DatabaseMutationInputData,
     configs?: DatabaseMutationConfig,
   ): Promise<T> {
     const { include } = configs || {};
     const options = { ...this.options, symbol: '$' as const };
-
+    const data = {
+      ...inputData,
+      ...(options.authUserId ? { user_id: options.authUserId } : {}),
+    } as DatabaseMutationInputData;
     const { fields, values: mainValuesInsert } = generateFieldsValuesCreate(data, options);
     const mainSqlInsert = insertSql({ tableName, fields, symbol: options.symbol });
     const insertInclude = buildInsertIncludeSql({
@@ -74,7 +77,7 @@ export class DatabasePGLite implements IDatabase {
     return data as T;
   }
 
-  async insertBulk(tableName: string, data: Record<string, any>[]): Promise<void> {
+  async insertBulk(tableName: string, data: DatabaseMutationInputData[]): Promise<void> {
     // TODO Aplicar o transaction
     await Promise.all(
       data.map((item) => {
@@ -85,7 +88,7 @@ export class DatabasePGLite implements IDatabase {
 
   async update<T>(
     tableName: string,
-    data: Record<string, any>,
+    data: DatabaseMutationInputData,
     id: string,
     configs?: DatabaseMutationConfig,
   ): Promise<T> {
@@ -136,8 +139,17 @@ export class DatabasePGLite implements IDatabase {
     const fields = generateQueryFields(select);
     const includes = generateIncludes(tableName, include);
     const whereClause = generateWhereClause(where);
-    const includesFields = generateIncludeFields({ ...includes, separator: '' });
-    const selectFields = generateSelectFields({ fields, tableName, separator: '' });
+    const includesFields = generateIncludeFields({
+      ...includes,
+      separator: '',
+      casing: this.options?.casing,
+    });
+    const selectFields = generateSelectFields({
+      fields,
+      tableName,
+      separator: '',
+      casing: this.options?.casing,
+    });
     const allSelectFields = selectFields + includesFields;
 
     const sql = `SELECT ${allSelectFields} FROM ${tableName} ${includes.joins} ${whereClause}`;
@@ -160,13 +172,20 @@ export class DatabasePGLite implements IDatabase {
   }
 
   async listAll<T>(tableName: string, configs?: DatabaseConfig): Promise<T[]> {
-    const { baseQuery, includes } = generateQuerySql(tableName, configs);
+    const { baseQuery, includes } = generateQuerySql(tableName, {
+      ...configs,
+      casing: this.options?.casing,
+    });
     const result = await this.connection.query<T>(baseQuery);
-    const data = result.rows.map(
-      (item) => serialize(item, [tableName, ...includes.tables.map((t) => t.name)]) as T,
-    );
 
-    return data;
+    const data = new RelationalSerializer({
+      mainTable: tableName,
+      rowFields: Object.keys(result.rows[0] || {}),
+      includesFields: includes.fields,
+      include: configs?.include,
+    }).serializeResults(result.rows) as T[];
+
+    return snakeToCamel(data);
   }
 
   async listPaginate<T>(
@@ -176,7 +195,11 @@ export class DatabasePGLite implements IDatabase {
     const { size = 10, page = 1 } = configs || {};
 
     const offset = (page - 1) * size;
-    const { baseQuery, includes } = generateQuerySql(tableName, { ...configs, separator: '' });
+    const { baseQuery, includes } = generateQuerySql(tableName, {
+      ...configs,
+      separator: '',
+      casing: this.options?.casing,
+    });
 
     const totalItemsQuery = `SELECT COUNT(*) as count FROM (${baseQuery}) as total_count_query`;
     const paginatedQuery = `${baseQuery} LIMIT ${size} OFFSET ${offset}`;
@@ -189,9 +212,6 @@ export class DatabasePGLite implements IDatabase {
     ]);
 
     const totalItems = parseInt(String(totalItemsResult.rows?.[0]?.count), 10);
-    // const data = result.rows.map(
-    //   (item) => serialize(item, [tableName, ...includes.tables.map((t) => t.name)]) as T,
-    // );
 
     const data = new RelationalSerializer({
       mainTable: tableName,
@@ -205,7 +225,7 @@ export class DatabasePGLite implements IDatabase {
     const next = page < totalPages ? page + 1 : null;
 
     return {
-      data,
+      data: snakeToCamel(data),
       totalItems,
       totalPages,
       currentPage: page,
@@ -216,8 +236,5 @@ export class DatabasePGLite implements IDatabase {
 
   listAllEach<T>(tableName: string, configs?: DatabaseConfig): AsyncIterableIterator<T> {
     throw new Error('Method not implemented.');
-    // const { select, where } = configs || {};
-    // const fields = generateQueryFields(select);
-    // return this.connection.getEachAsync(`SELECT ${fields} FROM ${tableName}`);
   }
 }

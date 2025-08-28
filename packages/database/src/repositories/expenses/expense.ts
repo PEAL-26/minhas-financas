@@ -5,6 +5,7 @@ import {
   ListPaginateRepositoryOption,
   PaginatedResult,
 } from '../../types';
+import { categoryInclude, expensesPricesInclude, incomeInclude, wishlistInclude } from './includes';
 import { ExpenseCreateData, IExpenseRepository } from './interface';
 import * as mappers from './mappers';
 
@@ -12,13 +13,29 @@ export class ExpenseRepository implements IExpenseRepository {
   constructor(private database: IDatabase) {}
 
   async create(input: ExpenseCreateData): Promise<void> {
-    const data = mappers.toDatabaseMap(input);
-    await this.database.insert('expenses', data);
+    const { prices, ...data } = mappers.toDatabaseMap(input);
+    await this.database.insert('expenses', data, {
+      include: {
+        prices: {
+          tableName: 'expenses_prices',
+          foreignKey: 'expenseId',
+          data: prices,
+        },
+      },
+    });
   }
 
   async update(input: Partial<ExpenseCreateData>, id: string): Promise<void> {
-    const data = mappers.toDatabaseMap(input);
-    await this.database.update('expenses', data, id);
+    const { prices, ...data } = mappers.toDatabaseMap(input);
+    await this.database.update('expenses', data, id, {
+      include: {
+        prices: {
+          tableName: 'expenses_prices',
+          foreignKey: 'expenseId',
+          data: prices,
+        },
+      },
+    });
   }
 
   async delete(id: string): Promise<void> {
@@ -26,7 +43,15 @@ export class ExpenseRepository implements IExpenseRepository {
   }
 
   async getById(id: string): Promise<Expense | null> {
-    const result = await this.database.getFirst('expenses', { where: { id } });
+    const result = await this.database.getFirst('expenses', {
+      where: { 'expenses.id': id },
+      include: {
+        wishlist: wishlistInclude,
+        categories: categoryInclude,
+        incomes: incomeInclude,
+        expenses_prices: expensesPricesInclude,
+      },
+    });
     if (!result) return null;
     return mappers.toEntityMap(result);
   }
@@ -43,6 +68,9 @@ export class ExpenseRepository implements IExpenseRepository {
       where: { title: { value: query, op: 'like' } },
       size,
       page,
+      include: {
+        categories: categoryInclude,
+      },
     });
 
     return {

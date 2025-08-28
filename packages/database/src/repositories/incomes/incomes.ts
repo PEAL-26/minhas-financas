@@ -40,7 +40,7 @@ export class IncomeRepository implements IIncomeRepository {
     const { query, size, page } = options || {};
 
     const result = await this.database.listPaginate('incomes', {
-      where: { title: { value: query, op: 'like' } },
+      where: { description: { value: query, op: 'like' } },
       size,
       page,
     });

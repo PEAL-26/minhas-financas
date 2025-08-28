@@ -20,14 +20,9 @@ export function useQuerySelect<TData = any, TParams extends Record<string, any> 
   const { repositoryName, queryKey, defaultSize = 10 } = props;
 
   const [searchQuery, setSearchQuery] = useState('');
-
-  //const searchQueryDebounced = ''; //useDebounceValue(searchQuery);
-
   const { getDatabase } = useDatabaseContext();
 
   const selectQuery = useQueryPagination({
-    // query: searchQueryDebounced,
-    // size: defaultSize,
     queryKey: [
       ...(queryKey || [`${repositoryName}-list-select-paginate`]),
       searchQuery,

@@ -5,10 +5,11 @@ import { FormControlCustom } from '@repo/ui/form/control';
 interface Props {
   form: any;
   response: any;
+  onChange?(item: any): void;
 }
 
 export function CategoryFormComponent(props: Props) {
-  const { form, response } = props;
+  const { form, response, onChange } = props;
 
   return (
     <FormControlCustom label="Categoria" name="category" control={form?.control}>
@@ -22,11 +23,9 @@ export function CategoryFormComponent(props: Props) {
             labelField="name"
             placeholder="Selecione uma categoria"
             onChange={({ backgroundColor, ...rest }: any) => {
-              if (rest?.id === 'NULL') {
-                field.onChange(null);
-              } else {
-                field.onChange({ ...rest, color: backgroundColor });
-              }
+              const data = rest?.id === 'NULL' ? null : { ...rest, color: backgroundColor };
+              field.onChange(data);
+              onChange?.(data);
             }}
             items={[
               {

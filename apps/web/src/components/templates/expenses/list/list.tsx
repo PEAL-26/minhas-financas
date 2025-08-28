@@ -4,6 +4,7 @@ import { CategoryComponent } from '@/components/ui/category-component';
 import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
 import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
+import { formatCurrency } from '@repo/helpers/currency';
 import { formatDate } from '@repo/helpers/date';
 import { Expense } from '@repo/types/expense';
 import { EXPENSE_STATUS_MAP } from '@repo/types/status';
@@ -42,17 +43,12 @@ export function ListExpensesTemplate() {
               name: 'description',
               title: 'Despesa',
               render: (item) => {
-                const expense = item?.wishlist || {
-                  name: item?.description || 'Desconhecido',
-                  category: item?.category,
-                };
-
                 return (
                   <CategoryComponent
-                    title={expense.name}
-                    description={expense?.category?.name}
-                    backgroundColor={expense?.category?.color}
-                    icon={expense?.category?.icon}
+                    title={item?.description || 'Desconhecido'}
+                    description={item?.category?.name}
+                    backgroundColor={item?.category?.color}
+                    icon={item?.category?.icon}
                   />
                 );
               },
@@ -65,6 +61,8 @@ export function ListExpensesTemplate() {
             {
               name: 'estimatedAmount',
               title: 'Montante',
+              render: (item) =>
+                item.estimatedAmount ? formatCurrency(item.estimatedAmount) : 'S/N',
             },
             {
               name: 'status',

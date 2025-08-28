@@ -20,6 +20,8 @@ export type DatabaseWhere = {
   [key: string]: DatabaseWhereField;
 };
 
+export type DatabaseCasingTypes = 'camelCase' | 'snakeCase';
+
 export type DatabaseIncludeProps = {
   structure?: 'object' | 'array';
   type?: 'INNER' | 'LEFT' | 'RIGHT';
@@ -40,6 +42,8 @@ export type DatabaseMutationIncludeProps = Pick<DatabaseIncludeProps, 'as'> & {
   key?: string;
   tableName: string;
 };
+
+export type DatabaseMutationInputData = Record<string, any>;
 
 export type DatabaseMutationConfig = {
   include?: {
@@ -69,6 +73,7 @@ export interface ListPaginateConfigs extends DatabaseConfig {
 
 export interface GenerateQuerySqlConfig extends ListPaginateConfigs {
   separator?: string;
+  casing?: DatabaseCasingTypes;
 }
 
 export interface ListPaginateRepositoryOption {

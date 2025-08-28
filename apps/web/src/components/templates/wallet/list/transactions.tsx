@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 
-import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
 import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
 import { Wallet } from '@repo/types/wallet';
@@ -19,20 +18,20 @@ export function ListTransactionsWalletsTemplate() {
 
   const remove = useDelete({ repositoryName: 'wallet', queryKey: ['wallets'] });
 
-  const listPaginate = useListPaginate<Wallet>({
-    repositoryName: 'wallet',
-    queryKey: ['wallets'],
-    query,
-    size,
-    page,
-    setPage,
-    setSize,
-  });
+  // const listPaginate = useListPaginate<Wallet>({
+  //   repositoryName: 'wallet',
+  //   queryKey: ['wallets'],
+  //   query,
+  //   size,
+  //   page,
+  //   setPage,
+  //   setSize,
+  // });
 
   return (
     <>
       <div className="flex flex-col p-4">
-        <DataTable
+        {/* <DataTable
           response={listPaginate}
           fields={[
             {
@@ -42,7 +41,7 @@ export function ListTransactionsWalletsTemplate() {
           ]}
           onEdit={(item) => setForm({ id: item.id, open: true })}
           onDelete={(id) => setAlertDelete({ open: true, id })}
-        />
+        /> */}
       </div>
 
       <WalletFormSheet onClose={() => setForm({ open: false })} open={form.open} id={form.id} />

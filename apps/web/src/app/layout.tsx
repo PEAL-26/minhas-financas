@@ -3,7 +3,6 @@ import '../styles/globals.css';
 
 import type { Metadata, Viewport } from 'next';
 
-import { TopLoader } from '@/components/ui/top-loader';
 import { AuthProvider } from '@repo/database/contexts/auth';
 import { Toaster } from '@repo/ui/sonner';
 import { poppins } from './fonts';
@@ -61,7 +60,7 @@ export default function Layout({ children }: RootLayoutProps) {
   return (
     <html lang="pt">
       <body className={`${poppins.className} bg-background antialiased`}>
-        <TopLoader />
+
         <AuthProvider platform="web">{children}</AuthProvider>
         <Toaster />
       </body>

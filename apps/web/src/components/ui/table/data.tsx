@@ -1,5 +1,7 @@
+'use client';
 import { ReactNode } from 'react';
 
+import { useQueryStateParams } from '@/hooks/use-search-params';
 import { IQueryPaginationResponse } from '@repo/database/hooks/use-query-pagination';
 import { stringEmpty } from '@repo/helpers/strings';
 import { Button } from '@repo/ui/button';
@@ -24,6 +26,8 @@ interface Props<T extends { id?: any; [key: string]: any }> {
 
 export function DataTable<T extends { id?: any; [key: string]: any } = any>(props: Props<T>) {
   const { response, fields, className, onEdit, onDelete } = props;
+  const [size, setSize] = useQueryStateParams<number>('size', 'int');
+  const [_, setPage] = useQueryStateParams<number>('page', 'int');
 
   return (
     <table className={cn('', className)}>
@@ -33,7 +37,7 @@ export function DataTable<T extends { id?: any; [key: string]: any } = any>(prop
             <th
               key={index}
               className={cn(
-                'border-y px-2 py-1 text-left text-sm font-medium text-gray-400',
+                'border-y px-2 py-2 text-left text-sm font-medium text-gray-400',
                 field.className,
               )}
             >
@@ -112,15 +116,36 @@ export function DataTable<T extends { id?: any; [key: string]: any } = any>(prop
                   <div>
                     <span className="text-xs text-gray-400">{response.data.length} item(s)</span>
                   </div>
-                  <div>
+                  <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-400">Items por Página</span>
+                    <select
+                      className="border-1 h-6 w-10 rounded-md border-border p-0 text-center text-xs text-gray-400 focus:ring-primary"
+                      value={String(size || 10)}
+                      onChange={(e) => {
+                        setSize(Number(e.target.value || '10'));
+                        setPage(1);
+                      }}
+                    >
+                      <option value="10" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
+                        10
+                      </option>
+                      <option value="20" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
+                        20
+                      </option>
+                      <option value="50" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
+                        50
+                      </option>
+                      <option value="100" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
+                        100
+                      </option>
+                    </select>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button disabled={!response?.prev} onClick={response.prevPage}>
                       Anterior
                     </Button>
                     <div className="text-xs text-gray-400">
-                      {response?.currentPage}/{response?.totalPages ?? 0}
+                      {response?.currentPage ?? 0}/{response?.totalPages ?? 0}
                     </div>
                     <Button
                       disabled={!response?.next}

@@ -14,7 +14,7 @@ interface Props {
   onChangeQuantity?(): void;
 }
 
-export function ExpenseQuantityTotalFormComponent(props: Props) {
+export function QuantityTotalFormComponent(props: Props) {
   const {
     form,
     quantityLabel,
@@ -29,6 +29,8 @@ export function ExpenseQuantityTotalFormComponent(props: Props) {
   return (
     <div className="flex items-center gap-3">
       <InputFormControl
+        type="number"
+        defaultStyleNumberRemove
         name={quantityName}
         label={quantityLabel}
         control={form?.control}

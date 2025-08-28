@@ -68,4 +68,5 @@ export type DatabaseOptions = {
   casing?: 'camelCase' | 'snakeCase';
   symbol?: '$' | '?';
   separator?: string;
+  authUserId?: string | null;
 };

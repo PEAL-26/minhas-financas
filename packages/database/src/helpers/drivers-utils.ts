@@ -2,6 +2,7 @@ import { isEmpty } from '@repo/helpers/empty';
 import {
   BuildInsertIncludeSqlInput,
   DATABASE_COLUMNS_TYPE_ENUM,
+  DatabaseCasingTypes,
   DatabaseConfigSelect,
   DatabaseCreateTableColumns,
   DatabaseInclude,
@@ -165,9 +166,14 @@ export function serialize(data: any, tableNames: string[], configs?: { fields: s
   return snakeToCamel(obj);
 }
 
-export function fieldsMap(fields: string[], tables: string[], configs?: { separator?: string }) {
-  const { separator = '\`' } = configs || {};
+export function fieldsMap(
+  fields: string[],
+  tables: string[],
+  configs?: { separator?: string; casing?: DatabaseCasingTypes },
+) {
+  const { separator = '\`', casing } = configs || {};
   const newFields = [];
+
   for (const fieldOld of fields) {
     let referenceTable = '';
     let field = fieldOld;
@@ -193,8 +199,9 @@ export function fieldsMap(fields: string[], tables: string[], configs?: { separa
       if (_field === '*') {
         newFields.push(`${table}.*`);
       } else {
-        const newField = `${referenceTable}${table}_${_field}`;
-        newFields.push(`${main} AS ${separator}${newField}${separator}`);
+        const newFieldMain = `${main.split('.')?.[0]}.${casingConverting(main.split('.')?.[1], casing)}`;
+        const newFieldAs = `${referenceTable}${table}_${casingConverting(_field, casing)}`;
+        newFields.push(`${newFieldMain} AS ${separator}${newFieldAs}${separator}`);
       }
     }
 
@@ -254,7 +261,7 @@ export function generateFieldsValuesCreate(data: Record<string, any>, options?: 
       continue;
     }
 
-    const fieldConvert = caseConverting(field, casing);
+    const fieldConvert = casingConverting(field, casing);
     fields.push(fieldConvert);
 
     if (value === null) {
@@ -291,7 +298,7 @@ export function generateFieldsValuesUpdate(data: Record<string, any>, options?: 
     order++;
 
     const fieldValue = symbol === '?' ? '?' : `$${order}`;
-    const fieldName = caseConverting(property, casing);
+    const fieldName = casingConverting(property, casing);
 
     sets.push(`${fieldName}=${fieldValue}`);
     values.push(value);
@@ -379,7 +386,7 @@ export function generateGroupBy(group?: string[]) {
 }
 
 export function generateQuerySql(tableName: string, configs?: GenerateQuerySqlConfig) {
-  const { select, where, include, orderBy, groupBy, fn, separator } = configs || {};
+  const { select, where, include, orderBy, groupBy, fn, separator, casing } = configs || {};
   const fields = generateQueryFields(select);
   const includes = generateIncludes(tableName, include);
 
@@ -389,13 +396,13 @@ export function generateQuerySql(tableName: string, configs?: GenerateQuerySqlCo
       ? `, ${fieldsMap(
           includes.fields,
           includes.tables.map((t) => t.name),
-          { separator },
+          { separator, casing },
         )}`
       : '';
   const fns = generateFn(fn);
   const orderByClause = generateOrderByClause(orderBy);
   const groups = generateGroupBy(groupBy);
-  const selectFields = fieldsMap(fields, [tableName], { separator });
+  const selectFields = fieldsMap(fields, [tableName], { separator, casing });
   const selectFn = fns ? `, ${fns}` : '';
 
   const baseQuery =
@@ -404,7 +411,7 @@ export function generateQuerySql(tableName: string, configs?: GenerateQuerySqlCo
   return { baseQuery, includes };
 }
 
-export function caseConverting(value: any, casing?: 'snakeCase' | 'camelCase') {
+export function casingConverting(value: any, casing?: 'snakeCase' | 'camelCase') {
   if (!casing) return value;
 
   if (casing === 'camelCase') {
@@ -556,7 +563,7 @@ export function deleteSql(input: {
 
   Object.entries(data || {}).forEach(([field, value], index) => {
     if (value !== undefined) {
-      const fieldCasing = caseConverting(field, casing);
+      const fieldCasing = casingConverting(field, casing);
       const fieldSymbol = `${symbol === '$' ? `$${index + 1}` : '?'}`;
       fields.push(`${fieldCasing}=${fieldSymbol}`);
       values.push(value);
@@ -570,13 +577,14 @@ export function generateIncludeFields(input: {
   fields: string[];
   tables: Table[];
   separator?: string;
+  casing?: DatabaseCasingTypes;
 }) {
-  const { fields, tables, separator } = input;
+  const { fields, tables, separator, casing } = input;
   if (fields.length > 0) {
     return `, ${fieldsMap(
       fields,
       tables.map((t) => t.name),
-      { separator },
+      { separator, casing },
     )}`;
   }
 
@@ -587,9 +595,11 @@ export function generateSelectFields(input: {
   fields: string[];
   tableName: string;
   separator?: string;
+  casing?: DatabaseCasingTypes;
 }) {
-  const { fields, tableName, separator } = input;
+  const { fields, tableName, separator, casing } = input;
   return fieldsMap(fields, [tableName], {
     separator,
+    casing,
   });
 }

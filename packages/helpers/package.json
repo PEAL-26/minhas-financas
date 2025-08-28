@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "author": "",
   "dependencies": {
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.13",
+    "zod": "^4.0.14"
   },
   "devDependencies": {
     "@repo/config-eslint": "1.0.0",

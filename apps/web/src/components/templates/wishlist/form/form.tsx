@@ -14,6 +14,7 @@ import { InputMoney } from '@repo/ui/input-money';
 import { CategoryFormComponent } from '@/components/ui/forms/category';
 import { LocationFormComponent } from '@/components/ui/forms/location';
 import { PriorityFormComponent } from '@/components/ui/forms/priority';
+import { QuantityTotalFormComponent } from '@/components/ui/forms/quantity-total';
 import { RecurrenceFormComponent } from '@/components/ui/forms/recurrence';
 import { StatusFormComponent } from '@/components/ui/forms/status';
 import { WishlistFormProps } from './types';
@@ -47,7 +48,12 @@ export function WishlistFormSheet(props: WishlistFormProps) {
     defaultSize: 100,
   });
 
-  console.log(mutation?.form?.watch());
+  const calculateTotal = () => {
+    const amount = mutation.form.getValues('estimatedCost');
+    const quantity = mutation.form.getValues('quantity');
+    const total = Number(amount || 0) * Number(quantity || 1);
+    mutation.form.setValue('total', total);
+  };
 
   return (
     <SheetForm
@@ -70,6 +76,7 @@ export function WishlistFormSheet(props: WishlistFormProps) {
         <InputFormControl
           name="name"
           label="Nome"
+          required
           control={mutation?.form?.control}
           placeholder="Ex.: Comprar um presente, Fazer uma viagem, etc."
         />
@@ -80,7 +87,7 @@ export function WishlistFormSheet(props: WishlistFormProps) {
 
         <FormControlCustom name="targetDate" label="Data Prevista" control={mutation.form.control}>
           {({ field }) => (
-            <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
+            <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange}  />
           )}
         </FormControlCustom>
 
@@ -100,22 +107,25 @@ export function WishlistFormSheet(props: WishlistFormProps) {
           control={mutation?.form?.control}
         >
           {({ field }) => (
-            <InputMoney value={field.value} onChangeValue={field.onChange} placeholder="0,00" />
+            <InputMoney
+              value={field.value}
+              onChangeValue={(value) => {
+                const amount = Number(value || 0);
+                field.onChange(amount);
+                calculateTotal();
+              }}
+              placeholder="0,00"
+            />
           )}
         </FormControlCustom>
 
-        <InputFormControl
-          name="quantity"
-          label="Quantidade"
-          control={mutation?.form?.control}
-          placeholder="0"
+        <QuantityTotalFormComponent
+          totalLabel="Total"
+          quantityLabel="Quantidade"
+          quantityPlaceholder="0"
+          form={mutation.form}
+          onChangeQuantity={() => calculateTotal()}
         />
-
-        <FormControlCustom label="Total" name="total" control={mutation?.form?.control}>
-          {({ field }) => (
-            <InputMoney value={field.value} onChangeValue={field.onChange} placeholder="0,00" />
-          )}
-        </FormControlCustom>
 
         {id && <StatusFormComponent form={mutation.form} statusMap={WISHLIST_STATUS_MAP} />}
 

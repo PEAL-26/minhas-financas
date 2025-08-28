@@ -6,9 +6,9 @@ export function toEntityMap(raw: any): Account {
   return {
     name: raw.name,
     type: raw.type,
-    currencies: raw.currencies,
-    siteUrl: raw.siteUrl,
-    swiftCode: raw.swiftCode,
+    currencies: raw.currencies || [],
+    siteUrl: checkNullUndefinedValue(raw.siteUrl),
+    swiftCode: checkNullUndefinedValue(raw.swiftCode),
     ...toEntityPropertiesCommonMap(raw),
   };
 }

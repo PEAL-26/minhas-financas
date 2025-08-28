@@ -53,7 +53,6 @@ export const expenseSchemaBase = z.object({
     .array(
       z.object({
         ...price.priceSchemaBase.partial().shape,
-        id: idSchema,
       }),
     )
     .optional(),

@@ -1,8 +1,8 @@
 import { CategoryFormComponent } from '@/components/ui/forms/category';
-import { ExpenseQuantityTotalFormComponent } from '@/components/ui/forms/expense-quantity-total';
 import { IncomeFormComponent } from '@/components/ui/forms/income';
 import { LocationPricesFormComponent } from '@/components/ui/forms/location-prices';
 import { PriorityFormComponent } from '@/components/ui/forms/priority';
+import { QuantityTotalFormComponent } from '@/components/ui/forms/quantity-total';
 import { RecurrenceFormComponent } from '@/components/ui/forms/recurrence';
 import { StatusFormComponent } from '@/components/ui/forms/status';
 import { WishlistFormComponent } from '@/components/ui/forms/wishlist';
@@ -61,6 +61,12 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
     defaultSize: 100,
   });
 
+  const selectLocation = useQuerySelect({
+    repositoryName: 'location',
+    queryKey: ['locations'],
+    defaultSize: 100,
+  });
+
   const calculateTotal = () => {
     const amount = mutation.form.getValues('estimatedAmount');
     const quantity = mutation.form.getValues('quantity');
@@ -86,14 +92,29 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
       contentClassName="gap-0"
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
-        <WishlistFormComponent form={mutation.form} response={selectWishlist} />
+        <WishlistFormComponent
+          form={mutation.form}
+          response={selectWishlist}
+          onChange={(item) => {
+            if (item?.id) {
+              console.log(item);
+              mutation.form.setValue('description', item?.name);
+              mutation.form.setValue('type', item?.type);
+              mutation.form.setValue('recurrence', item?.recurrence);
+              mutation.form.setValue('priority', item?.priority);
+              mutation.form.setValue('estimatedAmount', item?.estimatedCost);
+              mutation.form.setValue('quantity', item?.quantity);
+              mutation.form.setValue('total', item?.total);
+              mutation.form.setValue('estimatedDate', item?.targetDate);
+              mutation.form.setValue('category', item?.category);
+            }
+          }}
+        />
 
-        <IncomeFormComponent form={mutation.form} response={selectIncome} />
+        <IncomeFormComponent label="Renda" form={mutation.form} response={selectIncome} />
 
         {(!wishlist || Object.values(wishlist || {}).length === 0) && (
-          <>
-            <CategoryFormComponent form={mutation.form} response={selectCategories} />
-          </>
+          <CategoryFormComponent form={mutation.form} response={selectCategories} />
         )}
 
         <InputFormControl
@@ -102,6 +123,10 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
           placeholder="Ex.: Comprar um presente, Fazer uma viagem, etc."
           control={mutation?.form?.control}
         />
+
+        <RecurrenceFormComponent require label="Despesa" form={mutation.form} />
+
+        <PriorityFormComponent require form={mutation.form} />
 
         <FormControlCustom
           require
@@ -122,9 +147,12 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
           )}
         </FormControlCustom>
 
-        <RecurrenceFormComponent require label="Despesa" form={mutation.form} />
-
-        <PriorityFormComponent require form={mutation.form} />
+        <QuantityTotalFormComponent
+          totalLabel="Total"
+          quantityLabel="Quantidade"
+          form={mutation.form}
+          onChangeQuantity={() => calculateTotal()}
+        />
 
         <FormControlCustom
           name="estimatedDate"
@@ -149,16 +177,13 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
           </FormControlCustom>
         </div>
 
-        <ExpenseQuantityTotalFormComponent
-          totalLabel="Total"
-          quantityLabel="Quantidade"
-          form={mutation.form}
-          onChangeQuantity={() => calculateTotal()}
-        />
-
         <StatusFormComponent form={mutation.form} statusMap={EXPENSE_STATUS_MAP} />
 
-        <LocationPricesFormComponent control={mutation.form.control} name="prices" />
+        <LocationPricesFormComponent
+          control={mutation.form.control}
+          name="prices"
+          responseLocations={selectLocation}
+        />
       </div>
     </SheetForm>
   );

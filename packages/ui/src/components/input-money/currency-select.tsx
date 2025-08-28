@@ -26,7 +26,7 @@ export function CurrencySelect(props: CurrencySelectProps) {
   return (
     <Popover>
       <PopoverTrigger className="w-fit p-0">
-        <div className="flex w-fit items-center gap-1 rounded-full bg-gray-200 p-0 hover:cursor-pointer input-small:p-1">
+        <div className="flex w-fit items-center gap-1 rounded-full bg-gray-100 p-0 hover:cursor-pointer input-small:p-1">
           <div className="h-4 w-4 rounded-full bg-white">
             <AO className="h-4 w-4 rounded-full" />
           </div>
@@ -36,7 +36,9 @@ export function CurrencySelect(props: CurrencySelectProps) {
           </div>
         </div>
       </PopoverTrigger>
-      <PopoverContent side="bottom" align="end" className="w-fit"></PopoverContent>
+      <PopoverContent side="bottom" align="end" className="w-fit">
+        
+      </PopoverContent>
     </Popover>
   );
 }

@@ -1,3 +1,4 @@
+import { randomUUID } from '@repo/database/helpers/uuid';
 import { Button } from '@repo/ui/button';
 import {
   Command,
@@ -88,7 +89,7 @@ export function CustomCardDropdown<T>(props: Props<T>) {
   return (
     <Popover open={open} onOpenChange={handleChangeOpen} modal={modal}>
       <PopoverTrigger asChild>
-        <div>
+        <div className="w-full overflow-hidden">
           <Button
             variant="outline"
             className="h-[36px] w-full justify-start rounded-md px-3 py-1 text-left"
@@ -126,8 +127,8 @@ export function CustomCardDropdown<T>(props: Props<T>) {
             )}
             {!loading && (
               <CommandGroup>
-                {items.map((item, index) => (
-                  <CommandItem key={index}>
+                {items.map((item) => (
+                  <CommandItem value={(item as any)?.id} key={(item as any)?.id || randomUUID()}>
                     <CategoryComponent
                       title={(item as any)?.[labelField]}
                       description={(item as any)?.description}

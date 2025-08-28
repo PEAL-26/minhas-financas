@@ -11,6 +11,7 @@ import { Badge } from '@repo/ui/badge';
 import { showToastError } from '@repo/ui/helpers/toast';
 
 import { CategoryComponent } from '@/components/ui/category-component';
+import { formatCurrency } from '@repo/helpers/currency';
 import { PRIORITY_MAP } from '@repo/types/priority';
 import {
   displayRecurrence,
@@ -33,6 +34,7 @@ export function ListWishlistsTemplate() {
   const listPaginate = useListPaginate<Wishlist>({
     repositoryName: 'wishlist',
     queryKey: ['wishlists'],
+    
     query,
     size,
     page,
@@ -89,6 +91,10 @@ export function ListWishlistsTemplate() {
             {
               name: 'total',
               title: 'Montante',
+              render: (item) => {
+                if (!item?.total) return 'S/N';
+                return formatCurrency(item.total);
+              },
             },
             {
               name: 'status',

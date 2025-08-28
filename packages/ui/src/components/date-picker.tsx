@@ -10,13 +10,13 @@ import { Calendar } from './calendar';
 import { Input } from './input';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
-interface Props {
+export interface DatePickerProps {
   modal?: boolean;
   defaultDate?: Date;
   onChange?: (value: Date | undefined) => void;
 }
 
-export function DatePicker(props: Props) {
+export function DatePicker(props: DatePickerProps) {
   const { modal, defaultDate, onChange } = props;
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState<Date | undefined>(() => defaultDate);
@@ -85,6 +85,7 @@ export function DatePicker(props: Props) {
           sideOffset={10}
         >
           <Calendar
+          
             mode="single"
             selected={date}
             captionLayout="dropdown"

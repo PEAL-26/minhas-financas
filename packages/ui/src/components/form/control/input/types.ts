@@ -1,10 +1,10 @@
-import type { HTMLProps } from 'react';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import { InputProps } from '../../../input';
 
 export interface InputFormProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
-> extends HTMLProps<HTMLInputElement> {
+> extends InputProps {
   name: TName;
   control?: Control<TFieldValues>;
   label?: string;

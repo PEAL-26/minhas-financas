@@ -5,10 +5,11 @@ import { FormControlCustom } from '@repo/ui/form/control';
 interface Props {
   form: any;
   response: any;
+  onChange?(item: any | null): void;
 }
 
 export function WishlistFormComponent(props: Props) {
-  const { form, response } = props;
+  const { form, response, onChange } = props;
 
   return (
     <FormControlCustom label="Necessidades" name="wishlist" control={form?.control}>
@@ -17,8 +18,9 @@ export function WishlistFormComponent(props: Props) {
           <CustomCardDropdown
             modal
             title={field.value?.name}
-            backgroundColor={field.value?.color || colors.primary.DEFAULT}
-            icon={field.value?.icon || 'tag'}
+            description={field.value?.category?.name}
+            backgroundColor={field.value?.category?.color || colors.primary.DEFAULT}
+            icon={field.value?.category?.icon || 'tag'}
             labelField="name"
             placeholder="Selecione uma necessidade"
             items={[
@@ -32,15 +34,14 @@ export function WishlistFormComponent(props: Props) {
               ...response.data.map((item: any) => {
                 const color = item?.category?.color || colors.primary.DEFAULT;
                 const icon = item?.category?.icon || 'tag';
-                return { ...item, backgroundColor: color, icon };
+                const category = {...item?.category, color, icon }
+                return { ...item, category, description: item?.category?.name, backgroundColor: color, icon, };
               }),
             ]}
             onChange={({ backgroundColor, ...rest }) => {
-              if (rest?.id === 'NULL') {
-                field.onChange(null);
-              } else {
-                field.onChange({ ...rest, color: backgroundColor });
-              }
+              const data = rest?.id === 'NULL' ? null : { ...rest, color: backgroundColor };
+              field.onChange(data);
+              onChange?.(data);
             }}
             onSearch={response.search}
             loading={response.isLoadingAll}

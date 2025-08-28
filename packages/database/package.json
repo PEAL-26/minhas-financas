@@ -21,6 +21,7 @@
     "@repo/config-eslint": "1.0.0",
     "@repo/config-prettier": "1.0.0",
     "@repo/config-typescript": "1.0.0",
+    "@tanstack/react-query-devtools": "^5.85.5",
     "@types/pg": "^8.15.5",
     "drizzle-kit": "^0.31.4",
     "eslint": "^9.32.0",

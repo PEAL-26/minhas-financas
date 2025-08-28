@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useAuthContext } from '../../contexts/auth';
 import { useDatabaseContext } from '../../contexts/database';
 import { getRepository } from '../../helpers/repository';
 import { PaginatedResult } from '../../types';
@@ -10,13 +9,12 @@ export function useListPaginate<T>(props: UseListPaginateProps) {
   const { query, page = 1, size = 10, queryKey, repositoryName, setPage, setSize, onError } = props;
 
   const { getDatabase } = useDatabaseContext();
-  const { user } = useAuthContext();
 
   const result = useQueryPagination({
     fn: async () => {
       const database = await getDatabase();
       const repository = getRepository(repositoryName, database);
-      const response = await repository.listPaginate({ query, page, size, userId: user?.id });
+      const response = await repository.listPaginate({ query, page, size });
       return response as PaginatedResult<T>;
     },
     queryKey: [...(queryKey || [`${repositoryName}-list-paginate`]), query, page, size],

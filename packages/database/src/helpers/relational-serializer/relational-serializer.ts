@@ -34,6 +34,7 @@ export class RelationalSerializer {
     return Object.entries(input || {}).map(([tableName, values]) => {
       return {
         tableName,
+        as: values?.as,
         alias: values?.singular || values?.as,
         structure: values.structure || 'object',
         fields: this.buildFields(Object.keys(values.select || {}), []),
@@ -94,9 +95,8 @@ export class RelationalSerializer {
     parentPrefix?: string,
   ): void {
     for (const include of includes) {
-      const tableName = include.alias || include.tableName;
+      const tableName = include?.as || include.alias || include.tableName;
       const prefix = parentPrefix ? `${parentPrefix}_${tableName}` : `${tableName}`;
-
       this.processSingleInclude(row, result, include, prefix);
     }
   }

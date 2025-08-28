@@ -4,22 +4,7 @@ import { Wishlist } from '@repo/types/wishlist';
 import { toDatabasePropertiesCommonMap, toEntityPropertiesCommonMap } from '../..//helpers/map';
 import * as categoryMapper from '../categories';
 import * as locationMapper from '../locations';
-
-export function pricesToEntityMap(prices: any) {
-  if (!prices) return [];
-
-  return prices.map((price: any) => {
-    return {
-      location: checkNullUndefinedValue(price.location, {
-        convert: 'emptyToNull',
-        fn: (value) => {
-          return locationMapper.toEntityMap(value);
-        },
-      }),
-      amount: Number(price.amount),
-    };
-  });
-}
+import { pricesToEntityMap } from '../shared';
 
 export function toEntityMap(raw: any): Wishlist {
   return {
@@ -29,7 +14,9 @@ export function toEntityMap(raw: any): Wishlist {
     category: checkNullUndefinedValue(raw.category, {
       fn: (data) => categoryMapper.toEntityMap(data),
     }),
-    targetDate: checkNullUndefinedValue(raw.targetDate, { fn: (value) => new Date(value) }),
+    targetDate: checkNullUndefinedValue(raw.targetDate, {
+      fn: (value) => new Date(value),
+    }),
     priority: raw.priority || undefined,
     expectedLocation: checkNullUndefinedValue(raw.expectedLocation, {
       fn: (data) => locationMapper.toEntityMap(data),

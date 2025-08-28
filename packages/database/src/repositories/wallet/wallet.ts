@@ -26,7 +26,23 @@ export class WalletRepository implements IWalletRepository {
   }
 
   async getById(id: string): Promise<Wallet | null> {
-    const result = await this.database.getFirst('wallets', { where: { id } });
+    const result = await this.database.getFirst('wallets', {
+      where: { 'wallets.id': id },
+      include: {
+        accounts: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+            currencies: true,
+            siteUrl: true,
+            swiftCode: true,
+          },
+          singular: 'account',
+          structure: 'object',
+        },
+      },
+    });
     if (!result) return null;
     return mappers.toEntityMap(result);
   }

@@ -57,9 +57,16 @@ export function CategoryComponent(props: Props) {
         </div>
       )}
       <div className="flex w-full flex-1 flex-col gap-[2px] overflow-hidden leading-none">
-        <span className={cn('line-clamp-1 text-sm font-medium', titleClassName)}>{title}</span>
+        <span className={cn('line-clamp-1 overflow-ellipsis text-sm font-medium whitespace-break-spaces', titleClassName)}>
+          {title}
+        </span>
         {description && (
-          <span className={cn('line-clamp-1 text-[8px] text-gray-400', descriptionClassName)}>
+          <span
+            className={cn(
+              'line-clamp-1 overflow-ellipsis text-[8px] text-gray-400',
+              descriptionClassName,
+            )}
+          >
             {description}
           </span>
         )}

@@ -118,7 +118,7 @@ export class WishlistRepository implements IWishlistRepository {
     const { query, size, page } = options || {};
 
     const result = await this.database.listPaginate('wishlist', {
-      where: { name: { value: query, op: 'like' } },
+      where: { 'wishlist.name': { value: query, op: 'like' } },
       size,
       page,
       include: {
