@@ -2,8 +2,7 @@
 import { useState } from 'react';
 
 import { useQueryStateParams } from '@/hooks/use-search-params';
-import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
-import { Wallet } from '@repo/types/wallet';
+import { useDelete } from '@repo/database/hooks/crud';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
 
 import { WalletFormSheet } from '../form';

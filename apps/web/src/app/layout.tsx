@@ -60,7 +60,6 @@ export default function Layout({ children }: RootLayoutProps) {
   return (
     <html lang="pt">
       <body className={`${poppins.className} bg-background antialiased`}>
-
         <AuthProvider platform="web">{children}</AuthProvider>
         <Toaster />
       </body>

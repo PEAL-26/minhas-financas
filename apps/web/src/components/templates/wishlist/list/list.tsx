@@ -34,7 +34,7 @@ export function ListWishlistsTemplate() {
   const listPaginate = useListPaginate<Wishlist>({
     repositoryName: 'wishlist',
     queryKey: ['wishlists'],
-    
+
     query,
     size,
     page,

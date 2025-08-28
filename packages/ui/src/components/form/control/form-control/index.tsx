@@ -15,7 +15,7 @@ export function FormControlCustom<
     label,
     containerClassName,
     showError = true,
-    require = false,
+    required = false,
     defaultValue,
     children,
   } = props;
@@ -28,7 +28,7 @@ export function FormControlCustom<
       render={(props) => (
         <FormItem className={containerClassName}>
           {label && (
-            <FormLabel require={require} className="font-bold text-black">
+            <FormLabel require={required} className="font-bold text-black">
               {label}
             </FormLabel>
           )}

@@ -4,14 +4,19 @@ import { cn } from '@repo/ui/lib/utils';
 
 interface Props {
   form: any;
-  require?: boolean;
+  required?: boolean;
 }
 
 export function PriorityFormComponent(props: Props) {
-  const { form, require } = props;
+  const { form, required } = props;
 
   return (
-    <FormControlCustom require={require} control={form.control} name="priority" label="Prioridade">
+    <FormControlCustom
+      required={required}
+      control={form.control}
+      name="priority"
+      label="Prioridade"
+    >
       {({ field }) => (
         <div className="grid w-full grid-cols-3 gap-3">
           {Object.entries(PRIORITY_MAP).map(([key, value]) => (

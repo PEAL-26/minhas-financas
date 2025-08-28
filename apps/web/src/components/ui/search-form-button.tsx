@@ -58,7 +58,7 @@ export function SearchFormButton() {
             />
             {search && (
               <div className="absolute bottom-0 right-0 top-0 flex w-7 items-center justify-center">
-                <Button onClick={() => handleClear()} className='rounded bg-red-500'>
+                <Button onClick={() => handleClear()} className="rounded bg-red-500">
                   <XIcon className="size-4 text-white" />
                 </Button>
               </div>

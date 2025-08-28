@@ -1,167 +1,169 @@
 'use client';
-import { ReactNode } from 'react';
 
-import { useQueryStateParams } from '@/hooks/use-search-params';
-import { IQueryPaginationResponse } from '@repo/database/hooks/use-query-pagination';
-import { stringEmpty } from '@repo/helpers/strings';
+import { useQueryStateParams, useSetQueryStateParams } from '@/hooks/use-search-params';
 import { Button } from '@repo/ui/button';
 import { ErrorComponent } from '@repo/ui/error-component';
-import { EditIcon, InboxIcon, TrashIcon } from '@repo/ui/lib/lucide';
+import { InboxIcon } from '@repo/ui/lib/lucide';
 import { cn } from '@repo/ui/lib/utils';
+import { DataTableRow } from './row';
+import {
+  DataTableProps,
+  Entity,
+  RenderFooterProps,
+  RenderResponseDataProps,
+  RenderStatusProps,
+} from './types';
 
-type Field<T> = {
-  title: string;
-  name: keyof T;
-  className?: string;
-  render?(item: T): ReactNode;
-};
-
-interface Props<T extends { id?: any; [key: string]: any }> {
-  response?: IQueryPaginationResponse<T>;
-  onEdit?(item: T): void;
-  onDelete?(id: string): void;
-  fields: Field<T>[];
-  className?: string;
-}
-
-export function DataTable<T extends { id?: any; [key: string]: any } = any>(props: Props<T>) {
-  const { response, fields, className, onEdit, onDelete } = props;
+export function DataTable<T extends { id?: any; [key: string]: any } = any>(
+  props: DataTableProps<T>,
+) {
+  const {
+    response,
+    fields,
+    className,
+    showHeader = true,
+    showFooter = true,
+    classNameRow,
+    onEdit,
+    onDelete,
+  } = props;
   const [size, setSize] = useQueryStateParams<number>('size', 'int');
-  const [_, setPage] = useQueryStateParams<number>('page', 'int');
+  const setPage = useSetQueryStateParams<number>('page', 'int');
 
   return (
     <table className={cn('', className)}>
-      <thead>
-        <tr>
-          {fields.map((field, index) => (
-            <th
-              key={index}
-              className={cn(
-                'border-y px-2 py-2 text-left text-sm font-medium text-gray-400',
-                field.className,
-              )}
-            >
-              {field.title}
-            </th>
-          ))}
-          <th className="w-16 border-y px-2 py-1"></th>
-        </tr>
-      </thead>
-      {response && (
-        <>
-          <tbody>
-            {response.isLoadingAll &&
-              Array.from({ length: 6 }).map((_, index) => (
-                <tr key={index}>
-                  {Array.from({ length: fields.length + 1 }).map((_, indexTd) => (
-                    <td className="px-2 py-3" key={indexTd}>
-                      <div className="h-4 w-full animate-pulse rounded-full bg-gray-100" />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            {!response.isLoadingAll && response.isError && (
-              <tr>
-                <td colSpan={fields.length + 1}>
-                  <ErrorComponent onRefetch={response.refetch} containerClassName="min-h-52" />
-                </td>
-              </tr>
-            )}
-            {response.isEmpty && (
-              <tr>
-                <td colSpan={fields.length + 1}>
-                  <div className="flex min-h-52 flex-col items-center justify-center">
-                    <InboxIcon className="size-24 text-gray-400" />
-                    <span className="text-xs text-gray-400">Sem nenhum registro.</span>
-                  </div>
-                </td>
-              </tr>
-            )}
-            {!response.isLoadingAll &&
-              !response.isEmpty &&
-              !response.isError &&
-              response.data.map((item, index) => (
-                <tr key={index} className="hover:cursor-pointer hover:bg-gray-100">
-                  {fields.map((field, index) => {
-                    let data: ReactNode = stringEmpty(item[field.name]) || 'S/N';
-
-                    if (field?.render) {
-                      data = field.render(item);
-                    }
-
-                    return (
-                      <td key={index} className={cn('px-2 py-3 text-sm', field.className)}>
-                        {data}
-                      </td>
-                    );
-                  })}
-
-                  <td className="w-fit px-2 py-3">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button onClick={() => onEdit?.(item)} className="group rounded p-1">
-                        <EditIcon className="size-4 text-gray-400 group-hover:text-gray-500" />
-                      </Button>
-                      <Button onClick={() => onDelete?.(item.id)} className="group rounded p-1">
-                        <TrashIcon className="size-4 stroke-red-500 group-hover:stroke-red-600" />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={fields.length + 1}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-xs text-gray-400">{response.data.length} item(s)</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-400">Items por Página</span>
-                    <select
-                      className="border-1 h-6 w-10 rounded-md border-border p-0 text-center text-xs text-gray-400 focus:ring-primary"
-                      value={String(size || 10)}
-                      onChange={(e) => {
-                        setSize(Number(e.target.value || '10'));
-                        setPage(1);
-                      }}
-                    >
-                      <option value="10" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
-                        10
-                      </option>
-                      <option value="20" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
-                        20
-                      </option>
-                      <option value="50" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
-                        50
-                      </option>
-                      <option value="100" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
-                        100
-                      </option>
-                    </select>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button disabled={!response?.prev} onClick={response.prevPage}>
-                      Anterior
-                    </Button>
-                    <div className="text-xs text-gray-400">
-                      {response?.currentPage ?? 0}/{response?.totalPages ?? 0}
-                    </div>
-                    <Button
-                      disabled={!response?.next}
-                      onClick={() => {
-                        response?.nextPage?.();
-                      }}
-                    >
-                      Próximo
-                    </Button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tfoot>
-        </>
+      {showHeader && (
+        <thead>
+          <tr>
+            {fields.map((field, index) => (
+              <th
+                key={index}
+                className={cn(
+                  'border-y px-2 py-2 text-left text-sm font-medium text-gray-400',
+                  field.className,
+                )}
+              >
+                {field.title}
+              </th>
+            ))}
+            <th className="w-16 border-y px-2 py-1"></th>
+          </tr>
+        </thead>
       )}
+
+      <tbody>
+        {renderStatus({ ...response, totalFields: fields.length + 1 })}
+        {renderResponseData({
+          response,
+          fields,
+          className: classNameRow,
+          onEdit,
+          onDelete,
+        })}
+      </tbody>
+      {renderFooter({ showFooter, response, fields, size, setSize, setPage })}
     </table>
   );
+}
+
+function renderResponseData<T extends Entity>(props: RenderResponseDataProps<T>) {
+  const { response, ...rest } = props;
+  if (!response || (response.isLoadingAll && response.isEmpty && response.isError)) return null;
+  return response.data.map((item, index) => <DataTableRow key={index} {...rest} data={item} />);
+}
+
+function renderFooter<T extends Entity>(props: RenderFooterProps<T>) {
+  const { showFooter, fields, response, size, setSize, setPage } = props;
+  if (!showFooter || !response) return null;
+  return (
+    <tfoot>
+      <tr>
+        <td colSpan={fields.length + 1}>
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-xs text-gray-400">{response.data.length} item(s)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-400">Items por Página</span>
+              <select
+                className="border-1 h-6 w-10 appearance-none rounded-md border-border bg-none p-0 text-center text-xs text-gray-400 focus:border-none focus:ring-primary"
+                value={String(size || 10)}
+                onChange={(e) => {
+                  setSize?.(Number(e.target.value || '10'));
+                  setPage?.(1);
+                }}
+              >
+                <option value="10" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
+                  10
+                </option>
+                <option value="20" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
+                  20
+                </option>
+                <option value="50" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
+                  50
+                </option>
+                <option value="100" className="p-1 hover:bg-accent/50 focus:bg-accent/50">
+                  100
+                </option>
+              </select>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button disabled={!response?.prev} onClick={response.prevPage}>
+                Anterior
+              </Button>
+              <div className="text-xs text-gray-400">
+                {response?.currentPage ?? 0}/{response?.totalPages ?? 0}
+              </div>
+              <Button
+                disabled={!response?.next}
+                onClick={() => {
+                  response?.nextPage?.();
+                }}
+              >
+                Próximo
+              </Button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tfoot>
+  );
+}
+
+function renderStatus(props: RenderStatusProps) {
+  const { isLoadingAll, isError, isEmpty, totalFields, refetch } = props;
+  if (isLoadingAll) {
+    return Array.from({ length: 6 }).map((_, index) => (
+      <tr key={index}>
+        {Array.from({ length: totalFields }).map((_, indexTd) => (
+          <td className="px-2 py-3" key={indexTd}>
+            <div className="h-4 w-full animate-pulse rounded-full bg-gray-100" />
+          </td>
+        ))}
+      </tr>
+    ));
+  }
+
+  if (!isLoadingAll && isError) {
+    return (
+      <tr>
+        <td colSpan={totalFields}>
+          <ErrorComponent onRefetch={refetch} containerClassName="min-h-52" />
+        </td>
+      </tr>
+    );
+  }
+
+  if (isEmpty) {
+    return (
+      <tr>
+        <td colSpan={totalFields}>
+          <div className="flex min-h-52 flex-col items-center justify-center">
+            <InboxIcon className="size-24 text-gray-400" />
+            <span className="text-xs text-gray-400">Sem nenhum registo.</span>
+          </div>
+        </td>
+      </tr>
+    );
+  }
 }

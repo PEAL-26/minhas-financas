@@ -4,8 +4,15 @@ import { CategoryComponent } from '@/components/ui/category-component';
 import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
 import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
+import { formatCurrency } from '@repo/helpers/currency';
+import { formatDate } from '@repo/helpers/date';
 import { ACCOUNT_TYPE_MAP } from '@repo/types/account';
 import { Income } from '@repo/types/income';
+import {
+  RECURRENCE_TYPE_ENUM,
+  RECURRENCE_TYPE_MAP,
+  displayRecurrence,
+} from '@repo/types/recurrence';
 import { INCOME_STATUS_MAP } from '@repo/types/status';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
 import { Badge } from '@repo/ui/badge';
@@ -40,6 +47,7 @@ export function ListIncomesTemplate() {
       <div className="flex flex-col p-4">
         <DataTable
           response={listPaginate}
+          showHeader={false}
           fields={[
             {
               name: 'description',
@@ -64,12 +72,34 @@ export function ListIncomesTemplate() {
               },
             },
             {
+              title: 'Data Recebimento (Prevista)',
+              className: 'whitespace-nowrap',
+              render: (item) => {
+                return formatDate(item.estimatedDateReceipt) || 'S/N';
+              },
+            },
+            {
+              title: 'Recorrência',
+              render: (item) => {
+                const typeDisplay = RECURRENCE_TYPE_MAP[item.type]?.display;
+                if (item.type === RECURRENCE_TYPE_ENUM.UNIQUE) {
+                  return typeDisplay;
+                }
+                return displayRecurrence(item.recurrence);
+              },
+            },
+            {
               name: 'status',
               title: 'Estado',
               render: (item) => {
                 const status = INCOME_STATUS_MAP[item.status];
                 return <Badge style={{ backgroundColor: status.color }}>{status.display}</Badge>;
               },
+            },
+            {
+              title: 'Montante',
+              className: 'text-right',
+              render: (item) => formatCurrency(item.amount),
             },
           ]}
           onEdit={(item) => setForm({ id: item.id, open: true })}

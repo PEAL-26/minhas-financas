@@ -1,4 +1,3 @@
-import { PriorityFormComponent } from '@/components/ui/forms/priority';
 import { RecurrenceFormComponent } from '@/components/ui/forms/recurrence';
 import { StatusFormComponent } from '@/components/ui/forms/status';
 import { WalletFormComponent } from '@/components/ui/forms/wallet';
@@ -24,7 +23,8 @@ export function IncomeFormSheet(props: IncomeFormProps) {
     loadingData: open,
     defaultValues: {
       type: RECURRENCE_TYPE_ENUM.UNIQUE,
-      status: INCOME_STATUS_ENUM.PENDING,
+      recurrence: null,
+      status: INCOME_STATUS_ENUM.ACTIVE,
     },
     repositoryName: 'income',
     queryKey: ['incomes'],
@@ -58,16 +58,22 @@ export function IncomeFormSheet(props: IncomeFormProps) {
       contentClassName="gap-0"
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
-        <WalletFormComponent form={mutation.form} response={selectWallet} />
+        <WalletFormComponent required form={mutation.form} response={selectWallet} />
 
         <InputFormControl
+          required
           name="description"
           label="Descrição"
           placeholder="Ex.: Salário mensal, Venda de produtos, Aluguel de imóvel, etc."
           control={mutation?.form?.control}
         />
 
-        <FormControlCustom require label="Montante" name="amount" control={mutation?.form?.control}>
+        <FormControlCustom
+          required
+          label="Montante"
+          name="amount"
+          control={mutation?.form?.control}
+        >
           {({ field }) => (
             <InputMoney
               value={field.value}
@@ -81,29 +87,57 @@ export function IncomeFormSheet(props: IncomeFormProps) {
           )}
         </FormControlCustom>
 
-        <RecurrenceFormComponent require label="Renda" form={mutation.form} />
-
-        <PriorityFormComponent require form={mutation.form} />
-
-        <InputFormControl
-          name="duration"
-          label="Duração"
-          control={mutation?.form?.control}
-          placeholder="0"
+        <RecurrenceFormComponent
+          required
+          label="Renda"
+          form={mutation.form}
+          onChangeType={(type) => {
+            if (type === RECURRENCE_TYPE_ENUM.UNIQUE) {
+              mutation.form.setValue('duration', null);
+              mutation.form.setValue('startDate', null);
+              mutation.form.setValue('endDate', null);
+            }
+          }}
         />
 
-        <div className="grid grid-cols-2 gap-3">
-          <FormControlCustom name="startDate" label="Data Inicial" control={mutation.form.control}>
-            {({ field }) => (
-              <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
-            )}
-          </FormControlCustom>
-          <FormControlCustom name="endDate" label="Data Final" control={mutation.form.control}>
-            {({ field }) => (
-              <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
-            )}
-          </FormControlCustom>
-        </div>
+        {mutation.form.watch('recurrence') !== null && (
+          <>
+            <InputFormControl
+              name="duration"
+              label="Duração (dias)"
+              control={mutation?.form?.control}
+              placeholder="0"
+              type="number"
+              defaultStyleNumberRemove
+              min={0}
+            />
+
+            <div className="grid grid-cols-2 gap-3">
+              <FormControlCustom
+                name="startDate"
+                label="Data Inicial"
+                control={mutation.form.control}
+              >
+                {({ field }) => (
+                  <DatePicker
+                    modal
+                    defaultDate={field?.value || undefined}
+                    onChange={field.onChange}
+                  />
+                )}
+              </FormControlCustom>
+              <FormControlCustom name="endDate" label="Data Final" control={mutation.form.control}>
+                {({ field }) => (
+                  <DatePicker
+                    modal
+                    defaultDate={field?.value || undefined}
+                    onChange={field.onChange}
+                  />
+                )}
+              </FormControlCustom>
+            </div>
+          </>
+        )}
 
         <FormControlCustom
           name="estimatedDateReceipt"

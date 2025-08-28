@@ -28,6 +28,7 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
     loadingData: open,
     defaultValues: {
       type: RECURRENCE_TYPE_ENUM.UNIQUE,
+      recurrence: null,
       quantity: 1,
       status: EXPENSE_STATUS_ENUM.PENDING,
     },
@@ -124,12 +125,22 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
           control={mutation?.form?.control}
         />
 
-        <RecurrenceFormComponent require label="Despesa" form={mutation.form} />
+        <RecurrenceFormComponent
+          required
+          label="Despesa"
+          form={mutation.form}
+          onChangeType={(key) => {
+            if (key === RECURRENCE_TYPE_ENUM.UNIQUE) {
+              mutation.form.setValue('startDate', null);
+              mutation.form.setValue('endDate', null);
+            }
+          }}
+        />
 
-        <PriorityFormComponent require form={mutation.form} />
+        <PriorityFormComponent required form={mutation.form} />
 
         <FormControlCustom
-          require
+          required
           label="Montante"
           name="estimatedAmount"
           control={mutation?.form?.control}
@@ -164,19 +175,32 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
           )}
         </FormControlCustom>
 
-        <div className="grid grid-cols-2 gap-3">
-          <FormControlCustom name="startDate" label="Data Inicial" control={mutation.form.control}>
-            {({ field }) => (
-              <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
-            )}
-          </FormControlCustom>
-          <FormControlCustom name="endDate" label="Data Final" control={mutation.form.control}>
-            {({ field }) => (
-              <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
-            )}
-          </FormControlCustom>
-        </div>
-
+        {mutation?.form?.watch('recurrence') !== null && (
+          <div className="grid grid-cols-2 gap-3">
+            <FormControlCustom
+              name="startDate"
+              label="Data Inicial"
+              control={mutation.form.control}
+            >
+              {({ field }) => (
+                <DatePicker
+                  modal
+                  defaultDate={field?.value || undefined}
+                  onChange={field.onChange}
+                />
+              )}
+            </FormControlCustom>
+            <FormControlCustom name="endDate" label="Data Final" control={mutation.form.control}>
+              {({ field }) => (
+                <DatePicker
+                  modal
+                  defaultDate={field?.value || undefined}
+                  onChange={field.onChange}
+                />
+              )}
+            </FormControlCustom>
+          </div>
+        )}
         <StatusFormComponent form={mutation.form} statusMap={EXPENSE_STATUS_MAP} />
 
         <LocationPricesFormComponent

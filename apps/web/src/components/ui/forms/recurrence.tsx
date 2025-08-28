@@ -13,11 +13,13 @@ import { useState } from 'react';
 interface Props {
   form: any;
   label: string;
-  require?: boolean;
+  required?: boolean;
+  onChangeType?(item: RECURRENCE_TYPE_ENUM): void;
+  onChangeRecurrence?(value: number | null): void;
 }
 
 export function RecurrenceFormComponent(props: Props) {
-  const { form, label, require } = props;
+  const { form, label, required, onChangeType, onChangeRecurrence } = props;
   const [recurrenceCustomValue, setRecurrenceCustomValue] = useState(() => {
     const recurrence = form.getValues('recurrence');
     if (!includesEnum(RECURRENCE_ENUM, recurrence)) {
@@ -27,9 +29,13 @@ export function RecurrenceFormComponent(props: Props) {
     return '';
   });
 
+  const handleChangeRecurrence = (value: number | null) => {
+    onChangeRecurrence?.(value);
+  };
+
   return (
     <>
-      <FormControlCustom require={require} control={form.control} name="type" label={label}>
+      <FormControlCustom required={required} control={form.control} name="type" label={label}>
         {({ field }) => (
           <div className="grid w-full grid-cols-2 gap-3">
             {Object.entries(RECURRENCE_TYPE_MAP).map(([key, value]) => (
@@ -40,6 +46,7 @@ export function RecurrenceFormComponent(props: Props) {
                   }
 
                   field.onChange(key);
+                  onChangeType?.(key as RECURRENCE_TYPE_ENUM);
                 }}
                 className={cn(
                   'flex w-full flex-col items-center justify-center gap-1 rounded-lg border p-3 transition-all hover:cursor-pointer hover:bg-gray-100',
@@ -61,7 +68,9 @@ export function RecurrenceFormComponent(props: Props) {
                 <div
                   onClick={() => {
                     setRecurrenceCustomValue('');
-                    field.onChange(Number(key));
+                    const value = Number(key);
+                    field.onChange(value);
+                    handleChangeRecurrence(value);
                   }}
                   className={cn(
                     'flex h-[36px] w-full flex-col items-center justify-center gap-1 rounded-lg border p-2 transition-all hover:cursor-pointer hover:bg-gray-100',
@@ -78,7 +87,9 @@ export function RecurrenceFormComponent(props: Props) {
                 onChange={(e) => {
                   const value = (e.currentTarget as any)?.value || '';
                   setRecurrenceCustomValue(value);
-                  field.onChange(Number(value || 0) || null);
+                  const recurrence = Number(value || 0) || null;
+                  field.onChange(recurrence);
+                  handleChangeRecurrence(value);
                 }}
                 placeholder="Personalizado"
                 className="text-[10px] placeholder:text-[10px] placeholder:text-gray-400"

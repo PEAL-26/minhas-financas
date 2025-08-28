@@ -5,22 +5,27 @@ import { FormControlCustom } from '@repo/ui/form/control';
 interface Props {
   form: any;
   response: any;
+  required?: boolean;
 }
 
 export function WalletFormComponent(props: Props) {
-  const { form, response } = props;
+  const { form, response, required } = props;
 
   return (
-    <FormControlCustom label="Carteira" name="wallet" control={form.control}>
+    <FormControlCustom required={required} label="Carteira" name="wallet" control={form.control}>
       {({ field }) => {
+        const type =
+          ACCOUNT_TYPE_MAP?.[field?.value?.account?.type as keyof typeof ACCOUNT_TYPE_MAP];
+        const description = `${type?.display ? `${type.display} |` : ''} ${field.value?.account?.name || ''}`;
+
         return (
           <CustomCardDropdown
             title={field.value?.title}
-            description={field?.value?.description}
+            description={description}
             backgroundColor={'transparent'}
-            borderColor={field?.value?.color || 'transparent'}
-            color={field?.value?.color || 'black'}
-            icon={field?.value?.icon || 'wallet'}
+            borderColor={type?.color || 'transparent'}
+            color={type?.color || 'black'}
+            icon={type?.icon || 'wallet'}
             labelField="title"
             placeholder="Selecione uma conta"
             items={[

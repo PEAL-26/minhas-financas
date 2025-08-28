@@ -85,7 +85,7 @@ export function TransactionFormSheet(props: TransactionFormProps) {
       contentClassName="gap-0"
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
-        <FormControlCustom require control={mutation.form.control} name="type">
+        <FormControlCustom required control={mutation.form.control} name="type">
           {({ field }) => (
             <div className="grid w-full grid-cols-2 gap-3">
               {Object.entries(TRANSACTION_TYPE_MAP).map(([key, value]) => (
@@ -145,7 +145,7 @@ export function TransactionFormSheet(props: TransactionFormProps) {
               onChange={() => calculateTotal(TRANSACTION_TYPE_ENUM.INCOME)}
             />
             <FormControlCustom
-              require
+              required
               label="Montante"
               name="incomes.0.amount"
               control={mutation?.form?.control}

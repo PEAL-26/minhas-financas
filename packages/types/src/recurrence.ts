@@ -17,7 +17,7 @@ export const RECURRENCE_MAP = {
   [RECURRENCE_ENUM.YEARLY]: { display: 'Anual' },
 };
 
-export const RECURRENCE_TYPE_MAP = {
+export const RECURRENCE_TYPE_MAP: Record<RECURRENCE_TYPE_ENUM, { display: string }> = {
   [RECURRENCE_TYPE_ENUM.UNIQUE]: { display: 'Única' },
   [RECURRENCE_TYPE_ENUM.RECURRENCE]: { display: 'Recorrente' },
 };

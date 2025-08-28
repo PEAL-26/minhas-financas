@@ -2,7 +2,7 @@ export type JoinType = 'inner' | 'left' | 'right';
 
 export interface RelationshipConfig {
   tableName: string;
-  as?: string,
+  as?: string;
   alias?: string;
   structure: 'object' | 'array';
   fields?: string[];

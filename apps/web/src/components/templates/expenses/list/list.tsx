@@ -5,8 +5,13 @@ import { DataTable } from '@/components/ui/table/data';
 import { useQueryStateParams } from '@/hooks/use-search-params';
 import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
 import { formatCurrency } from '@repo/helpers/currency';
-import { formatDate } from '@repo/helpers/date';
 import { Expense } from '@repo/types/expense';
+import { PRIORITY_MAP } from '@repo/types/priority';
+import {
+  RECURRENCE_TYPE_ENUM,
+  RECURRENCE_TYPE_MAP,
+  displayRecurrence,
+} from '@repo/types/recurrence';
 import { EXPENSE_STATUS_MAP } from '@repo/types/status';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
 import { Badge } from '@repo/ui/badge';
@@ -37,10 +42,10 @@ export function ListExpensesTemplate() {
     <>
       <div className="flex flex-col p-4">
         <DataTable
+          showHeader={false}
           response={listPaginate}
           fields={[
             {
-              name: 'description',
               title: 'Despesa',
               render: (item) => {
                 return (
@@ -54,23 +59,39 @@ export function ListExpensesTemplate() {
               },
             },
             {
-              name: 'estimatedDate',
-              title: 'Data',
-              render: (item) => (item.estimatedDate ? formatDate(item.estimatedDate) : 'S/N'),
+              title: 'Prioridade',
+              className: 'text-center',
+              render: (item) => {
+                const priority = PRIORITY_MAP[item.priority];
+                return (
+                  <Badge style={{ backgroundColor: priority.color }}>{priority.display}</Badge>
+                );
+              },
             },
             {
-              name: 'estimatedAmount',
-              title: 'Montante',
-              render: (item) =>
-                item.estimatedAmount ? formatCurrency(item.estimatedAmount) : 'S/N',
+              title: 'Recorrência',
+              render: (item) => {
+                const typeDisplay = RECURRENCE_TYPE_MAP[item.type]?.display;
+
+                if (item.type === RECURRENCE_TYPE_ENUM.UNIQUE) {
+                  return typeDisplay;
+                }
+
+                return displayRecurrence(item.recurrence);
+              },
             },
             {
-              name: 'status',
               title: 'Estado',
+              className: 'text-center',
               render: (item) => {
                 const status = EXPENSE_STATUS_MAP[item.status];
                 return <Badge style={{ backgroundColor: status.color }}>{status.display}</Badge>;
               },
+            },
+            {
+              title: 'Montante',
+              className: 'text-right',
+              render: (item) => (item.total ? formatCurrency(item.total) : 'S/N'),
             },
           ]}
           onEdit={(item) => setForm({ id: item.id, open: true })}

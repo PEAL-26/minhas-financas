@@ -69,6 +69,7 @@ export function SheetForm<
     if (isSubmitting) return;
 
     if (!state) {
+      form?.reset?.();
       onClose?.();
     }
   };

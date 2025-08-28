@@ -5,6 +5,7 @@ import {
   ListPaginateRepositoryOption,
   PaginatedResult,
 } from '../../types';
+import { walletInclude } from './includes';
 import { IIncomeRepository, IncomeCreateData } from './interface';
 import * as mappers from './mappers';
 
@@ -26,7 +27,12 @@ export class IncomeRepository implements IIncomeRepository {
   }
 
   async getById(id: string): Promise<Income | null> {
-    const result = await this.database.getFirst('incomes', { where: { id } });
+    const result = await this.database.getFirst('incomes', {
+      where: { 'incomes.id': id },
+      include: {
+        wallets: walletInclude,
+      },
+    });
     if (!result) return null;
     return mappers.toEntityMap(result);
   }
@@ -40,9 +46,12 @@ export class IncomeRepository implements IIncomeRepository {
     const { query, size, page } = options || {};
 
     const result = await this.database.listPaginate('incomes', {
-      where: { description: { value: query, op: 'like' } },
+      where: { 'incomes.description': { value: query, op: 'like' } },
       size,
       page,
+      include: {
+        wallets: walletInclude,
+      },
     });
 
     return {

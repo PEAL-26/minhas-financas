@@ -36,9 +36,7 @@ export function CurrencySelect(props: CurrencySelectProps) {
           </div>
         </div>
       </PopoverTrigger>
-      <PopoverContent side="bottom" align="end" className="w-fit">
-        
-      </PopoverContent>
+      <PopoverContent side="bottom" align="end" className="w-fit"></PopoverContent>
     </Popover>
   );
 }

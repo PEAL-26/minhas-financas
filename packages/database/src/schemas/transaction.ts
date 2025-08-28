@@ -9,12 +9,14 @@ const tableName = 'transactions';
 
 const fields = {
   pglite: {
+    walletId: pgCore.text('wallet_id'),
     type: pgCore.text('type').$type<TRANSACTION_TYPE_ENUM>().notNull(),
     date: pgCore.timestamp('date').notNull(),
     totalAmount: pgCore.real('total_amount').notNull().default(0.0),
     note: pgCore.text('note'),
   },
   sqlite: {
+    walletId: sqliteCore.text('wallet_id'),
     type: sqliteCore.text('type').$type<TRANSACTION_TYPE_ENUM>().notNull(),
     date: sqliteCore.integer('date', { mode: 'timestamp' }).notNull(),
     totalAmount: sqliteCore.real('total_amount').notNull().default(0.0),

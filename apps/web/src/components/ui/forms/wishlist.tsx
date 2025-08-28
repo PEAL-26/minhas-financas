@@ -6,13 +6,19 @@ interface Props {
   form: any;
   response: any;
   onChange?(item: any | null): void;
+  required?: boolean;
 }
 
 export function WishlistFormComponent(props: Props) {
-  const { form, response, onChange } = props;
+  const { form, response, required, onChange } = props;
 
   return (
-    <FormControlCustom label="Necessidades" name="wishlist" control={form?.control}>
+    <FormControlCustom
+      required={required}
+      label="Necessidades"
+      name="wishlist"
+      control={form?.control}
+    >
       {({ field }) => {
         return (
           <CustomCardDropdown
@@ -34,8 +40,14 @@ export function WishlistFormComponent(props: Props) {
               ...response.data.map((item: any) => {
                 const color = item?.category?.color || colors.primary.DEFAULT;
                 const icon = item?.category?.icon || 'tag';
-                const category = {...item?.category, color, icon }
-                return { ...item, category, description: item?.category?.name, backgroundColor: color, icon, };
+                const category = { ...item?.category, color, icon };
+                return {
+                  ...item,
+                  category,
+                  description: item?.category?.name,
+                  backgroundColor: color,
+                  icon,
+                };
               }),
             ]}
             onChange={({ backgroundColor, ...rest }) => {

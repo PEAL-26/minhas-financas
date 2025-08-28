@@ -59,9 +59,7 @@ export function DatePicker(props: DatePickerProps) {
           }
 
           if (e.key === 'Backspace' || e.key === 'Delete') {
-            setValue('');
-            setDate(undefined);
-            setMonth(undefined);
+            handleChangeData(undefined);
           }
         }}
       />
@@ -85,7 +83,6 @@ export function DatePicker(props: DatePickerProps) {
           sideOffset={10}
         >
           <Calendar
-          
             mode="single"
             selected={date}
             captionLayout="dropdown"

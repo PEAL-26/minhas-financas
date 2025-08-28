@@ -5,7 +5,7 @@ import { Wallet } from './wallet';
 export type Income = {
   id: string;
   wallet?: Wallet | null;
-  description?: string | null;
+  description: string;
   amount: number;
   type: RECURRENCE_TYPE_ENUM;
   recurrence?: RECURRENCE_ENUM | number | null;

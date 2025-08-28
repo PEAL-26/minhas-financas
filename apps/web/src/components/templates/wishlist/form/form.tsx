@@ -87,7 +87,7 @@ export function WishlistFormSheet(props: WishlistFormProps) {
 
         <FormControlCustom name="targetDate" label="Data Prevista" control={mutation.form.control}>
           {({ field }) => (
-            <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange}  />
+            <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
           )}
         </FormControlCustom>
 

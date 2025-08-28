@@ -8,6 +8,13 @@
       "when": 1755359640121,
       "tag": "0000_known_harrier",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1756423991978,
+      "tag": "0001_clear_the_santerians",
+      "breakpoints": true
     }
   ]
 }
