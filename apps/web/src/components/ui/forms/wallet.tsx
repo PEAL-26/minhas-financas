@@ -6,13 +6,15 @@ interface Props {
   form: any;
   response: any;
   required?: boolean;
+  label?: string;
+  name?: string;
 }
 
 export function WalletFormComponent(props: Props) {
-  const { form, response, required } = props;
+  const { form, name = 'wallet', response, label, required } = props;
 
   return (
-    <FormControlCustom required={required} label="Carteira" name="wallet" control={form.control}>
+    <FormControlCustom required={required} label={label} name={name} control={form.control}>
       {({ field }) => {
         const type =
           ACCOUNT_TYPE_MAP?.[field?.value?.account?.type as keyof typeof ACCOUNT_TYPE_MAP];

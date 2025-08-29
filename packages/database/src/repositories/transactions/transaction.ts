@@ -5,6 +5,7 @@ import {
   ListPaginateRepositoryOption,
   PaginatedResult,
 } from '../../types';
+import { walletInclude } from './includes';
 import { ITransactionRepository, TransactionCreateData } from './interface';
 import * as mappers from './mappers';
 
@@ -12,13 +13,39 @@ export class TransactionRepository implements ITransactionRepository {
   constructor(private database: IDatabase) {}
 
   async create(input: TransactionCreateData): Promise<void> {
-    const data = mappers.toDatabaseMap(input);
-    await this.database.insert('transactions', data);
+    const { incomes, expenses, ...data } = mappers.toDatabaseMap(input);
+    await this.database.insert('transactions', data, {
+      include: {
+        incomes: {
+          tableName: 'transactions_incomes',
+          foreignKey: 'transactionId',
+          data: incomes,
+        },
+        expenses: {
+          tableName: 'transactions_expenses',
+          foreignKey: 'transactionId',
+          data: expenses,
+        },
+      },
+    });
   }
 
   async update(input: Partial<TransactionCreateData>, id: string): Promise<void> {
-    const data = mappers.toDatabaseMap(input);
-    await this.database.update('transactions', data, id);
+    const { incomes, expenses, ...data } = mappers.toDatabaseMap(input);
+    await this.database.update('transactions', data, id, {
+      include: {
+        incomes: {
+          tableName: 'transactions_incomes',
+          foreignKey: 'transactionId',
+          data: incomes,
+        },
+        expenses: {
+          tableName: 'transactions_expenses',
+          foreignKey: 'transactionId',
+          data: expenses,
+        },
+      },
+    });
   }
 
   async delete(id: string): Promise<void> {
@@ -45,6 +72,9 @@ export class TransactionRepository implements ITransactionRepository {
       //where: { title: { value: query, op: 'like' } },
       size,
       page,
+      include: {
+        wallets: walletInclude,
+      },
     });
 
     return {

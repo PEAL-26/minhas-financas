@@ -20,75 +20,6 @@ export const metadata: Metadata = {
   description: MAIN_MENUS.DASHBOARD.description,
 };
 
-const data = [
-  {
-    date: new Date(),
-    amount: 10000,
-    type: 'income' as const,
-    description: 'Teste',
-  },
-  {
-    date: new Date(new Date().setDate(new Date().getDate() - 1)),
-    amount: 10000,
-    type: 'income' as const,
-    description: 'Teste',
-  },
-  {
-    date: new Date('2024-01-26'),
-    amount: 10000,
-    type: 'income' as const,
-    description: 'Teste',
-  },
-  {
-    date: new Date('2024-01-01'),
-    amount: 10000,
-    type: 'income' as const,
-    description: 'Teste',
-  },
-  {
-    date: new Date('2024-01-02'),
-    amount: 10000,
-    type: 'expense' as const,
-    description: 'Teste',
-  },
-  {
-    date: new Date('2024-01-03'),
-    amount: 10000,
-    type: 'income' as const,
-    description: 'Teste',
-  },
-  {
-    date: new Date('2024-01-04'),
-    amount: 10000,
-    type: 'expense' as const,
-    description: 'Teste',
-  },
-  {
-    date: new Date('2024-01-05'),
-    amount: 10000,
-    type: 'income' as const,
-    description: 'Teste',
-  },
-  {
-    date: new Date('2024-02-03'),
-    amount: 10000,
-    type: 'income' as const,
-    description: 'Teste',
-  },
-  {
-    date: new Date('2024-02-04'),
-    amount: 10000,
-    type: 'expense' as const,
-    description: 'Teste',
-  },
-  {
-    date: new Date('2024-02-05'),
-    amount: 10000,
-    type: 'income' as const,
-    description: 'Teste',
-  },
-];
-
 export function ListTransactionsTemplate() {
   const [page, setPage] = useQueryStateParams<number>('page', 'int');
   const [size, setSize] = useQueryStateParams<number>('size', 'int');
@@ -110,6 +41,7 @@ export function ListTransactionsTemplate() {
   });
 
   const dates = new Map();
+
   return (
     <>
       <div className="flex flex-col p-4">
@@ -179,33 +111,7 @@ export function ListTransactionsTemplate() {
               );
             })}
           </div>
-          {/* <DataTable
-                className="w-full"
-                //response={{} as any}
-                fields={[
-                  { name: 'transaction', title: 'Transação' },
-                  { name: 'date', title: 'Data' },
-                  { name: 'amount', title: 'Montante' },
-                  { name: 'status', title: 'Estado' },
-                ]}
-              /> */}
         </div>
-        {/* <DataTable
-          response={listPaginate}
-          fields={[
-            {
-              name: 'type',
-              title: 'Tipo',
-            },
-            {
-              name: 'date',
-              title: 'Data',
-              render: (item) => (item.date ? formatDate(item.date) : 'S/N'),
-            },
-          ]}
-          onEdit={(item) => setForm({ id: item.id, open: true })}
-          onDelete={(id) => setAlertDelete({ open: true, id })}
-        /> */}
       </div>
 
       <TransactionFormSheet

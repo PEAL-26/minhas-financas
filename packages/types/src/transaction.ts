@@ -1,6 +1,7 @@
 import { Expense } from './expense';
 import { Income } from './income';
 import { Location } from './location';
+import { Wallet } from './wallet';
 
 export type TransactionIncome = {
   income: Income;
@@ -22,6 +23,7 @@ export type Transaction = {
   date: Date;
   incomes?: TransactionIncome[];
   expenses?: TransactionExpense[];
+  wallet?: Wallet | null;
   totalAmount: number;
   note?: string | null;
   createdAt: Date;

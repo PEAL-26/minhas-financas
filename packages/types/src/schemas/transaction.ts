@@ -5,6 +5,7 @@ import * as expense from './expense';
 import * as income from './income';
 import * as location from './location';
 import { timestampsSchema } from './timestamps';
+import * as wallet from './wallet';
 
 export const transactionIncomeSchema = z.object({
   income: z.object({
@@ -37,6 +38,12 @@ export const transactionExpenseSchema = z.object({
 });
 
 export const transactionSchemaBase = z.object({
+  wallet: z
+    .object({
+      ...wallet.walletSchemaBase.partial().shape,
+      id: z.string({ error: 'Campo obrigatório.' }),
+    })
+    .nullish(),
   type: z.enum(TRANSACTION_TYPE_ENUM, {
     error: `Valor inválido (deve ser ${Object.values(TRANSACTION_TYPE_MAP)
       .map((v) => v.display)

@@ -65,7 +65,7 @@ export class ExpenseRepository implements IExpenseRepository {
     const { query, size, page } = options || {};
 
     const result = await this.database.listPaginate('expenses', {
-      where: { title: { value: query, op: 'like' } },
+      where: { description: { value: query, op: 'like' } },
       size,
       page,
       include: {

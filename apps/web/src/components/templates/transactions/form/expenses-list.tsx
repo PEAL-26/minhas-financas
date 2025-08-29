@@ -84,7 +84,7 @@ export function ExpensesList(props: Props) {
 
   return (
     <div>
-      <div className="flex items-center justify-between border-b pb-3">
+      <div className="flex items-center justify-between border-b pb-2">
         <Label className="font-bold text-black">Despesas: </Label>
         <Button variant="outline" className="size-6 p-0">
           <EllipsisIcon className="text-input" size={16} />
@@ -102,7 +102,9 @@ export function ExpensesList(props: Props) {
                 containerClassName="w-full"
                 enableChange={false}
                 item={(field as any)?.expense}
-                onChange={(item) => handleSelectExpense(item, index)}
+                onChange={(item) => {
+                  handleSelectExpense(item, index);
+                }}
               />
 
               <SelectFormControl

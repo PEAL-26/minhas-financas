@@ -6,6 +6,7 @@ import { useQuerySelect } from '@repo/database/hooks/use-query-select';
 import { TransactionSchemaType } from '@repo/types/schemas';
 import { showToastError } from '@repo/ui/helpers/toast';
 
+import { WalletFormComponent } from '@/components/ui/forms/wallet';
 import { TRANSACTION_TYPE_ENUM, TRANSACTION_TYPE_MAP } from '@repo/types/transaction';
 import { DatePicker } from '@repo/ui/date-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
@@ -22,6 +23,8 @@ export function TransactionFormSheet(props: TransactionFormProps) {
     id,
     loadingData: open,
     defaultValues: {
+      incomes: [],
+      expenses: [],
       date: new Date(),
       type: TRANSACTION_TYPE_ENUM.INCOME,
     },
@@ -50,6 +53,12 @@ export function TransactionFormSheet(props: TransactionFormProps) {
   const querySelectLocations = useQuerySelect({
     repositoryName: 'location',
     queryKey: ['locations'],
+    defaultSize: 100,
+  });
+
+  const selectWallet = useQuerySelect({
+    repositoryName: 'wallet',
+    queryKey: ['wallets'],
     defaultSize: 100,
   });
 
@@ -120,29 +129,23 @@ export function TransactionFormSheet(props: TransactionFormProps) {
           )}
         </FormControlCustom>
 
-        <FormControlCustom name="date" label="Data" control={mutation.form.control}>
-          {({ field }) => (
-            <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
-          )}
-        </FormControlCustom>
-
-        {mutation.form.watch('type') === TRANSACTION_TYPE_ENUM.EXPENSE && (
-          <ExpensesList
-            form={mutation.form}
-            querySelectExpenses={querySelectExpenses}
-            querySelectIncomes={querySelectIncomes}
-            querySelectLocations={querySelectLocations}
-            onChange={() => calculateTotal(TRANSACTION_TYPE_ENUM.EXPENSE)}
-          />
-        )}
-
         {mutation.form.watch('type') === TRANSACTION_TYPE_ENUM.INCOME && (
           <>
             <IncomeFormComponent
               form={mutation.form}
               response={querySelectIncomes}
               name="incomes.0.income"
-              onChange={() => calculateTotal(TRANSACTION_TYPE_ENUM.INCOME)}
+              onChange={(item) => {
+                if (item?.wallet) {
+                  mutation.form.setValue('wallet', item.wallet);
+                }
+
+                if (item?.amount) {
+                  mutation.form.setValue('incomes.0.amount', item.amount);
+                }
+
+                calculateTotal(TRANSACTION_TYPE_ENUM.INCOME);
+              }}
             />
             <FormControlCustom
               required
@@ -164,11 +167,30 @@ export function TransactionFormSheet(props: TransactionFormProps) {
           </>
         )}
 
+        {mutation.form.watch('type') === TRANSACTION_TYPE_ENUM.EXPENSE && (
+          <ExpensesList
+            form={mutation.form}
+            querySelectExpenses={querySelectExpenses}
+            querySelectIncomes={querySelectIncomes}
+            querySelectLocations={querySelectLocations}
+            onChange={() => calculateTotal(TRANSACTION_TYPE_ENUM.EXPENSE)}
+          />
+        )}
+
+        <WalletFormComponent label="Carteira" form={mutation.form} response={selectWallet} />
+
+        <FormControlCustom name="date" label="Data" control={mutation.form.control}>
+          {({ field }) => (
+            <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
+          )}
+        </FormControlCustom>
+
         <TextareaFormControl
           label="Detalhes"
           name="note"
           control={mutation?.form?.control}
-          placeholder=""
+          placeholder="Anotações adicionais"
+          className=""
         />
       </div>
     </SheetForm>

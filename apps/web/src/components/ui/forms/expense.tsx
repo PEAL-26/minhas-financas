@@ -60,16 +60,16 @@ export function ExpenseFormComponent(props: Props) {
         return (
           <CustomCardDropdown
             modal
-            title={currentValue?.name}
+            title={currentValue?.title}
             description={currentValue?.description}
             backgroundColor={currentValue?.backgroundColor || colors.primary.DEFAULT}
             icon={currentValue?.icon || 'tag'}
-            labelField="name"
+            labelField="title"
             placeholder="Selecione uma despesa"
             items={[
               {
                 id: 'NULL',
-                name: 'Desselecionar',
+                title: 'Desselecionar',
                 showIcon: false,
                 className: 'text-center text-gray-300',
               },
@@ -77,6 +77,7 @@ export function ExpenseFormComponent(props: Props) {
                 const category = item.category;
                 return {
                   ...item,
+                  title: item.description,
                   description: `${category?.name ? `${category.name} |` : ''} ${formatCurrency(item.estimatedCost || 0)}`,
                   backgroundColor: category?.color || colors.primary.DEFAULT,
                   icon: category?.icon || 'tag',
