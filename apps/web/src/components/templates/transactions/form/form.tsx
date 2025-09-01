@@ -94,6 +94,7 @@ export function TransactionFormSheet(props: TransactionFormProps) {
       contentClassName="gap-0"
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
+        {/* TIPO DE TRANSAÇÃO */}
         <FormControlCustom required control={mutation.form.control} name="type">
           {({ field }) => (
             <div className="grid w-full grid-cols-2 gap-3">
@@ -129,13 +130,17 @@ export function TransactionFormSheet(props: TransactionFormProps) {
           )}
         </FormControlCustom>
 
+        {/* TRANSAÇÃO - RENDA */}
         {mutation.form.watch('type') === TRANSACTION_TYPE_ENUM.INCOME && (
           <>
             <IncomeFormComponent
               form={mutation.form}
               response={querySelectIncomes}
-              name="incomes.0.income"
-              onChange={(item) => {
+              name="incomes.0.description"
+              onSelectItem={(item) => {
+                console.log(item);
+                mutation.form.setValue('incomes.0.income', item);
+
                 if (item?.wallet) {
                   mutation.form.setValue('wallet', item.wallet);
                 }
@@ -167,6 +172,7 @@ export function TransactionFormSheet(props: TransactionFormProps) {
           </>
         )}
 
+        {/* TRANSAÇÃO - DESPESAS */}
         {mutation.form.watch('type') === TRANSACTION_TYPE_ENUM.EXPENSE && (
           <ExpensesList
             form={mutation.form}
@@ -177,14 +183,17 @@ export function TransactionFormSheet(props: TransactionFormProps) {
           />
         )}
 
+        {/* CARTEIRAS */}
         <WalletFormComponent label="Carteira" form={mutation.form} response={selectWallet} />
 
+        {/* DATA */}
         <FormControlCustom name="date" label="Data" control={mutation.form.control}>
           {({ field }) => (
             <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
           )}
         </FormControlCustom>
 
+        {/* DETALHES */}
         <TextareaFormControl
           label="Detalhes"
           name="note"

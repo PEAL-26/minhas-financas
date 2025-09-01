@@ -2,7 +2,7 @@ import { CurrenciesFormComponent } from '@/components/ui/forms/currencies';
 import { SheetForm } from '@/components/ui/sheet-form';
 import { FORM_DESCRIPTION } from '@repo/constants/forms';
 import { useMutation } from '@repo/database/hooks/crud/use-mutation';
-import { ACCOUNT_TYPE_MAP } from '@repo/types/account';
+import { ACCOUNT_TYPE_ENUM, ACCOUNT_TYPE_MAP } from '@repo/types/account';
 import { AccountSchemaType } from '@repo/types/schemas';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
@@ -18,7 +18,12 @@ export function AccountFormSheet(props: AccountFormProps) {
   const mutation = useMutation<AccountSchemaType>({
     id,
     loadingData: open,
-    defaultValues: {},
+    defaultValues: {
+      name: '',
+      siteUrl: '',
+      swiftCode: '',
+      type: ACCOUNT_TYPE_ENUM.BANK,
+    },
     repositoryName: 'account',
     queryKey: ['accounts'],
     onSuccess: () => {

@@ -1,5 +1,5 @@
 import { checkNullUndefinedValue } from '@repo/helpers/checkers';
-import { randomUUID } from './uuid';
+import { randomUUID } from '@repo/helpers/uuid';
 
 export function toDatabasePropertiesCommonMap(entity: {
   id?: string | null;

@@ -1,62 +1,58 @@
-import { CustomCardDropdown } from '@/components/ui/custom-card-dropdown';
-import { colors } from '@repo/ui/colors';
 import { FormControlCustom } from '@repo/ui/form/control';
+import { InputSuggestions } from '@repo/ui/input';
+import { CategoryComponent } from '../category-component';
 
 interface Props {
   form: any;
   response: any;
-  onChange?(item: any | null): void;
   required?: boolean;
+  label?: string;
+  name?: string;
+  onChange?(item: any | null): void;
+  onChangeValue?(value: string | null): void;
+  onSelectItem?(item: any | null): void;
 }
 
 export function WishlistFormComponent(props: Props) {
-  const { form, response, required, onChange } = props;
+  const {
+    label,
+    name = 'description',
+    form,
+    response,
+    required,
+    onSelectItem,
+    onChangeValue,
+  } = props;
 
   return (
-    <FormControlCustom
-      required={required}
-      label="Necessidades"
-      name="wishlist"
-      control={form?.control}
-    >
+    <FormControlCustom required={required} label={label} name={name} control={form?.control}>
       {({ field }) => {
+        const item = form.getValues('wishlist');
         return (
-          <CustomCardDropdown
-            modal
-            title={field.value?.name}
-            description={field.value?.category?.name}
-            backgroundColor={field.value?.category?.color || colors.primary.DEFAULT}
-            icon={field.value?.category?.icon || 'tag'}
-            labelField="name"
-            placeholder="Selecione uma necessidade"
-            items={[
-              {
-                id: 'NULL',
-                name: 'Desselecionar',
-                backgroundColor: undefined,
-                showIcon: false,
-                className: 'text-center text-gray-300',
-              },
-              ...response.data.map((item: any) => {
-                const color = item?.category?.color || colors.primary.DEFAULT;
-                const icon = item?.category?.icon || 'tag';
-                const category = { ...item?.category, color, icon };
-                return {
-                  ...item,
-                  category,
-                  description: item?.category?.name,
-                  backgroundColor: color,
-                  icon,
-                };
-              }),
-            ]}
-            onChange={({ backgroundColor, ...rest }) => {
-              const data = rest?.id === 'NULL' ? null : { ...rest, color: backgroundColor };
-              field.onChange(data);
-              onChange?.(data);
+          <InputSuggestions
+            placeholder="Insira descrição ou selecione"
+            value={field.value}
+            onChange={(e) => {
+              field.onChange(e);
+              onChangeValue?.(e.target?.value);
             }}
-            onSearch={response.search}
-            loading={response.isLoadingAll}
+            item={item}
+            items={response.data}
+            renderItem={({ item }) => (
+              <CategoryComponent
+                title={(item as any).name}
+                description={(item as any).category?.name}
+                backgroundColor={(item as any)?.category?.color}
+                icon={(item as any)?.category?.icon}
+                showIcon={(item as any)?.showIcon}
+                sizeIcon={24}
+              />
+            )}
+            onSelectItem={onSelectItem}
+            onSearch={response?.search}
+            isLoading={response?.isLoadingAll}
+            isError={response?.isError}
+            isEmpty={response?.isEmpty}
           />
         );
       }}

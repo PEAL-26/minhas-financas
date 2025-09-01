@@ -7,3 +7,10 @@ export type User = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export const userHelps: Partial<Record<keyof User, string>> = {
+  name: '',
+  email: '',
+  passwordHash: '',
+  providerId: '',
+};

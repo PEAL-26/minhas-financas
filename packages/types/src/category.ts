@@ -6,3 +6,7 @@ export type Category = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export const categoryHelps: Partial<Record<keyof Category, string>> = {
+  name: '',
+};

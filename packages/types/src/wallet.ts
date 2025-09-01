@@ -12,3 +12,13 @@ export type Wallet = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export const walletHelps: Partial<Record<keyof Wallet, string>> = {
+  title: '',
+  account: '',
+  reference: '',
+  iban: '',
+  details: '',
+  currencies: '',
+  active: '',
+};

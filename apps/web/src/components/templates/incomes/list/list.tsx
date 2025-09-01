@@ -61,7 +61,7 @@ export function ListIncomesTemplate() {
 
                 return (
                   <CategoryComponent
-                    title={item.description || ''}
+                    title={item.description}
                     description={`${accountType?.display ? `${accountType.display} |` : ''} ${item.wallet?.title || ''}`}
                     backgroundColor="transparent"
                     borderColor={color || 'transparent'}

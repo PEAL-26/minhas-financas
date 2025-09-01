@@ -11,6 +11,7 @@ import { INCOME_STATUS_ENUM, INCOME_STATUS_MAP } from '@repo/types/status';
 import { DatePicker } from '@repo/ui/date-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
 import { InputFormControl } from '@repo/ui/form/control/input';
+import { TextareaFormControl } from '@repo/ui/form/control/textarea';
 import { showToastError } from '@repo/ui/helpers/toast';
 import { InputMoney } from '@repo/ui/input-money';
 import { IncomeFormProps } from './types';
@@ -59,7 +60,6 @@ export function IncomeFormSheet(props: IncomeFormProps) {
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
         <WalletFormComponent required form={mutation.form} response={selectWallet} />
-
         <InputFormControl
           required
           name="description"
@@ -67,7 +67,6 @@ export function IncomeFormSheet(props: IncomeFormProps) {
           placeholder="Ex.: Salário mensal, Venda de produtos, Aluguel de imóvel, etc."
           control={mutation?.form?.control}
         />
-
         <FormControlCustom
           required
           label="Montante"
@@ -86,7 +85,6 @@ export function IncomeFormSheet(props: IncomeFormProps) {
             />
           )}
         </FormControlCustom>
-
         <RecurrenceFormComponent
           required
           label="Renda"
@@ -99,7 +97,6 @@ export function IncomeFormSheet(props: IncomeFormProps) {
             }
           }}
         />
-
         {mutation.form.watch('recurrence') !== null && (
           <>
             <InputFormControl
@@ -138,7 +135,6 @@ export function IncomeFormSheet(props: IncomeFormProps) {
             </div>
           </>
         )}
-
         <FormControlCustom
           name="estimatedDateReceipt"
           label="Data Estimada de Recebimento"
@@ -148,8 +144,15 @@ export function IncomeFormSheet(props: IncomeFormProps) {
             <DatePicker modal defaultDate={field?.value || undefined} onChange={field.onChange} />
           )}
         </FormControlCustom>
-
         <StatusFormComponent form={mutation.form} statusMap={INCOME_STATUS_MAP} />
+
+        <TextareaFormControl
+          label="Detalhes"
+          name="note"
+          control={mutation?.form?.control}
+          placeholder="Anotações adicionais"
+          className=""
+        />
       </div>
     </SheetForm>
   );

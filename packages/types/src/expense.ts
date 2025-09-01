@@ -23,6 +23,26 @@ export type Expense = {
   total?: number | null;
   prices?: Price[];
   status: EXPENSE_STATUS_ENUM;
+  note?: string | null;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export const expenseHelps: Partial<Record<keyof Expense, string>> = {
+  wishlist: '',
+  income: '',
+  category: '',
+  description: '',
+  estimatedDate: '',
+  priority: '',
+  type: '',
+  recurrence: '',
+  startDate: '',
+  endDate: '',
+  estimatedAmount: '',
+  quantity: '',
+  total: '',
+  prices: '',
+  status: '',
+  note: '',
 };

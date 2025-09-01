@@ -14,9 +14,11 @@ export const incomeSchemaBase = z.object({
     })
     .nullish(),
   description: z.string({ error: 'Campo obrigatório.' }),
-  amount: z.number({
-    error: (e) => (e.input === undefined ? 'Campo obrigatório' : 'Valor inválido'),
-  }),
+  amount: numericString(
+    z.number({
+      error: (e) => (e.input === undefined ? 'Campo obrigatório' : 'Valor inválido'),
+    }),
+  ),
   type: z.enum(RECURRENCE_TYPE_ENUM, enumValidate(RECURRENCE_TYPE_MAP)),
   recurrence: z.int({ error: 'Valor inválido' }).nullish(),
   duration: numericString(z.int({ error: 'Valor inválido' })).nullish(),
@@ -31,6 +33,7 @@ export const incomeSchemaBase = z.object({
     .enum(INCOME_STATUS_ENUM, enumValidate(INCOME_STATUS_MAP))
     .default(INCOME_STATUS_ENUM.PENDING)
     .optional(),
+  note: z.string().nullish(),
   ...timestampsSchema.partial().shape,
 });
 

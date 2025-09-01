@@ -1,3 +1,4 @@
+import { randomUUID } from '@repo/helpers/uuid';
 import { DatabaseInclude } from '../../types';
 import {
   ConfigProps,
@@ -49,7 +50,7 @@ export class RelationalSerializer {
     const resultMap = new Map<string, SerializedData>();
 
     for (const row of rows as RawRow[]) {
-      const mainId = row[`${this.config.mainTable}_id`] || row.id;
+      const mainId = row[`${this.config.mainTable}_id`] || row.id || randomUUID();
 
       if (!resultMap.has(mainId)) {
         resultMap.set(mainId, this.serializeMainRow(row));

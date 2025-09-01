@@ -21,6 +21,7 @@ const fields = {
     currency: pgCore.varchar('currency', { length: 3 }),
     estimatedDateReceipt: pgCore.timestamp('estimated_date_receipt'),
     status: pgCore.text().$type<INCOME_STATUS_ENUM>().default(INCOME_STATUS_ENUM.PENDING),
+    note: pgCore.text('note'),
   },
   sqlite: {
     walletId: sqliteCore.text('wallet_id'),
@@ -34,6 +35,7 @@ const fields = {
     currency: sqliteCore.text('currency', { length: 3 }),
     estimatedDateReceipt: sqliteCore.integer('estimated_date_receipt', { mode: 'timestamp' }),
     status: sqliteCore.text().$type<INCOME_STATUS_ENUM>().default(INCOME_STATUS_ENUM.PENDING),
+    note: sqliteCore.text('note'),
   },
 };
 

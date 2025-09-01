@@ -69,6 +69,7 @@ export class ExpenseRepository implements IExpenseRepository {
       size,
       page,
       include: {
+        wishlist: { ...wishlistInclude, select: { name: true }, include: undefined },
         categories: categoryInclude,
       },
     });

@@ -15,6 +15,13 @@
       "when": 1756423991978,
       "tag": "0001_clear_the_santerians",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1756500974629,
+      "tag": "0002_living_avengers",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { randomUUID } from '@repo/database/helpers/uuid';
+import { randomUUID } from '@repo/helpers/uuid';
 import { Button } from '@repo/ui/button';
 import {
   Command,

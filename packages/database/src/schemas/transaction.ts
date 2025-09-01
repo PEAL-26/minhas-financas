@@ -43,12 +43,14 @@ const transactionIncomeTableName = 'transactions_incomes';
 export const transactionIncome = {
   sqlite: sqliteCore.sqliteTable(transactionIncomeTableName, {
     transactionId: sqliteCore.text('transaction_id').notNull(),
-    incomeId: sqliteCore.text('income_id').notNull(),
+    incomeId: sqliteCore.text('income_id'),
+    description: sqliteCore.text('description'),
     amount: sqliteCore.real('amount').notNull().default(0.0),
   }),
   pglite: pgCore.pgTable(transactionIncomeTableName, {
     transactionId: pgCore.text('transaction_id').notNull(),
-    incomeId: pgCore.text('income_id').notNull(),
+    incomeId: pgCore.text('income_id'),
+    description: pgCore.text('description'),
     amount: pgCore.real('amount').notNull().default(0.0),
   }),
 }[databaseConfig.driver];
@@ -57,7 +59,8 @@ const transactionExpenseTableName = 'transactions_expenses';
 export const transactionExpense = {
   sqlite: sqliteCore.sqliteTable(transactionExpenseTableName, {
     transactionId: sqliteCore.text('transaction_id').notNull(),
-    expenseId: sqliteCore.text('expense_id').notNull(),
+    expenseId: sqliteCore.text('expense_id'),
+    description: sqliteCore.text('description'),
     amount: sqliteCore.real('amount').notNull().default(0.0),
     quantity: sqliteCore.real('quantity').notNull().default(1),
     total: sqliteCore.real('total').notNull().default(0.0),
@@ -66,7 +69,8 @@ export const transactionExpense = {
   }),
   pglite: pgCore.pgTable(transactionExpenseTableName, {
     transactionId: pgCore.text('transaction_id').notNull(),
-    expenseId: pgCore.text('expense_id').notNull(),
+    expenseId: pgCore.text('expense_id'),
+    description: pgCore.text('description'),
     amount: pgCore.real('amount').notNull().default(0.0),
     quantity: pgCore.real('quantity').notNull().default(1),
     total: pgCore.real('total').notNull().default(0.0),

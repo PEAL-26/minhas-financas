@@ -15,6 +15,22 @@ export type Income = {
   currency?: string;
   estimatedDateReceipt?: Date | null;
   status: INCOME_STATUS_ENUM;
+  note?: string | null;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export const incomeHelps: Partial<Record<keyof Income, string>> = {
+  wallet: '',
+  description: '',
+  amount: '',
+  type: '',
+  recurrence: '',
+  duration: '',
+  startDate: '',
+  endDate: '',
+  currency: '',
+  estimatedDateReceipt: '',
+  status: '',
+  note: '',
 };

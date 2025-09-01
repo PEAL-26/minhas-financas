@@ -15,7 +15,7 @@ import { ExpenseSchemaType } from '@repo/types/schemas';
 import { EXPENSE_STATUS_ENUM, EXPENSE_STATUS_MAP } from '@repo/types/status';
 import { DatePicker } from '@repo/ui/date-picker';
 import { FormControlCustom } from '@repo/ui/form/control';
-import { InputFormControl } from '@repo/ui/form/control/input';
+import { TextareaFormControl } from '@repo/ui/form/control/textarea';
 import { showToastError } from '@repo/ui/helpers/toast';
 import { InputMoney } from '@repo/ui/input-money';
 import { ExpenseFormProps } from './types';
@@ -94,12 +94,14 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
     >
       <div className="grid h-full flex-1 auto-rows-min gap-6 overflow-y-auto px-4">
         <WishlistFormComponent
+          label="Despensa"
           form={mutation.form}
           response={selectWishlist}
-          onChange={(item) => {
-            if (item?.id) {
-              console.log(item);
-              mutation.form.setValue('description', item?.name);
+          onSelectItem={(item) => {
+            mutation.form.setValue('wishlist', item);
+
+            if (item) {
+              mutation.form.setValue('description', null);
               mutation.form.setValue('type', item?.type);
               mutation.form.setValue('recurrence', item?.recurrence);
               mutation.form.setValue('priority', item?.priority);
@@ -112,18 +114,19 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
           }}
         />
 
-        <IncomeFormComponent label="Renda" form={mutation.form} response={selectIncome} />
+        <IncomeFormComponent
+          label="Renda"
+          form={mutation.form}
+          response={selectIncome}
+          disableValueChange
+          onSelectItem={(item) => {
+            mutation.form.setValue('income', item);
+          }}
+        />
 
         {(!wishlist || Object.values(wishlist || {}).length === 0) && (
           <CategoryFormComponent form={mutation.form} response={selectCategories} />
         )}
-
-        <InputFormControl
-          name="description"
-          label="Descrição"
-          placeholder="Ex.: Comprar um presente, Fazer uma viagem, etc."
-          control={mutation?.form?.control}
-        />
 
         <RecurrenceFormComponent
           required
@@ -202,6 +205,14 @@ export function ExpenseFormSheet(props: ExpenseFormProps) {
           </div>
         )}
         <StatusFormComponent form={mutation.form} statusMap={EXPENSE_STATUS_MAP} />
+
+        <TextareaFormControl
+          label="Detalhes"
+          name="note"
+          control={mutation?.form?.control}
+          placeholder="Anotações adicionais"
+          className=""
+        />
 
         <LocationPricesFormComponent
           control={mutation.form.control}

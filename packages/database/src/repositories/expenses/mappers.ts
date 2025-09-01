@@ -36,6 +36,7 @@ export function toEntityMap(raw: any): Expense {
     quantity: checkNullUndefinedValue(raw.quantity, { fn: (value) => Number(value) }),
     total: checkNullUndefinedValue(raw.total, { fn: (value) => Number(value) }),
     status: raw.status || undefined,
+    note: raw.note,
     prices: pricesToEntityMap(raw.prices),
     ...toEntityPropertiesCommonMap(raw),
   };
@@ -67,11 +68,15 @@ export function toDatabaseMap(entity: Partial<Expense>) {
     total: entity.total,
     prices: entity.prices
       ? entity.prices.map((price) => ({
-          locationId: price?.location?.id,
+          locationId: checkNullUndefinedValue(price?.location, {
+            convert: 'emptyToNull',
+            fn: (value) => value.id,
+          }),
           amount: price.amount,
         }))
       : [],
     status: entity?.status ?? EXPENSE_STATUS_ENUM.PENDING,
+    note: entity?.note,
     ...toDatabasePropertiesCommonMap(entity),
   };
 }

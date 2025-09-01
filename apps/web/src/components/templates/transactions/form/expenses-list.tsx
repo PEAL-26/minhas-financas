@@ -82,6 +82,8 @@ export function ExpensesList(props: Props) {
     }
   };
 
+console.log(form.watch())
+
   return (
     <div>
       <div className="flex items-center justify-between border-b pb-2">
@@ -98,11 +100,13 @@ export function ExpensesList(props: Props) {
               <ExpenseFormComponent
                 form={form}
                 response={querySelectExpenses}
-                name={`expenses.${index}.expense`}
+                name={`expenses.${index}.description`}
+                itemName={`expenses.${index}.expense`}
                 containerClassName="w-full"
                 enableChange={false}
+                value={(field as any)?.description}
                 item={(field as any)?.expense}
-                onChange={(item) => {
+                onSelectItem={(item) => {
                   handleSelectExpense(item, index);
                 }}
               />

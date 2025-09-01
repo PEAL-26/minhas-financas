@@ -21,3 +21,18 @@ export type Wishlist = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export const wishlistHelps: Partial<Record<keyof Wishlist, string>> = {
+  name: '',
+  type: '',
+  recurrence: '',
+  category: '',
+  targetDate: '',
+  priority: '',
+  expectedLocation: '',
+  estimatedCost: '',
+  quantity: '',
+  total: '',
+  status: '',
+  prices: '',
+};

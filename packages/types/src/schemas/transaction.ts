@@ -1,6 +1,7 @@
 import z from 'zod';
 import { TRANSACTION_TYPE_ENUM, TRANSACTION_TYPE_MAP } from '../transaction';
 
+import { numericString } from '@repo/helpers/zod';
 import * as expense from './expense';
 import * as income from './income';
 import * as location from './location';
@@ -8,21 +9,27 @@ import { timestampsSchema } from './timestamps';
 import * as wallet from './wallet';
 
 export const transactionIncomeSchema = z.object({
-  income: z.object({
-    ...income.incomeSchemaBase.partial().shape,
-    id: z.string({ error: 'Campo obrigatório.' }),
-  }),
-  amount: z.number(),
+  income: z
+    .object({
+      ...income.incomeSchemaBase.partial().shape,
+      id: z.string({ error: 'Campo obrigatório.' }),
+    })
+    .nullish(),
+  description: z.string().nullish(),
+  amount: numericString(z.number()),
 });
 
 export const transactionExpenseSchema = z.object({
-  expense: z.object({
-    ...expense.expenseSchemaBase.partial().shape,
-    id: z.string({ error: 'Campo obrigatório.' }),
-  }),
-  amount: z.number(),
-  quantity: z.number(),
-  total: z.number(),
+  expense: z
+    .object({
+      ...expense.expenseSchemaBase.partial().shape,
+      id: z.string({ error: 'Campo obrigatório.' }),
+    })
+    .nullish(),
+  description: z.string().nullish(),
+  amount: numericString(z.number()),
+  quantity: numericString(z.number()),
+  total: numericString(z.number()),
   location: z
     .object({
       ...location.locationSchemaBase.partial().shape,
@@ -52,7 +59,7 @@ export const transactionSchemaBase = z.object({
   date: z.date({ error: 'Data inválida' }),
   incomes: z.array(transactionIncomeSchema).default([]).optional(),
   expenses: z.array(transactionExpenseSchema).default([]).optional(),
-  totalAmount: z.number().default(0),
+  totalAmount: numericString(z.number()).default(0),
   note: z.string().nullish(),
   ...timestampsSchema.partial().shape,
 });

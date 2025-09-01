@@ -6,10 +6,12 @@ import { useDelete, useListPaginate } from '@repo/database/hooks/crud';
 import { formatCurrency } from '@repo/helpers/currency';
 import { formatDate } from '@repo/helpers/date';
 import { dayjs } from '@repo/helpers/dayjs';
+import { descriptionListTransaction } from '@repo/helpers/description-list-transaction';
 import { TRANSACTION_TYPE_MAP, Transaction } from '@repo/types/transaction';
 import { AlertDialogCustom } from '@repo/ui/alert-dialog-custom';
+import { Button } from '@repo/ui/button';
 import { IconComponent } from '@repo/ui/icon-component';
-import { CalendarIcon } from '@repo/ui/lib/lucide';
+import { CalendarIcon, EditIcon, TrashIcon } from '@repo/ui/lib/lucide';
 import { cn } from '@repo/ui/lib/utils';
 import { Metadata } from 'next';
 import { useState } from 'react';
@@ -46,7 +48,7 @@ export function ListTransactionsTemplate() {
     <>
       <div className="flex flex-col p-4">
         <div className="mt-3 flex w-full">
-          <div className="flex w-full flex-col">
+          <div className="flex w-full flex-col gap-2">
             {listPaginate.data.map((item, index) => {
               const getDate = (date: Date | string) => {
                 const [year, month, day] = formatDate(date, 'YYYY-MM-DD').split('-');
@@ -94,18 +96,42 @@ export function ListTransactionsTemplate() {
                     </span>
                   )}
 
-                  <div className="mb-2 flex w-full items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <IconComponent name="a-arrow-down" />
+                  <div className="grid w-full grid-cols-4 rounded-md p-2 hover:bg-accent/30">
+                    <div className="col-span-2 flex items-center gap-2">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent">
+                        <IconComponent size={16} name="image" className="text-gray-400" />
+                      </div>
                       <div className="flex flex-col">
                         <span className="text-sm font-bold text-foreground">{type.display}</span>
-                        <span className="text-xs font-light text-foreground"></span>
+                        <span className="text-xs font-light text-foreground">
+                          {descriptionListTransaction(item)}
+                        </span>
                       </div>
                     </div>
-                    <span style={{ color: type.color }} className={cn('text-sm')}>
-                      {operation}
-                      {formatCurrency(item.totalAmount)}
-                    </span>
+                    <div className="w-fit content-center text-left">
+                      <span>{item?.wallet?.title || 'S/N'}</span>
+                    </div>
+                    <div className="flex items-center justify-end gap-4">
+                      <span style={{ color: type.color }} className={cn('text-sm')}>
+                        {operation}
+                        {formatCurrency(item.totalAmount)}
+                      </span>
+
+                      <div className="flex items-center justify-end gap-1">
+                        <Button
+                          onClick={() => setForm({ id: item.id, open: true })}
+                          className="group rounded p-1"
+                        >
+                          <EditIcon className="size-4 text-gray-400 group-hover:text-gray-500" />
+                        </Button>
+                        <Button
+                          onClick={() => setAlertDelete({ open: true, id: item.id })}
+                          className="group rounded p-1"
+                        >
+                          <TrashIcon className="size-4 stroke-red-500 group-hover:stroke-red-600" />
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               );

@@ -1,3 +1,5 @@
+import { DatabaseIncludeProps } from '@repo/database/types';
+
 export const accountInclude = {
   select: {
     id: true,
@@ -7,11 +9,12 @@ export const accountInclude = {
     siteUrl: true,
     swiftCode: true,
   },
+  as: 'transactions_wallet_account',
   singular: 'account',
   type: 'LEFT',
   references: {
-    left: 'account.id',
-    right: 'wallet.account_id',
+    left: 'transactions_wallet_account.id',
+    right: 'transactions_wallet.account_id',
   },
 } as const;
 
@@ -25,8 +28,9 @@ export const walletInclude = {
     currencies: true,
     active: true,
   },
+  as: 'transactions_wallet',
   references: {
-    left: 'wallet.id',
+    left: 'transactions_wallet.id',
     right: 'transactions.wallet_id',
   },
   singular: 'wallet',
@@ -35,3 +39,35 @@ export const walletInclude = {
     accounts: accountInclude,
   },
 } as const;
+
+export const incomeInclude: DatabaseIncludeProps = {
+  as: 'incomes',
+  structure: 'array',
+  type: 'LEFT',
+  references: {
+    left: 'transactions.id',
+    right: 'incomes.transaction_id',
+  },
+  select: {
+    description: true,
+  },
+};
+
+export const expenseInclude: DatabaseIncludeProps = {
+  as: 'expenses',
+  singular: 'expense',
+  structure: 'array',
+  type: 'LEFT',
+  references: {
+    left: 'transactions.id',
+    right: 'expenses.transaction_id',
+  },
+  select: {
+    description: true,
+    amount: true,
+    quantity: true,
+    total: true,
+    locationId: true,
+    incomeId: true,
+  },
+};

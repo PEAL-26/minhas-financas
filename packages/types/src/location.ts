@@ -12,6 +12,17 @@ export type Location = {
   updatedAt: Date;
 };
 
+export const locationHelps: Partial<Record<keyof Location, string>> = {
+  name: '',
+  type: '',
+  country: '',
+  province: '',
+  city: '',
+  address: '',
+  coordinate: '',
+  contacts: '',
+};
+
 export type Coordinate = {
   latitude: number;
   longitude: number;

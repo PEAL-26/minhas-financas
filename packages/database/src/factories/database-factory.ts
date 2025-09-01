@@ -1,6 +1,6 @@
 import { wait } from '@repo/helpers/wait';
 import { paginateData } from '../helpers/pagination';
-import { randomUUID } from '../helpers/uuid';
+import { randomUUID } from '@repo/helpers/uuid';
 //import * as mocks from '../mocks';
 import {
   DatabaseConfig,

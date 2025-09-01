@@ -5,7 +5,7 @@ import {
   ListPaginateRepositoryOption,
   PaginatedResult,
 } from '../../types';
-import { walletInclude } from './includes';
+import { expenseInclude, incomeInclude, walletInclude } from './includes';
 import { ITransactionRepository, TransactionCreateData } from './interface';
 import * as mappers from './mappers';
 
@@ -29,7 +29,6 @@ export class TransactionRepository implements ITransactionRepository {
       },
     });
   }
-
   async update(input: Partial<TransactionCreateData>, id: string): Promise<void> {
     const { incomes, expenses, ...data } = mappers.toDatabaseMap(input);
     await this.database.update('transactions', data, id, {
@@ -74,6 +73,8 @@ export class TransactionRepository implements ITransactionRepository {
       page,
       include: {
         wallets: walletInclude,
+        transactions_incomes: incomeInclude,
+        transactions_expenses: expenseInclude,
       },
     });
 

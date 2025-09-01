@@ -9,6 +9,14 @@ export type Account = {
   updatedAt: Date;
 };
 
+export const accountHelps: Partial<Record<keyof Account, string>> = {
+  name: '',
+  type: '',
+  currencies: '',
+  siteUrl: '',
+  swiftCode: '',
+};
+
 export enum ACCOUNT_TYPE_ENUM {
   BANK = 'bank',
   E_WALLET = 'e_wallet',

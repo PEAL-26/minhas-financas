@@ -12,6 +12,7 @@ import * as income from './income';
 import * as price from './price';
 import { timestampsSchema } from './timestamps';
 import * as wishlist from './wishlist';
+import { numericString } from '@repo/helpers/zod';
 
 const idSchema = z.string({ error: 'Campo obrigatório.' });
 
@@ -46,9 +47,9 @@ export const expenseSchemaBase = z.object({
   recurrence: z.int({ error: 'Valor inválido' }).nullish(),
   startDate: z.date({ error: 'Data inválida' }).nullish(),
   endDate: z.date({ error: 'Data inválida' }).nullish(),
-  estimatedAmount: z.number({ error: 'Valor inválido' }),
-  quantity: z.number().default(1).nullish(),
-  total: z.number().nullish(),
+  estimatedAmount: numericString(z.number({ error: 'Valor inválido' })),
+  quantity: numericString(z.number()).default(1).nullish(),
+  total: numericString(z.number()).nullish(),
   prices: z
     .array(
       z.object({
@@ -60,6 +61,7 @@ export const expenseSchemaBase = z.object({
     .enum(EXPENSE_STATUS_ENUM, enumValidate(EXPENSE_STATUS_MAP))
     .default(EXPENSE_STATUS_ENUM.PENDING)
     .optional(),
+  note: z.string().nullish(),
   ...timestampsSchema.partial().shape,
 });
 

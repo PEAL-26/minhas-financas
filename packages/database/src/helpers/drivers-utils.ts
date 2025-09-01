@@ -51,8 +51,8 @@ export function generateWhereClause(where?: DatabaseWhere): string {
 
       if (value !== undefined) {
         const where = {
-          equal: `${column} = '${value}'`,
-          like: `LOWER(${column}) LIKE LOWER('%${value}%')`,
+          equal: `${column} = '${String(value).trim()}'`,
+          like: `LOWER(${column}) LIKE LOWER('%${String(value).trim()}%')`,
         }[op];
         return where || '';
       }

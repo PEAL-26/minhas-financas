@@ -50,7 +50,7 @@ export function ListExpensesTemplate() {
               render: (item) => {
                 return (
                   <CategoryComponent
-                    title={item?.description || 'Desconhecido'}
+                    title={item?.description || (item as any)?.wishlist?.name || 'Sem nome'}
                     description={item?.category?.name}
                     backgroundColor={item?.category?.color}
                     icon={item?.category?.icon}

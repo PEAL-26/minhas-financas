@@ -7,7 +7,6 @@ import * as locationMappers from '../locations';
 import * as walletMappers from '../wallet';
 
 export function toEntityMap(raw: any): Transaction {
-  // TODO Melhorar esse mapeamento
   return {
     type: checkNullUndefinedValue(raw?.type, { convert: 'emptyToUndefined' }),
     date: checkNullUndefinedValue(raw?.date, { fn: (value) => new Date(value) }),
@@ -21,6 +20,7 @@ export function toEntityMap(raw: any): Transaction {
           convert: 'emptyToUndefined',
           fn: (value) => incomeMappers.toEntityMap(value),
         }),
+        description: descriptionIncome(item?.description, item?.income),
         amount: checkNullUndefinedValue(item?.amount, {
           convert: 'emptyToUndefined',
           fn: (value) => Number(value),
@@ -32,6 +32,7 @@ export function toEntityMap(raw: any): Transaction {
           convert: 'emptyToUndefined',
           fn: (value) => expenseMappers.toEntityMap(value),
         }),
+        description: item?.description,
         amount: checkNullUndefinedValue(item?.amount, {
           convert: 'emptyToUndefined',
           fn: (value) => Number(value),
@@ -66,8 +67,12 @@ export function toDatabaseMap(entity: Partial<Transaction>) {
   const incomes =
     entity?.incomes?.map((item) => ({
       incomeId: checkNullUndefinedValue(item.income, {
-        convert: 'emptyToUndefined',
+        convert: 'emptyToNull',
         fn: (value) => value?.id,
+      }),
+      description: checkNullUndefinedValue(item.description, {
+        convert: 'emptyToNull',
+        fn: (value) => String(value).trim(),
       }),
       amount: Number(item?.amount || 0),
     })) || [];
@@ -75,9 +80,14 @@ export function toDatabaseMap(entity: Partial<Transaction>) {
   const expenses =
     entity?.expenses?.map((item) => ({
       expenseId: checkNullUndefinedValue(item.expense, {
-        convert: 'emptyToUndefined',
+        convert: 'emptyToNull',
         fn: (value) => value?.id,
       }),
+      description: descriptionExpense(
+        item?.description,
+        item?.expense,
+        entity.expenses?.length || 0,
+      ),
       amount: Number(item?.amount || 0),
       quantity: Number(item?.quantity || 1),
       total: Number(item?.amount || 0) * Number(item?.quantity || 1),
@@ -124,4 +134,24 @@ function calculateTotalAmount(
 
   if (type === TRANSACTION_TYPE_ENUM.EXPENSE)
     return expenses.reduce((total, item) => total + item.total, 0);
+}
+
+function descriptionIncome(description: string | undefined | null, income: any) {
+  const descriptions = [
+    income?.wallet?.account?.name || '',
+    income?.wallet?.title || '',
+    income?.description || '',
+  ].filter((des) => String(des).trim() !== '');
+
+  return description ? String(description).trim() : `${descriptions.join(' | ')}`;
+}
+
+function descriptionExpense(description: string | undefined | null, expense: any, length: number) {
+  const descriptions = [expense?.category?.name || '', expense?.wishlist?.name || ''].filter(
+    (des) => String(des).trim() !== '',
+  );
+
+  return description
+    ? String(description).trim()
+    : `${descriptions.join(' | ')} ${length > 2 ? ', mais...' : ''}`.trim();
 }

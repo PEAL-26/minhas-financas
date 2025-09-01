@@ -21,6 +21,7 @@ export function toEntityMap(raw: any): Income {
       fn: (value) => new Date(value),
     }),
     status: raw.status || INCOME_STATUS_ENUM.ACTIVE,
+    note: raw.note,
     ...toEntityPropertiesCommonMap(raw),
   };
 }
@@ -59,6 +60,10 @@ export function toDatabaseMap(entity: Partial<Income>) {
       fn: (value) => new Date(value).getTime(),
     }),
     status: entity?.status || INCOME_STATUS_ENUM.ACTIVE,
+    note: checkNullUndefinedValue(entity?.note, {
+      convert: 'emptyToNull',
+      fn: (value) => String(value).trim(),
+    }),
     ...toDatabasePropertiesCommonMap(entity),
   };
 }

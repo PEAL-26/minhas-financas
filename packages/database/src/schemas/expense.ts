@@ -24,6 +24,7 @@ const fields = {
     quantity: pgCore.real('quantity').notNull().default(1),
     total: pgCore.real('total').notNull().default(0),
     status: pgCore.text('status').$type<EXPENSE_STATUS_ENUM>().default(EXPENSE_STATUS_ENUM.PENDING),
+    note: pgCore.text('note'),
   },
   sqlite: {
     wishlistId: sqliteCore.text('wishlist_id'),
@@ -33,9 +34,9 @@ const fields = {
     estimatedDate: sqliteCore.integer('estimated_date', { mode: 'timestamp' }),
     priority: sqliteCore.integer().$type<PRIORITY_ENUM>().default(PRIORITY_ENUM.NORMAL),
     type: sqliteCore
-      .text('type')
-      .$type<RECURRENCE_TYPE_ENUM>()
-      .default(RECURRENCE_TYPE_ENUM.UNIQUE),
+    .text('type')
+    .$type<RECURRENCE_TYPE_ENUM>()
+    .default(RECURRENCE_TYPE_ENUM.UNIQUE),
     recurrence: sqliteCore.integer('recurrence'),
     startDate: sqliteCore.integer('start_date', { mode: 'timestamp' }),
     endDate: sqliteCore.integer('end_date', { mode: 'timestamp' }),
@@ -43,9 +44,10 @@ const fields = {
     quantity: sqliteCore.real('quantity').notNull().default(1),
     total: sqliteCore.real('total').notNull().default(0),
     status: sqliteCore
-      .text('status')
-      .$type<EXPENSE_STATUS_ENUM>()
-      .default(EXPENSE_STATUS_ENUM.PENDING),
+    .text('status')
+    .$type<EXPENSE_STATUS_ENUM>()
+    .default(EXPENSE_STATUS_ENUM.PENDING),
+    note: sqliteCore.text('note'),
   },
 };
 

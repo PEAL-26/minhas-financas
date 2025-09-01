@@ -3,7 +3,9 @@ import { CustomCardDropdown } from '@/components/ui/custom-card-dropdown';
 import { formatCurrency } from '@repo/helpers/currency';
 import { colors } from '@repo/ui/colors';
 import { FormControlCustom } from '@repo/ui/form/control';
+import { InputSuggestions } from '@repo/ui/input';
 import { useEffect, useState } from 'react';
+import { CategoryComponent } from '../category-component';
 
 interface Props {
   form: any;
@@ -13,7 +15,12 @@ interface Props {
   containerClassName?: string;
   enableChange?: boolean;
   item?: any | null;
+  value?: any;
+  required?: boolean;
+  itemName?: string;
   onChange?(item: any | null): void;
+  onChangeValue?(value: string): void;
+  onSelectItem?(item: any | null): void;
 }
 
 export function ExpenseFormComponent(props: Props) {
@@ -25,29 +32,76 @@ export function ExpenseFormComponent(props: Props) {
     containerClassName,
     enableChange = true,
     item,
+    value,
+    required,
+    itemName,
     onChange,
+    onChangeValue,
+    onSelectItem,
   } = props;
 
-  const [currentValue, setCurrentValue] = useState(() => item);
+  const [currentItem, setCurrentItem] = useState(() => item);
 
-  const handleChangeItem = (item: any, field: any, update = true) => {
-    const data = item?.id === 'NULL' ? null : item;
+  const handleChangeItem = (item: any | null, field: any, update = true) => {
+    setCurrentItem(item);
 
-    setCurrentValue(data);
-
-    if (enableChange) {
-      field?.onChange(data);
+    if (item) {
+      field?.onChange?.(null);
     }
 
     if (update) {
-      onChange?.(data);
+      onSelectItem?.(item);
     }
   };
 
   useEffect(() => {
-    handleChangeItem(item, undefined, false);
+    handleChangeItem(item, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
+
+  return (
+    <FormControlCustom
+      required={required}
+      defaultValue={value}
+      label={label}
+      name={name}
+      control={form?.control}
+      containerClassName="w-full"
+    >
+      {({ field }) => {
+        //const item = form.getValue(itemName);
+        return (
+          <InputSuggestions
+            placeholder="Insira descrição ou selecione"
+            value={field.value}
+            onChange={(e) => {
+              field.onChange(e);
+              onChangeValue?.(e.target?.value);
+            }}
+            item={currentItem}
+            items={response.data}
+            renderItem={({ item }) => (
+              <CategoryComponent
+                title={item.description || item?.wishlist?.name}
+                description={`${item?.category?.name ? `${item?.category.name} |` : ''} ${formatCurrency(item.estimatedCost || 0)}`}
+                backgroundColor={item?.category?.color || colors.primary.DEFAULT}
+                icon={(item as any)?.category?.icon}
+                showIcon
+                sizeIcon={24}
+              />
+            )}
+            onSelectItem={(item) => {
+              handleChangeItem(item, field);
+            }}
+            onSearch={response?.search}
+            isLoading={response?.isLoadingAll}
+            isError={response?.isError}
+            isEmpty={response?.isEmpty}
+          />
+        );
+      }}
+    </FormControlCustom>
+  );
 
   return (
     <FormControlCustom
